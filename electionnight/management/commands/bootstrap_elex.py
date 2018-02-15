@@ -30,7 +30,10 @@ class Command(BaseCommand):
         else:
             name = row['statename']
 
-        if row['level'] in ['county', 'township']:
+        if row['level'] in [
+            geography.DivisionLevel.COUNTY,
+            geography.DivisionLevel.TOWNSHIP
+        ]:
             kwargs['code'] = row['fipscode']
         else:
             kwargs['name'] = name
@@ -43,7 +46,10 @@ class Command(BaseCommand):
         Depends on knowing the division of the row of election results.
         """
 
-        if division.level.name not in ['state', 'country']:
+        if division.level.name not in [
+            geography.DivisionLevel.STATE,
+            geography.DivisionLevel.COUNTRY
+        ]:
             state = division.parent
         else:
             state = division
@@ -76,7 +82,7 @@ class Command(BaseCommand):
                 label='U.S. House of Representatives'
             )
             district = state.children.get(
-                level__name='district',
+                level__name=geography.DivisionLevel.DISTRICT,
                 code=row['seatnum'].zfill(2) if int(row['seatnum']) < 10 else row['seatnum']
             )
             return government.Office.objects.get(
@@ -298,6 +304,6 @@ class Command(BaseCommand):
         with open('bootstrap.json', 'r') as readfile:
             data = json.load(readfile)
             for row in data:
-                if row['level'] == 'township':
+                if row['level'] == geography.DivisionLevel.TOWNSHIP:
                     continue
                 self.process_row(row)
