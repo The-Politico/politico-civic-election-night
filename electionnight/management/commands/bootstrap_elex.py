@@ -103,20 +103,6 @@ class Command(BaseCommand):
             party=party
         )
 
-    def get_or_create_ap_election_meta(self, row, election):
-        kwargs = {
-            'ap_election_id': row['raceid']
-        }
-
-        kwargs['election'] = election
-
-        election_meta, created = APElectionMeta.objects.get_or_create(
-            ap_election_id=row['raceid'],
-            election=election
-        )
-
-        return election_meta
-
     def get_or_create_party(self, row):
         if row['party'] in ['Dem', 'GOP']:
             aggregable = False
@@ -167,8 +153,14 @@ class Command(BaseCommand):
     def get_or_create_candidate_election(
         self, row, election, candidate, party
     ):
-        election.update_or_create_candidate(
+        return election.update_or_create_candidate(
             candidate, party.aggregate_candidates
+        )
+
+    def get_or_create_ap_election_meta(self, row, election):
+        APElectionMeta.objects.get_or_create(
+            ap_election_id=row['raceid'],
+            election=election
         )
 
     def get_or_create_votes(self, row, division, candidate_election):
@@ -199,9 +191,7 @@ class Command(BaseCommand):
         )
 
         self.get_or_create_ap_election_meta(row, election)
-        self.get_or_create_votes(
-            row, division, candidate_election=candidate_election
-        )
+        self.get_or_create_votes(row, division, candidate_election)
 
     def add_arguments(self, parser):
         parser.add_argument('election_date', type=str)
@@ -210,6 +200,11 @@ class Command(BaseCommand):
             dest='senate_class',
             action='store',
             default='1'
+        )
+        parser.add_argument(
+            '--test',
+            dest='test',
+            action='store_true',
         )
 
     def handle(self, *args, **options):
@@ -220,11 +215,12 @@ class Command(BaseCommand):
             'elex',
             'results',
             options['election_date'],
-            '-t',
             '-o',
             'json',
             '--national-only'
         ]
+        if options['test']:
+            elex_args.append('-t')
         subprocess.run(elex_args, stdout=writefile)
 
         with open('bootstrap.json', 'r') as readfile:
