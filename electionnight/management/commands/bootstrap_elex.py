@@ -143,7 +143,9 @@ class Command(BaseCommand):
 
         return person
 
-    def get_or_create_candidate(self, row, person, party, race):
+    def get_or_create_candidate(self, row, party, race):
+        person = self.get_or_create_person(row)
+
         id_components = row['id'].split('-')
         candidate_id = '{0}-{1}'.format(
             id_components[1],
@@ -165,20 +167,18 @@ class Command(BaseCommand):
     def get_or_create_candidate_election(
         self, row, election, candidate, party
     ):
-        return election.update_or_create_candidate(
+        election.update_or_create_candidate(
             candidate, party.aggregate_candidates
         )
 
     def get_or_create_votes(self, row, division, candidate_election):
-        votes, created = vote.Votes.objects.get_or_create(
+        vote.Votes.objects.get_or_create(
             division=division,
             count=row['votecount'],
             pct=row['votepct'],
             winning=row['winner'],
             candidate_election=candidate_election
         )
-
-        return votes
 
     def process_row(self, row):
         print('Processing {0} {1} {2} {3}'.format(
@@ -192,9 +192,8 @@ class Command(BaseCommand):
         race = self.get_race(row, division)
         election = self.get_election(row, race)
 
-        person = self.get_or_create_person(row)
         party = self.get_or_create_party(row)
-        candidate = self.get_or_create_candidate(row, person, party, race)
+        candidate = self.get_or_create_candidate(row, party, race)
         candidate_election = self.get_or_create_candidate_election(
             row, election, candidate, party
         )
