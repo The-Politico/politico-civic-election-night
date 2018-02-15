@@ -16,7 +16,11 @@ class Command(BaseCommand):
         'Bootstraps election meta for all elections in AP data.'
     )
 
-    def _get_division(self, row):
+    def get_division(self, row):
+        """
+        Gets the Division object for the given row of election results.
+        """
+
         kwargs = {
             'level__name': row['level']
         }
@@ -34,6 +38,11 @@ class Command(BaseCommand):
         return geography.Division.objects.get(**kwargs)
 
     def get_office(self, row, division):
+        """
+        Gets the Office object for the given row of election results.
+        Depends on knowing the division of the row of election results.
+        """
+
         if division.level.name not in ['state', 'country']:
             state = division.parent
         else:
@@ -76,6 +85,16 @@ class Command(BaseCommand):
             )
 
     def get_race(self, row, division):
+        """
+        Gets the Race object for the given row of election results.
+
+        In order to get the race, we must know the office. This function
+        will get the office as well.
+
+        The only way to know if a Race is a special is based on the string
+        of the `racetype` field from the AP data.
+        """
+
         office = self.get_office(row, division)
 
         return election.Race.objects.get(
@@ -85,6 +104,15 @@ class Command(BaseCommand):
         )
 
     def get_election(self, row, race):
+        """
+        Gets the Election object for the given row of election results.
+        Depends on knowing the Race object.
+
+        If this is the presidential election, this will determine the
+        Division attached to the election based on the row's statename.
+
+        This function depends on knowing the Race object from `get_race`.
+        """
         election_day = election.ElectionDay.objects.get(
             date=row['electiondate'],
         )
@@ -104,6 +132,12 @@ class Command(BaseCommand):
         )
 
     def get_or_create_party(self, row):
+        """
+        Gets or creates the Party object based on AP code of the row of
+        election data.
+
+        All parties that aren't Democratic or Republican are aggregable.
+        """
         if row['party'] in ['Dem', 'GOP']:
             aggregable = False
         else:
@@ -122,6 +156,9 @@ class Command(BaseCommand):
         return party
 
     def get_or_create_person(self, row):
+        """
+        Gets or creates the Person object for the given row of AP data.
+        """
         person, created = entity.Person.objects.get_or_create(
             first_name=row['first'],
             last_name=row['last']
@@ -130,6 +167,16 @@ class Command(BaseCommand):
         return person
 
     def get_or_create_candidate(self, row, party, race):
+        """
+        Gets or creates the Candidate object for the given row of AP data.
+
+        In order to tie with live data, this will synthesize the proper
+        AP candidate id.
+
+        This function also calls `get_or_create_person` to get a Person
+        object to pass to Django.
+        """
+
         person = self.get_or_create_person(row)
 
         id_components = row['id'].split('-')
@@ -153,17 +200,29 @@ class Command(BaseCommand):
     def get_or_create_candidate_election(
         self, row, election, candidate, party
     ):
+        """
+        For a given election, this function updates or creates the
+        CandidateElection object using the model method on the election.
+        """
         return election.update_or_create_candidate(
             candidate, party.aggregate_candidates
         )
 
     def get_or_create_ap_election_meta(self, row, election):
+        """
+        Gets or creates the APElectionMeta object for the given row of
+        AP data.
+        """
         APElectionMeta.objects.get_or_create(
             ap_election_id=row['raceid'],
             election=election
         )
 
     def get_or_create_votes(self, row, division, candidate_election):
+        """
+        Gets or creates the Vote object for the given row of AP data.
+        """
+
         vote.Votes.objects.get_or_create(
             division=division,
             count=row['votecount'],
@@ -173,6 +232,10 @@ class Command(BaseCommand):
         )
 
     def process_row(self, row):
+        """
+        Processes a row of AP election data to determine what model objects
+        need to be created.
+        """
         print('Processing {0} {1} {2} {3}'.format(
             row['statename'],
             row['level'],
@@ -180,7 +243,7 @@ class Command(BaseCommand):
             row['officename']
         ))
 
-        division = self._get_division(row)
+        division = self.get_division(row)
         race = self.get_race(row, division)
         election = self.get_election(row, race)
 
@@ -208,6 +271,15 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        """
+        This management command gets data for a given election date from
+        elex. Then, it loops through each row of the data and calls
+        `process_row`.
+
+        In order for this command to work, you must have bootstrapped all
+        of the dependent apps: entity, geography, government, election, vote,
+        and almanac.
+        """
         self.senate_class = options['senate_class']
 
         writefile = open('bootstrap.json', 'w')
