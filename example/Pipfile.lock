@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c001290076919f36921f4c212b264e891fc636a3d5b255586eafda0bd3c20449"
+            "sha256": "3b5eab2883d53f74dd48640645122ff37a25383ef1e002ce3f6fc6e337b4398d"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -29,6 +29,17 @@
         ]
     },
     "default": {
+        "almanac": {
+            "editable": true,
+            "git": "ssh://git@github.com/The-Politico/politico-civic-almanac"
+        },
+        "amqp": {
+            "hashes": [
+                "sha256:4e28d3ea61a64ae61830000c909662cb053642efddbe96503db0e7783a6ee85b",
+                "sha256:cba1ace9d4ff6049b190d8b7991f9c1006b443a5238021aca96dd6ad2ac9da22"
+            ],
+            "version": "==2.2.2"
+        },
         "attrs": {
             "hashes": [
                 "sha256:a17a9573a6f475c99b551c0e0a812707ddda1ec9653bed04c13841404ed6f450",
@@ -36,19 +47,45 @@
             ],
             "version": "==17.4.0"
         },
+        "billiard": {
+            "hashes": [
+                "sha256:abd9ce008c9a71ccde2c816f8daa36246e92a21e6a799831b887d88277187ecd",
+                "sha256:1d7b22bdc47aa52841120fcd22a74ae4fc8c13e9d3935643098184f5788c3ce6"
+            ],
+            "version": "==3.5.0.3"
+        },
         "boto3": {
             "hashes": [
-                "sha256:06b3101ead51a37e904d897ed08854ac38de2932ad70821aedc9c414fb86506f",
-                "sha256:a83373ddb48b27ffeb371e5d1af363837890a717ee3adc35801ae82731f05ab8"
+                "sha256:9312b3aa24888ab6436fcc41c56e2231dfdd1864879dabaac042256cbe292dbc",
+                "sha256:f773243adc1d2264fe87b75fa2f5e696ab042ac7a9bf0cae8a2045e32e325044"
             ],
-            "version": "==1.5.29"
+            "version": "==1.5.30"
         },
         "botocore": {
             "hashes": [
-                "sha256:a101debec948513813f61b1733aa60d11da7fc345c5e020d9a47657d6749ab91",
-                "sha256:8f16beaab33c71d597d0f84a7dca8787adc323dbb5a9746b20dbedf1edba9889"
+                "sha256:2b3761dfe3a2a388859ee2663c8f0183746b83f4ac23e8cdb164012bbbe31f28",
+                "sha256:02bdae93a167bbbd8053099300f14dea648abaa2031ffd29b4733ed253ed2458"
             ],
-            "version": "==1.8.43"
+            "version": "==1.8.44"
+        },
+        "cachecontrol": {
+            "hashes": [
+                "sha256:8f7829d92584f1f2360ebfff4517ee359787d5b7dfa2ef9579f871b628745a1e"
+            ],
+            "version": "==0.11.7"
+        },
+        "celery": {
+            "hashes": [
+                "sha256:81a67f0d53a688ec2bc8557bd5d6d7218f925a6f2e6df80e01560de9e28997ec",
+                "sha256:77ff3730198d6a17b3c1f05579ebe570b579efb35f6d7e13dba3b1368d068b35"
+            ],
+            "version": "==4.1.0"
+        },
+        "cement": {
+            "hashes": [
+                "sha256:d50c5980bf3e2456e515178ba097d16e36be0fbcab7811a60589d22f45b64f55"
+            ],
+            "version": "==2.10.2"
         },
         "census": {
             "hashes": [
@@ -56,20 +93,6 @@
                 "sha256:b8670f9cc1b582e05cde45b91427d0a077f1798af70c555b5f83a4c37b62340a"
             ],
             "version": "==0.8.6"
-        },
-        "certifi": {
-            "hashes": [
-                "sha256:14131608ad2fd56836d33a71ee60fa1c82bc9d2c8d98b7bdbc631fe1b3cd1296",
-                "sha256:edbc3f203427eef571f79a7692bb160a2b0f7ccaa31953e99bd17e307cf63f7d"
-            ],
-            "version": "==2018.1.18"
-        },
-        "chardet": {
-            "hashes": [
-                "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691",
-                "sha256:84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae"
-            ],
-            "version": "==3.0.4"
         },
         "dj-database-url": {
             "hashes": [
@@ -146,6 +169,12 @@
             "editable": true,
             "path": "./.."
         },
+        "elex": {
+            "hashes": [
+                "sha256:0fbf1d2fc32c1afe0caa70253a55c9fdd08b87e6cded2c7264f159b873ee3ba9"
+            ],
+            "version": "==2.4.1"
+        },
         "entity": {
             "editable": true,
             "git": "ssh://git@github.com/The-Politico/politico-civic-entity"
@@ -172,13 +201,6 @@
             "editable": true,
             "git": "ssh://git@github.com/The-Politico/politico-civic-government"
         },
-        "idna": {
-            "hashes": [
-                "sha256:8c7309c718f94b3a625cb648ace320157ad16ff131ae0af362c9f21b80ef6ec4",
-                "sha256:2c6a5de3089009e3da7c5dde64a141dbc8551d5b7f6cf4ed7c2568d0cc520a8f"
-            ],
-            "version": "==2.6"
-        },
         "jellyfish": {
             "hashes": [
                 "sha256:d0b22034df56d5faa34928457655722acf385d122da59c2cf7f4acd6bd49ea8b",
@@ -192,6 +214,20 @@
                 "sha256:6a81d4c9aa62caf061cb517b4d9ad1dd300374cd4706997aff9cd6aedd61fc64"
             ],
             "version": "==0.9.3"
+        },
+        "kombu": {
+            "hashes": [
+                "sha256:01f0da9fe222a2183345004243d1518c0fbe5875955f1b24842f2d9c65709ade",
+                "sha256:4249d9dd9dbf1fcec471d1c2def20653c9310dd1a217272d77e4844f9d5273cb"
+            ],
+            "version": "==4.1.0"
+        },
+        "lockfile": {
+            "hashes": [
+                "sha256:6c3cb24f344923d30b2785d5ad75182c8ea7ac1b6171b08657258ec7429d50fa",
+                "sha256:6aed02de03cba24efabcd600b30540140634fc06cfa603822d508d5361e9f799"
+            ],
+            "version": "==0.12.2"
         },
         "mccabe": {
             "hashes": [
@@ -311,6 +347,10 @@
             ],
             "version": "==1.6.0"
         },
+        "pymongo": {
+            "hashes": [],
+            "version": "==3.3"
+        },
         "pyshp": {
             "hashes": [
                 "sha256:8dcd65e0aa2aa2951527ddb7339ea6e69023543d8a20a73fc51e2829b9ed6179"
@@ -326,10 +366,9 @@
         },
         "python-dateutil": {
             "hashes": [
-                "sha256:95511bae634d69bc7329ba55e646499a842bc4ec342ad54a8cdb65645a0aad3c",
-                "sha256:891c38b2a02f5bb1be3e4793866c8df49c7d19baabf9c1bad62547e0b4866aca"
+                "sha256:eec865307ebe7f329a6a9945c15453265a449cdaaf3710340828a1934d53e468"
             ],
-            "version": "==2.6.1"
+            "version": "==2.2"
         },
         "python-slugify": {
             "hashes": [
@@ -354,10 +393,10 @@
         },
         "requests": {
             "hashes": [
-                "sha256:6a1b267aa90cac58ac3a765d067950e7dbbf75b1da07e895d1f594193a40a38b",
-                "sha256:9c443e7324ba5b85070c4a818ade28bfabedf16ea10206da1132edaa6dda237e"
+                "sha256:545c4855cd9d7c12671444326337013766f4eea6068c3f0307fb2dc2696d580e",
+                "sha256:5acf980358283faba0b897c73959cecf8b841205bb4b2ad3ef545f46eae1a133"
             ],
-            "version": "==2.18.4"
+            "version": "==2.11.1"
         },
         "s3transfer": {
             "hashes": [
@@ -380,6 +419,12 @@
             ],
             "version": "==4.19.5"
         },
+        "ujson": {
+            "hashes": [
+                "sha256:f66073e5506e91d204ab0c614a148d5aa938bdbf104751be66f8ad7a222f5f86"
+            ],
+            "version": "==1.35"
+        },
         "unidecode": {
             "hashes": [
                 "sha256:72f49d3729f3d8f5799f710b97c1451c5163102e76d64d20e170aedbbd923582",
@@ -387,18 +432,18 @@
             ],
             "version": "==1.0.22"
         },
-        "urllib3": {
-            "hashes": [
-                "sha256:06330f386d6e4b195fbfc736b297f58c5a892e4440e54d294d7004e3a9bbea1b",
-                "sha256:cc44da8e1145637334317feebd728bd869a35285b93cbb4cca2577da7e62db4f"
-            ],
-            "version": "==1.22"
-        },
         "us": {
             "hashes": [
                 "sha256:09dc9ba763e2e4399e6a042104f3e415a7de6bfa4df6f557b4f19e3ba9a22fda"
             ],
             "version": "==1.0.0"
+        },
+        "vine": {
+            "hashes": [
+                "sha256:6849544be74ec3638e84d90bc1cf2e1e9224cc10d96cd4383ec3f69e9bce077b",
+                "sha256:52116d59bc45392af9fdd3b75ed98ae48a93e822cee21e5fda249105c59a7a72"
+            ],
+            "version": "==1.1.4"
         },
         "vote": {
             "editable": true,
