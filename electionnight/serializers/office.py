@@ -1,10 +1,13 @@
 from election.models import Election, ElectionDay
+from electionnight.models import PageContent
 from geography.models import Division
 from government.models import Office, Party
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 
 from .division import DivisionSerializer
+from .election import ElectionSerializer
+from .party import PartySerializer
 
 
 class OfficeListSerializer(serializers.ModelSerializer):

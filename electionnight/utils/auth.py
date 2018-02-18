@@ -1,6 +1,6 @@
-from electionnight.conf import settings
 from django.conf import settings as project_settings
 from django.utils.decorators import method_decorator
+from electionnight.conf import settings
 
 from .importers import import_class
 

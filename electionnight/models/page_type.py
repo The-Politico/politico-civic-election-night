@@ -1,16 +1,17 @@
-from core.constants import DIVISION_LEVELS
-from core.models import UUIDBase
+import uuid
+
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from election.models import ElectionDay
-from entity.models import Body, Jurisdiction, Office
 from geography.models import Division, DivisionLevel
+from government.models import Body, Jurisdiction, Office
 
 
-class PageType(UUIDBase):
+class PageType(models.Model):
     """
     A type of page that content can attach to.
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     allowed_types = models.Q(app_label='geography', model='division') | \
         models.Q(app_label='entity', model='office') | \
         models.Q(app_label='entity', model='body')
@@ -53,7 +54,7 @@ class PageType(UUIDBase):
         if model_class == Office:
             # President
             if self.jurisdiction:
-                if self.division_level.name == DIVISION_LEVELS['state']:
+                if self.division_level.name == DivisionLevel.STATE:
                     return '/{}/president/{{state}}'.format(cycle)
                 else:
                     return '/{}/president/'.format(cycle)
@@ -64,7 +65,7 @@ class PageType(UUIDBase):
             # Senate
             if self.body.name == 'senate':
                 if self.jurisdiction:
-                    if self.division_level.name == DIVISION_LEVELS['state']:
+                    if self.division_level.name == DivisionLevel.STATE:
                         return '/{}/senate/{{state}}/'.format(cycle)
                     else:
                         return '/{}/senate/'.format(cycle)
@@ -73,7 +74,7 @@ class PageType(UUIDBase):
             # House
             else:
                 if self.jurisdiction:
-                    if self.division_level.name == DIVISION_LEVELS['state']:
+                    if self.division_level.name == DivisionLevel.STATE:
                         return '/{}/house/{{state}}/'.format(cycle)
                     else:
                         return '/{}/house/'.format(cycle)

@@ -1,10 +1,9 @@
 import os
 import uuid
 
-from core.aws import StorageService
-from core.models import AuditTrackBase, UUIDBase
 from django.db import models
 from django.utils.html import format_html
+from electionnight.utils.aws import StorageService
 from entity.models import Person
 
 
@@ -20,12 +19,14 @@ def person_image_path(instance, filename):
     )
 
 
-class PersonImage(UUIDBase, AuditTrackBase):
+class PersonImage(models.Model):
     """
     Image attached to a person, which can be serialized
     by a tag.
     """
-    person = models.ForeignKey(Person, related_name='images')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    person = models.ForeignKey(
+        Person, related_name='images', on_delete=models.CASCADE)
     tag = models.SlugField(
         help_text="Used to serialize images. "
         "<b>Must be unique per person.</b>"
@@ -34,6 +35,9 @@ class PersonImage(UUIDBase, AuditTrackBase):
         upload_to=person_image_path,
         storage=StorageService()
     )
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    updated = models.DateTimeField(auto_now=True, editable=False)
 
     def preview(self):
         return format_html(

@@ -1,6 +1,5 @@
 from django.db import models
-
-from election.models import Election, BallotMeasure
+from election.models import BallotMeasure, Election
 
 
 class APElectionMeta(models.Model):

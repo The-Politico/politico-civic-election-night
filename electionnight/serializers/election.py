@@ -1,4 +1,4 @@
-from election.models import Candidate, CandidateElection, Election, Party
+from election.models import Candidate, CandidateElection, Election
 from entity.models import Office, Person
 from geography.models import Division
 from rest_framework import serializers
@@ -29,7 +29,7 @@ class FlattenMixin:
                 # Include their fields, prefixed, in the current representation
                 for key in objrep:
                     rep[key] = objrep[key]
-            except:
+            except Exception:
                 continue
         return rep
 
