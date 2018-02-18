@@ -56,17 +56,17 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:9312b3aa24888ab6436fcc41c56e2231dfdd1864879dabaac042256cbe292dbc",
-                "sha256:f773243adc1d2264fe87b75fa2f5e696ab042ac7a9bf0cae8a2045e32e325044"
+                "sha256:ae0ae1c11f4a78bd69a43c8b8a9bdb6569c3b497331f5892cc3cdb95f6f7f42b",
+                "sha256:65d7b85d213b63f4540b259b5a9780db8b0cbdcb5d748545d1eb19992910587b"
             ],
-            "version": "==1.5.30"
+            "version": "==1.5.31"
         },
         "botocore": {
             "hashes": [
-                "sha256:2b3761dfe3a2a388859ee2663c8f0183746b83f4ac23e8cdb164012bbbe31f28",
-                "sha256:02bdae93a167bbbd8053099300f14dea648abaa2031ffd29b4733ed253ed2458"
+                "sha256:80ccf6d2145a19b2b0354df7522ab7f8ef4e2793b5e187ea10cb5c4d8cbbd6a3",
+                "sha256:8f91b648a216dc945783d1539c013fc08a9e65ecc4fc5aae017bdd5961fd3468"
             ],
-            "version": "==1.8.44"
+            "version": "==1.8.45"
         },
         "cachecontrol": {
             "hashes": [
@@ -108,10 +108,15 @@
             ],
             "version": "==2.0.2"
         },
+        "django-politico-civic-almanac": {
+            "editable": true,
+            "git": "ssh://git@github.com/The-Politico/politico-civic-almanac",
+            "ref": "ab66c5d940e2675e58162b296c6cbcd7c9d0e227"
+        },
         "django-politico-civic-election": {
             "editable": true,
             "git": "ssh://git@github.com/The-Politico/politico-civic-election",
-            "ref": "e8792f7f5917e32472855409fa0222bf40aa586d"
+            "ref": "e9336a904e919c2a1f914e76b33c30cfee35792a"
         },
         "django-politico-civic-entity": {
             "editable": true,
@@ -121,12 +126,12 @@
         "django-politico-civic-geography": {
             "editable": true,
             "git": "ssh://git@github.com/The-Politico/politico-civic-geography",
-            "ref": "32ef2ca355eb4f56c6a1d2316f81a25d84717ce1"
+            "ref": "4c6eb7f0e2672b25ee876956438367a5b865c4d9"
         },
         "django-politico-civic-government": {
             "editable": true,
             "git": "ssh://git@github.com/The-Politico/politico-civic-government",
-            "ref": "317276aabb5cc75570b60ebb947902e191b499b6"
+            "ref": "e6492ab93eca8e1e3e1e26864613fd071e53a892"
         },
         "django-politico-civic-vote": {
             "editable": true,

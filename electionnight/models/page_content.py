@@ -5,9 +5,9 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from election.models import ElectionDay
+from electionnight.managers.page_content import PageContentManager
 from geography.models import Division, DivisionLevel
 
-from .managers.page_content import PageContentManager
 from .page_type import PageType
 
 

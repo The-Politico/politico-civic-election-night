@@ -1,7 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 from django.core import exceptions
 from django.db import models
-from electionnight.models import PageType
 
 
 class PageContentManager(models.Manager):
@@ -19,6 +18,7 @@ class PageContentManager(models.Manager):
         """
         Return serialized content for an office page.
         """
+        from electionnight.models import PageType
         office_type = ContentType.objects.get_for_model(office)
         page_type = PageType.objects.get(
             model_type=office_type,

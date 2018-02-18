@@ -25,7 +25,10 @@ setup(
 
     packages=find_packages(exclude=['docs', 'tests', 'example']),
 
-    install_requires=[],
+    install_requires=[
+        'django-uuslug',
+        'djangorestframework',
+    ],
 
     extras_require={
         'test': ['pytest'],
