@@ -1,9 +1,10 @@
 from election.models import ElectionDay
-from electionnight.serializers import (SpecialElectionListSerializer,
-                                       SpecialElectionSerializer)
 from geography.models import Division, DivisionLevel
 from rest_framework import generics
 from rest_framework.exceptions import APIException
+
+from electionnight.serializers import (SpecialElectionListSerializer,
+                                       SpecialElectionSerializer)
 
 
 class SpecialMixin(object):
@@ -19,7 +20,7 @@ class SpecialMixin(object):
             )
         division_ids = []
         for election in date.elections.all():
-            if election.division.level == DivisionLevel.STATE and \
+            if election.division.level.name == DivisionLevel.STATE and \
                     election.race.special:
                 division_ids.append(election.division.uid)
         return Division.objects.filter(uid__in=division_ids)

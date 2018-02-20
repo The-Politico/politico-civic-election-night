@@ -5,8 +5,9 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from election.models import ElectionDay
-from electionnight.managers.page_content import PageContentManager
 from geography.models import Division, DivisionLevel
+
+from electionnight.managers.page_content import PageContentManager
 
 from .page_type import PageType
 
@@ -18,9 +19,9 @@ class PageContent(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     allowed_types = models.Q(app_label='geography', model='division') | \
-        models.Q(app_label='entity', model='office') | \
-        models.Q(app_label='entity', model='body') | \
-        models.Q(app_label='theshow', model='pagetype')
+        models.Q(app_label='government', model='office') | \
+        models.Q(app_label='government', model='body') | \
+        models.Q(app_label='electionnight', model='pagetype')
     content_type = models.ForeignKey(
         ContentType,
         limit_choices_to=allowed_types,

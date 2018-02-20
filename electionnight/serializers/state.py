@@ -1,9 +1,10 @@
 from election.models import ElectionDay
-from electionnight.models import PageContent
 from geography.models import Division
 from government.models import Party
 from rest_framework import serializers
 from rest_framework.reverse import reverse
+
+from electionnight.models import PageContent
 
 from .division import DivisionSerializer
 from .election import ElectionSerializer
@@ -36,7 +37,6 @@ class StateSerializer(serializers.ModelSerializer):
     parties = serializers.SerializerMethodField()
     elections = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
-    cities = serializers.SerializerMethodField()
 
     def get_division(self, obj):
         """Division."""
@@ -64,5 +64,4 @@ class StateSerializer(serializers.ModelSerializer):
             'elections',
             'parties',
             'division',
-            'cities',
         )

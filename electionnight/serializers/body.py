@@ -1,9 +1,10 @@
 from election.models import Election, ElectionDay
-from electionnight.models import PageContent
 from geography.models import Division
 from government.models import Body, Party
 from rest_framework import serializers
 from rest_framework.reverse import reverse
+
+from electionnight.models import PageContent
 
 from .division import DivisionSerializer
 from .election import ElectionSerializer
@@ -27,7 +28,7 @@ class BodyListSerializer(serializers.ModelSerializer):
         fields = (
             'url',
             'uid',
-            'name',
+            'slug',
         )
 
 

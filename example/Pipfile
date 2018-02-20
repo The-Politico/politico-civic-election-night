@@ -27,6 +27,8 @@ election = {git = "ssh://git@github.com/The-Politico/politico-civic-election", e
 almanac = {git = "ssh://git@github.com/The-Politico/politico-civic-almanac", editable = true}
 vote = {git = "ssh://git@github.com/The-Politico/politico-civic-vote", editable = true}
 electionnight = {path = "./..", editable = true}
+ipython = "*"
 
 
 [dev-packages]
+

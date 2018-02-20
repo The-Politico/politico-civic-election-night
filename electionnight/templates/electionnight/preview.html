@@ -1,8 +1,9 @@
-{% extends "theshow/base.html" %}
+{% extends "electionnight/base.html" %}
 
 {%block content%}
 <h1>Sample Pages</h1>
 <ul>
+  {% comment %}
   <li>
     <a href="{%url 'cycle-page' year='2017' %}">/election-results/2017/</a>
     <a href="{%url 'cycle-page-export' year='2017'%}"><small>export</small></a>
@@ -35,7 +36,7 @@
     <a href="{%url 'special-election-page' year='2017' state='alabama' month='dec' day='12'%}">/election-results/2017/alabama/special-election/dec-12/</a>
     <a href="{%url 'special-election-page-export' year='2017' state='alabama' month='dec' day='12'%}"><small>export</small></a>
   </li>
-
+  {% endcomment %}
 
 </ul>
 <h1>API</h1>

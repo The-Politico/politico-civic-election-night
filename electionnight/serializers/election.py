@@ -1,9 +1,10 @@
 from election.models import Candidate, CandidateElection, Election
-from electionnight.models import APElectionMeta
 from entity.models import Person
 from geography.models import Division
 from government.models import Office
 from rest_framework import serializers
+
+from electionnight.models import APElectionMeta
 
 from .votes import VotesSerializer
 
@@ -147,14 +148,15 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
         Votes entered into backend.
         Only used if ``override_ap_votes = True``.
         """
-        if obj.meta.override_ap_votes:
-            all_votes = None
-            for ce in obj.candidate_elections.all():
-                if all_votes:
-                    all_votes = all_votes | ce.votes.all()
-                else:
-                    all_votes = ce.votes.all()
-            return VotesSerializer(all_votes, many=True).data
+        if hasattr(obj, 'meta'):  # TODO: REVISIT THIS
+            if obj.meta.override_ap_votes:
+                all_votes = None
+                for ce in obj.candidate_elections.all():
+                    if all_votes:
+                        all_votes = all_votes | ce.votes.all()
+                    else:
+                        all_votes = ce.votes.all()
+                return VotesSerializer(all_votes, many=True).data
         return False
 
     def get_candidates(self, obj):
