@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 from django.core.management.base import BaseCommand
@@ -17,9 +18,11 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        cmd_path = os.path.dirname(os.path.realpath(__file__))
+        bash_script = os.path.join(cmd_path, '../../bin/results.sh')
         script_args = [
             'bash',
-            '../electionnight/bin/results.sh',
+            bash_script,
             '-d',
             options['election_date']
         ]
@@ -28,5 +31,3 @@ class Command(BaseCommand):
             script_args.extend(['-t', '--test'])
 
         subprocess.run(script_args)
-
-
