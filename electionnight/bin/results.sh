@@ -5,19 +5,23 @@ while getopts t:f:d: option
 do
   case "${option}"
     in
-    t) TARGET=${OPTARG};;
+    b) BUCKET=${OPTARG};;
     f) FILE=${OPTARG};;
     d) DATE=${OPTARG};;
+    t) TEST=${OPTARG};;
   esac
 done
 
+if [ -z $TEST ] ; then
+  TEST=""
+fi
 
 # grab elex results for everything
 if [ $FILE ]
   then
-    elex results ${DATE} --test --national-only -o json -d ${FILE} > master.json
+    elex results ${DATE} ${TEST} --national-only -o json -d ${FILE} > master.json
   else
-    elex results ${DATE} --test --national-only -o json > master.json
+    elex results ${DATE} ${TEST} --national-only -o json > master.json
 fi
 
 for file in ../electionnight/bin/output/elections/*.json ; do
@@ -57,6 +61,6 @@ for file in ../electionnight/bin/output/elections/*.json ; do
 done
 
 # deploy to s3
-if [ $TARGET ] ; then
-  aws s3 cp ../static/election-results/ s3://${TARGET}/elections/ --recursive --acl "public-read" --cache-control "max-age=5"
+if [ $BUCKET ] ; then
+  aws s3 cp ../static/election-results/ s3://${BUCKET}/election-results/ --recursive --acl "public-read" --cache-control "max-age=5"
 fi

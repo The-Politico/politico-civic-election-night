@@ -10,11 +10,23 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('election_date', type=str)
+        parser.add_argument(
+            '--test',
+            dest='test',
+            action='store_true'
+        )
 
     def handle(self, *args, **options):
-        subprocess.run([
+        script_args = [
             'bash',
             '../electionnight/bin/results.sh',
             '-d',
             options['election_date']
-        ])
+        ]
+
+        if options['test']:
+            script_args.extend(['-t', '--test'])
+
+        subprocess.run(script_args)
+
+
