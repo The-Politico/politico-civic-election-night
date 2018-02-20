@@ -1,13 +1,14 @@
 #!/bin/bash
 
 # parse args
-while getopts t:f:d: option
+while getopts b:d:f:o:t option
 do
   case "${option}"
     in
     b) BUCKET=${OPTARG};;
-    f) FILE=${OPTARG};;
     d) DATE=${OPTARG};;
+    f) FILE=${OPTARG};;
+    o) OUTPUT=${OPTARG};;
     t) TEST=${OPTARG};;
   esac
 done
@@ -24,12 +25,12 @@ if [ $FILE ]
     elex results ${DATE} ${TEST} --national-only -o json > master.json
 fi
 
-for file in ../electionnight/bin/output/elections/*.json ; do
+for file in ${OUTPUT} ; do
   if [ -e "$file" ] ; then
     elections=`cat $file | jq '.elections'`
     levels=`cat $file | jq '.levels'`
     path=`cat $file | jq -r '.filename'`
-    fullpath="../electionnight/static/election-results/$path"
+    fullpath="${OUTPUT}/election-results/$path"
     mkdir -p "$(dirname "$fullpath/p")"
 
     # filter results
@@ -62,5 +63,5 @@ done
 
 # deploy to s3
 if [ $BUCKET ] ; then
-  aws s3 cp ../static/election-results/ s3://${BUCKET}/election-results/ --recursive --acl "public-read" --cache-control "max-age=5"
+  aws s3 cp ${OUTPUT}/election-results/ s3://${BUCKET}/election-results/ --recursive --acl "public-read" --cache-control "max-age=5"
 fi

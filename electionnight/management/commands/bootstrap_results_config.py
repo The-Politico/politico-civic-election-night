@@ -3,8 +3,10 @@ import os
 
 from django.core.management.base import BaseCommand
 from django.db.models import Q
+from django.conf import settings as project_settings
 
 from election.models import Election, ElectionCycle
+from electionnight.conf import settings as app_settings
 from geography.models import DivisionLevel
 
 
@@ -228,22 +230,24 @@ class Command(BaseCommand):
             'filename': output_key
         }
 
-        with open('../electionnight/bin/output/elections/{0}.json'.format(
-            config_key), 'w'
-        ) as f:
+        with open('{0}/{1}.json'.format(self.folder, config_key), 'w') as f:
             json.dump(output, f)
 
     def add_arguments(self, parser):
         parser.add_argument('election_date', type=str)
 
     def handle(self, *args, **options):
-        folder = '../electionnight/bin/output/elections'
+        self.folder = os.path.join(
+            project_settings.BASE_DIR,
+            app_settings.RESULTS_STATIC_DIR,
+            'election-config'
+        )
 
-        if not os.path.exists(folder):
-            os.makedirs(folder)
+        if not os.path.exists(self.folder):
+            os.makedirs(self.folder)
 
-        for f in os.listdir(folder):
-            f_path = os.path.join(folder, f)
+        for f in os.listdir(self.folder):
+            f_path = os.path.join(self.folder, f)
 
             try:
                 if os.path.isfile(f_path):
