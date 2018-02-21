@@ -217,6 +217,13 @@ class Command(BaseCommand):
         )
 
     def _write_to_json(self, elections, config_key, levels, output_key):
+        full_output_path = os.path.join(
+            project_settings.BASE_DIR,
+            app_settings.RESULTS_STATIC_DIR,
+            'election-results',
+            output_key
+        )
+
         ids = []
         for election in elections:
             try:
@@ -227,7 +234,7 @@ class Command(BaseCommand):
         output = {
             'elections': ids,
             'levels': levels,
-            'filename': output_key
+            'output_path': full_output_path
         }
 
         with open('{0}/{1}.json'.format(self.folder, config_key), 'w') as f:

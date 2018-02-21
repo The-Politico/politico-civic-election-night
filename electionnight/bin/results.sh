@@ -9,13 +9,9 @@ do
     d) DATE=${OPTARG};;
     f) FILE=${OPTARG};;
     o) OUTPUT=${OPTARG};;
-    t) TEST=${OPTARG};;
+    t) TEST="--test"
   esac
 done
-
-if [ -z $TEST ] ; then
-  TEST=""
-fi
 
 # grab elex results for everything
 if [ $FILE ]
@@ -25,13 +21,12 @@ if [ $FILE ]
     elex results ${DATE} ${TEST} --national-only -o json > master.json
 fi
 
-for file in ${OUTPUT} ; do
+for file in "$OUTPUT"/* ; do
   if [ -e "$file" ] ; then
     elections=`cat $file | jq '.elections'`
     levels=`cat $file | jq '.levels'`
-    path=`cat $file | jq -r '.filename'`
-    fullpath="${OUTPUT}/election-results/$path"
-    mkdir -p "$(dirname "$fullpath/p")"
+    path=`cat $file | jq -r '.output_path'`
+    mkdir -p "$(dirname "$path/p")"
 
     # filter results
     if [ -s master.json ] ; then
@@ -54,14 +49,14 @@ for file in ${OUTPUT} ; do
           votepct: .votepct,
           winner: .winner
         }
-      ]' > "$fullpath/results.json" # gzip and copy to s3 after this
+      ]' > "$path/results.json" # gzip and copy to s3 after this
       last_updated="{\"date\":\"`date`\"}"
-      echo $last_updated > "$fullpath/timestamp.json"
+      echo $last_updated > "$path/timestamp.json"
     fi
   fi
 done
 
 # deploy to s3
 if [ $BUCKET ] ; then
-  aws s3 cp ${OUTPUT}/election-results/ s3://${BUCKET}/election-results/ --recursive --acl "public-read" --cache-control "max-age=5"
+  aws s3 cp /election-results/ s3://${BUCKET}/election-results/ --recursive --acl "public-read" --cache-control "max-age=5"
 fi
