@@ -16,13 +16,38 @@ class Command(BaseCommand):
 
     def main(self, script_args, run_once):
         results_start = 0
+        i = 0
 
         while True:
             now = time()
 
             if (now - results_start) > app_settings.RESULTS_DAEMON_INTERVAL:
                 results_start = now
-                subprocess.run(script_args)
+
+                env = os.environ.copy()
+                test_path = os.path.join(
+                    self.output_dir,
+                    'recordings',
+                    self.election_date
+                )
+                if not os.path.exists(test_path):
+                    os.makedirs(test_path)
+
+                if self.replay:
+                    files = os.listdir(test_path)
+                    if i < len(files):
+                        file = '{0}/{1}'.format(test_path, files[i])
+                        script_args.extend(['-f', file])
+                        print(file, i)
+                        i += 1
+                    else:
+                        print('reached end of test directory, exiting')
+                        sys.exit(0)
+                elif self.test:
+                    env['ELEX_RECORDING'] = 'flat'
+                    env['ELEX_RECORDING_DIR'] = test_path
+
+                subprocess.run(script_args, env=env)
 
             if run_once:
                 print('run once specified, exiting')
@@ -42,23 +67,33 @@ class Command(BaseCommand):
             dest='run_once',
             action='store_true'
         )
+        parser.add_argument(
+            '--replay',
+            dest='replay',
+            action='store_true'
+        )
 
     def handle(self, *args, **options):
+        self.election_date = options['election_date']
+        self.replay = options['replay']
+        self.test = options['test']
+
         cmd_path = os.path.dirname(os.path.realpath(__file__))
         bash_script = os.path.join(cmd_path, '../../bin/results.sh')
-        output_dir = os.path.join(
+
+        self.output_dir = os.path.join(
             project_settings.BASE_DIR,
             app_settings.RESULTS_STATIC_DIR,
-            'election-config'
         )
+        config_dir = os.path.join(self.output_dir, 'election-config')
 
         script_args = [
             'bash',
             bash_script,
             '-o',
-            os.path.normpath(output_dir),
+            os.path.normpath(config_dir),
             '-d',
-            options['election_date'],
+            self.election_date,
         ]
 
         if options['test']:
