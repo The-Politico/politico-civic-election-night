@@ -49,7 +49,7 @@ for file in "$OUTPUT"/* ; do
           votepct: .votepct,
           winner: .winner
         }
-      ]' > "$path/results.json" # gzip and copy to s3 after this
+      ]' > "$path/results.json"
       last_updated="{\"date\":\"`date`\"}"
       echo $last_updated > "$path/timestamp.json"
     fi
