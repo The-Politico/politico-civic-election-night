@@ -26,10 +26,10 @@ class Command(BaseCommand, BootstrapContentMethods):
         """
         if election.race.special:
             self.bootstrap_special_election(election)
-        elif election.race.office.body:
-            self.bootstrap_legislative_office(election)
-        else:
+        elif election.race.office.is_executive:
             self.bootstrap_executive_office(election)
+        else:
+            self.bootstrap_legislative_office(election)
 
     def handle(self, *args, **options):
         self.NATIONAL_LEVEL = DivisionLevel.objects.get(
