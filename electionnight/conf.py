@@ -5,8 +5,6 @@ with any overrides set in project settings.
 
 from django.conf import settings as project_settings
 
-from .exceptions import ElectionnightConfigError
-
 
 class Settings:
     pass
@@ -15,7 +13,13 @@ class Settings:
 Settings.AUTH_DECORATOR = getattr(
     project_settings,
     'ELECTIONNIGHT_AUTH_DECORATOR',
-    'django.contrib.auth.decorators.login_required'
+    'django.contrib.admin.views.decorators.staff_member_required'
+)
+
+Settings.AWS_S3_STATIC_ROOT = getattr(
+    project_settings,
+    'ELECTIONNIGHT_AWS_S3_STATIC_ROOT',
+    'https://www.politico.com/interactives'
 )
 
 Settings.SECRET_KEY = getattr(
@@ -39,11 +43,29 @@ Settings.CLOUDFRONT_ALTERNATE_DOMAIN = getattr(
 Settings.S3_UPLOAD_ROOT = getattr(
     project_settings, 'ELECTIONNIGHT_S3_UPLOAD_ROOT', 'uploads/electionnight')
 
+
+Settings.API_AUTHENTICATION_CLASS = getattr(
+    project_settings,
+    'ELECTIONNIGHT_API_AUTHENTICATION_CLASS',
+    'rest_framework.authentication.BasicAuthentication'
+)
+
+Settings.API_PERMISSION_CLASS = getattr(
+    project_settings,
+    'ELECTIONNIGHT_API_PERMISSION_CLASS',
+    'rest_framework.permissions.IsAdminUser'
+)
+
+Settings.API_PAGINATION_CLASS = getattr(
+    project_settings,
+    'ELECTIONNIGHT_API_PAGINATION_CLASS',
+    'electionnight.pagination.ResultsPagination'
+)
+
 Settings.RESULTS_STATIC_DIR = getattr(
     project_settings, 'ELECTIONNIGHT_RESULTS_STATIC_DIR', 'static_results')
 
 Settings.RESULTS_DAEMON_INTERVAL = getattr(
     project_settings, 'ELECTIONNIGHT_RESULTS_DAEMON_INTERVAL', 10)
-
 
 settings = Settings

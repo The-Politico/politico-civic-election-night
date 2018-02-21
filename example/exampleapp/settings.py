@@ -97,6 +97,7 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 #########################
 # electionnight settings
@@ -113,3 +114,4 @@ ELECTIONNIGHT_RESULTS_STATIC_DIR = 'static_results'
 STATICFILE_DIRS = [
     os.path.join(BASE_DIR, ELECTIONNIGHT_RESULTS_STATIC_DIR)
 ]
+

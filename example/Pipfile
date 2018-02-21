@@ -18,6 +18,8 @@ django = ">=2.0"
 djangorestframework = "*"
 dj-database-url = "*"
 "psycopg2" = "*"
+elex = "*"
+celery = "*"
 entity = {git = "ssh://git@github.com/The-Politico/politico-civic-entity", editable = true}
 geography = {git = "ssh://git@github.com/The-Politico/politico-civic-geography", editable = true}
 government = {git = "ssh://git@github.com/The-Politico/politico-civic-government", editable = true}
@@ -25,8 +27,7 @@ election = {git = "ssh://git@github.com/The-Politico/politico-civic-election", e
 almanac = {git = "ssh://git@github.com/The-Politico/politico-civic-almanac", editable = true}
 vote = {git = "ssh://git@github.com/The-Politico/politico-civic-vote", editable = true}
 electionnight = {path = "./..", editable = true}
-elex = "*"
-celery = "*"
+ipython = "*"
 
 
 [dev-packages]

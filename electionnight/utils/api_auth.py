@@ -1,7 +1,6 @@
-from electionnight.conf import settings
 from django.conf import settings as project_settings
 from django.contrib.auth.models import AnonymousUser
-from django.utils.decorators import method_decorator
+from electionnight.conf import settings
 from rest_framework import authentication, exceptions
 
 
@@ -19,7 +18,7 @@ class TokenAPIAuthentication(authentication.BaseAuthentication):
             # Token should be prefixed with string literal "Token" plus
             # whitespace, e.g., "Token <TOKEN>".
             token = request.META.get('HTTP_AUTHORIZATION').split()[1]
-        except:
+        except Exception:
             raise exceptions.AuthenticationFailed(
                 'No token or incorrect token format')
 

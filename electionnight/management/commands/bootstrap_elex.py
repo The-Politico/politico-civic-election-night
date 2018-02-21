@@ -1,14 +1,16 @@
+import collections
 import json
 import subprocess
 
-from django.core.management.base import BaseCommand
-
 import election.models as election
-from electionnight.models import APElectionMeta
 import entity.models as entity
 import geography.models as geography
 import government.models as government
 import vote.models as vote
+from django.core.management.base import BaseCommand
+from tqdm import tqdm
+
+from electionnight.models import APElectionMeta
 
 
 class Command(BaseCommand):
@@ -242,13 +244,6 @@ class Command(BaseCommand):
         Processes a row of AP election data to determine what model objects
         need to be created.
         """
-        print('Processing {0} {1} {2} {3}'.format(
-            row['statename'],
-            row['level'],
-            row['last'],
-            row['officename']
-        ))
-
         division = self.get_division(row)
         race = self.get_race(row, division)
         election = self.get_election(row, race)
@@ -303,7 +298,23 @@ class Command(BaseCommand):
 
         with open('bootstrap.json', 'r') as readfile:
             data = json.load(readfile)
-            for row in data:
-                if row['level'] == geography.DivisionLevel.TOWNSHIP:
-                    continue
-                self.process_row(row)
+            candidates = collections.defaultdict(list)
+            for d in data:
+                key = '{0} {1}: {2}, {3}'.format(
+                    d['officename'],
+                    d['statename'],
+                    d['last'],
+                    d['first']
+                )
+                candidates[key].append(d)
+            for candidate_races in candidates.values():
+                print('Processing {0} {1}: {2}, {3}'.format(
+                    candidate_races[0]['statename'],
+                    candidate_races[0]['officename'],
+                    candidate_races[0]['last'],
+                    candidate_races[0]['first'],
+                ))
+                for race in tqdm(candidate_races):
+                    if race['level'] == geography.DivisionLevel.TOWNSHIP:
+                        continue
+                    self.process_row(race)
