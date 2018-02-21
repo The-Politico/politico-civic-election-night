@@ -151,3 +151,6 @@ venv.bak/
 # Temporary Files
 tmp/
 example/bootstrap.json
+example/master.json
+example/static_results
+electionnight/static/

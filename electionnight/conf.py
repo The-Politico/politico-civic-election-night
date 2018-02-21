@@ -39,5 +39,11 @@ Settings.CLOUDFRONT_ALTERNATE_DOMAIN = getattr(
 Settings.S3_UPLOAD_ROOT = getattr(
     project_settings, 'ELECTIONNIGHT_S3_UPLOAD_ROOT', 'uploads/electionnight')
 
+Settings.RESULTS_STATIC_DIR = getattr(
+    project_settings, 'ELECTIONNIGHT_RESULTS_STATIC_DIR', 'static_results')
+
+Settings.RESULTS_DAEMON_INTERVAL = getattr(
+    project_settings, 'ELECTIONNIGHT_RESULTS_DAEMON_INTERVAL', 10)
+
 
 settings = Settings
