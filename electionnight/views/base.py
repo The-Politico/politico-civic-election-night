@@ -1,41 +1,28 @@
 """
 Base context for all pages, e.g., data needed to render navigation.
 """
+from django.views.generic import DetailView
 
-from django.test.client import RequestFactory
-from django.views.generic import DetailView, TemplateView
+from electionnight.conf import settings
 
-from .mixins.statics import StaticsMixin
-
-
-class LinkPreview(TemplateView):
-    template_name = "electionnight/preview.html"
+from .mixins.statics.paths import StaticsPathsMixin
+from .mixins.statics.publishing import StaticsPublishingMixin
 
 
-class BaseView(DetailView, StaticsMixin):
+class BaseView(DetailView, StaticsPathsMixin, StaticsPublishingMixin):
     name = None
     path = ''
-    publish_path = ''
 
-    def get_publish_path(self, context):
-        return self.publish_path.format(context)
+    static_path = settings.AWS_S3_STATIC_ROOT
 
-    def get_request(self, path='', production=False):
-        """Construct a request we can use to render the view."""
-        if production:
-            env = {'env': 'prod'}
-        else:
-            env = {'env': 'dev'}
-        return RequestFactory().get(path, env)
+    def get_publish_path(self):
+        """OVERWRITE this method to return publish path for a view."""
+        return ''
 
     def get_context_data(self, **kwargs):
-        context = super(BaseView, self).get_context_data(**kwargs)
-        context['domain'] = 'www.politico.com/interactives'
+        context = super().get_context_data(**kwargs)
+        # In self.publish_template, we set a querystring to prod to signal
+        # different static path handling
+        production = self.request.GET.get('env', 'dev') == 'prod'
+        context['production'] = production
         return context
-
-    def get_context_paths(self, production=False):
-        """Build paths to staticfiles and data."""
-        return {
-            **self.get_scripts_paths(production),
-            **self.get_data_paths(production)
-        }

@@ -13,7 +13,13 @@ class Settings:
 Settings.AUTH_DECORATOR = getattr(
     project_settings,
     'ELECTIONNIGHT_AUTH_DECORATOR',
-    'django.contrib.auth.decorators.login_required'
+    'django.contrib.admin.views.decorators.staff_member_required'
+)
+
+Settings.AWS_S3_STATIC_ROOT = getattr(
+    project_settings,
+    'ELECTIONNIGHT_AWS_S3_STATIC_ROOT',
+    'https://www.politico.com/interactives'
 )
 
 Settings.SECRET_KEY = getattr(

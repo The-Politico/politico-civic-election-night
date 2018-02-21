@@ -6,7 +6,7 @@ from .state import StateListSerializer, StateSerializer
 class SpecialElectionListSerializer(StateListSerializer):
     def get_url(self, obj):
         return reverse(
-            'special-election-detail',
+            'electionnight_api_special-election-detail',
             request=self.context['request'],
             kwargs={
                 'pk': obj.pk,

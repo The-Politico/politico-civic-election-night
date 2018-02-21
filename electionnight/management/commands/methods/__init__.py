@@ -1,6 +1,6 @@
-from .executive_office import ExecutiveOffice
-from .legislative_office import LegislativeOffice
-from .special_election import SpecialElection
+from .bootstrap.executive_office import ExecutiveOffice
+from .bootstrap.legislative_office import LegislativeOffice
+from .bootstrap.special_election import SpecialElection
 
 
 class BootstrapContentMethods(

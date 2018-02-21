@@ -1,3 +1,3 @@
 # flake8: noqa
-from .base import LinkPreview
+from .home import DevHome
 from .states import StatePage

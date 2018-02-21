@@ -16,7 +16,7 @@ class BodyListSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         return reverse(
-            'body-election-detail',
+            'electionnight_api_body-election-detail',
             request=self.context['request'],
             kwargs={
                 'pk': obj.pk,

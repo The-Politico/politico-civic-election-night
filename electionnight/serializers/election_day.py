@@ -12,7 +12,7 @@ class ElectionDaySerializer(serializers.ModelSerializer):
     def get_states(self, obj):
         """States holding a non-special election on election day."""
         return reverse(
-            'state-election-list',
+            'electionnight_api_state-election-list',
             request=self.context['request'],
             kwargs={'date': obj.date}
         )
@@ -20,7 +20,7 @@ class ElectionDaySerializer(serializers.ModelSerializer):
     def get_bodies(self, obj):
         """Bodies with offices up for election on election day."""
         return reverse(
-            'body-election-list',
+            'electionnight_api_body-election-list',
             request=self.context['request'],
             kwargs={'date': obj.date}
         )
@@ -28,7 +28,7 @@ class ElectionDaySerializer(serializers.ModelSerializer):
     def get_executive_offices(self, obj):
         """Executive offices up for election on election day."""
         return reverse(
-            'office-election-list',
+            'electionnight_api_office-election-list',
             request=self.context['request'],
             kwargs={'date': obj.date}
         )
@@ -36,7 +36,7 @@ class ElectionDaySerializer(serializers.ModelSerializer):
     def get_special_elections(self, obj):
         """States holding a special election on election day."""
         return reverse(
-            'special-election-list',
+            'electionnight_api_special-election-list',
             request=self.context['request'],
             kwargs={'date': obj.date}
         )

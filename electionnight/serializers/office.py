@@ -1,9 +1,10 @@
 from election.models import Election, ElectionDay
-from electionnight.models import PageContent
 from geography.models import Division
 from government.models import Office, Party
 from rest_framework import serializers
 from rest_framework.reverse import reverse
+
+from electionnight.models import PageContent
 
 from .division import DivisionSerializer
 from .election import ElectionSerializer
@@ -15,7 +16,7 @@ class OfficeListSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         return reverse(
-            'office-election-detail',
+            'electionnight_api_office-election-detail',
             request=self.context['request'],
             kwargs={
                 'pk': obj.pk,

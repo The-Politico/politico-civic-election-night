@@ -16,7 +16,7 @@ class StateListSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         return reverse(
-            'state-election-detail',
+            'electionnight_api_state-election-detail',
             request=self.context['request'],
             kwargs={
                 'pk': obj.pk,
@@ -48,7 +48,11 @@ class StateSerializer(serializers.ModelSerializer):
 
     def get_elections(self, obj):
         """All elections in division."""
-        return ElectionSerializer(obj.elections.all(), many=True).data
+        election_day = ElectionDay.objects.get(
+            date=self.context['election_date'])
+        return ElectionSerializer(
+            obj.elections.filter(election_day=election_day),
+            many=True).data
 
     def get_content(self, obj):
         """All content for a state's page on an election day."""

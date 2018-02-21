@@ -1,6 +1,7 @@
 import boto3
-from electionnight.conf import settings
 from storages.backends.s3boto3 import S3Boto3Storage
+
+from electionnight.conf import settings
 
 
 def get_bucket():
@@ -16,7 +17,6 @@ def get_bucket():
 
 class Defaults(object):
     CACHE_HEADER = str('max-age=5')
-    ROOT_PATH = 'elections'
     ACL = 'public-read'
 
 
