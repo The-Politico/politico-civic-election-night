@@ -43,6 +43,7 @@ Settings.CLOUDFRONT_ALTERNATE_DOMAIN = getattr(
 Settings.S3_UPLOAD_ROOT = getattr(
     project_settings, 'ELECTIONNIGHT_S3_UPLOAD_ROOT', 'uploads/electionnight')
 
+
 Settings.API_AUTHENTICATION_CLASS = getattr(
     project_settings,
     'ELECTIONNIGHT_API_AUTHENTICATION_CLASS',
@@ -60,5 +61,11 @@ Settings.API_PAGINATION_CLASS = getattr(
     'ELECTIONNIGHT_API_PAGINATION_CLASS',
     'electionnight.pagination.ResultsPagination'
 )
+
+Settings.RESULTS_STATIC_DIR = getattr(
+    project_settings, 'ELECTIONNIGHT_RESULTS_STATIC_DIR', 'static_results')
+
+Settings.RESULTS_DAEMON_INTERVAL = getattr(
+    project_settings, 'ELECTIONNIGHT_RESULTS_DAEMON_INTERVAL', 10)
 
 settings = Settings
