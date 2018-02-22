@@ -87,6 +87,7 @@ Want to not worry about it? Use the shortcut make command.
   $ cd example
   $ python manage.py bootstrap_election_events
   $ python manage.py bootstrap_elections
+  $ python manage.py bootstrap_elex <election-date>
   ```
 
 3. Build the config files
