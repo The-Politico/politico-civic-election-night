@@ -25,4 +25,5 @@ class BaseView(DetailView, StaticsPathsMixin, StaticsPublishingMixin):
         # different static path handling
         production = self.request.GET.get('env', 'dev') == 'prod'
         context['production'] = production
+        
         return context

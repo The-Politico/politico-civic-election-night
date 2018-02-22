@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from geography.models import Division, DivisionLevel
 from rest_framework.reverse import reverse
 
+from electionnight.conf import settings
 from electionnight.serializers import StateSerializer
 from electionnight.utils.auth import secure
 
@@ -22,11 +23,11 @@ class StatePage(BaseView):
     name = 'electionnight_state-page'
     path = 'state/<int:year>/<slug:state>/<slug:election_date>/'
 
-    js_dev_path = 'electionnight/js/app.js'
-    css_dev_path = 'electionnight/css/app.css'
+    js_dev_path = 'electionnight/js/main-state-app.js'
+    css_dev_path = 'electionnight/css/main-state-app.css'
 
     model = Division
-    context_object_name = 'state'
+    context_object_name = 'division'
     template_name = 'electionnight/states/index.html'
 
     def get_queryset(self):
@@ -43,9 +44,10 @@ class StatePage(BaseView):
         self.year = self.kwargs.get('year')
         self.state = self.kwargs.get('state')
         self.election_date = self.kwargs.get('election_date')
-
+        context['secret'] = settings.SECRET_KEY
         context['year'] = self.year
         context['state'] = self.state
+        context['election_date'] = self.election_date
 
         return {
             **context,
