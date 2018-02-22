@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'entity',
     'geography',
     'government',
@@ -29,6 +30,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -99,10 +101,24 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'access-control-allow-origin',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
+
 #########################
 # electionnight settings
 
-ELECTIONNIGHT_SECRET_KEY = ''
+ELECTIONNIGHT_SECRET_KEY = 'aewgrstdyfugiop'
 ELECTIONNIGHT_AWS_ACCESS_KEY_ID = ''
 ELECTIONNIGHT_AWS_SECRET_ACCESS_KEY = ''
 ELECTIONNIGHT_AWS_REGION = ''
@@ -114,4 +130,3 @@ ELECTIONNIGHT_RESULTS_STATIC_DIR = 'static_results'
 STATICFILE_DIRS = [
     os.path.join(BASE_DIR, ELECTIONNIGHT_RESULTS_STATIC_DIR)
 ]
-
