@@ -81,14 +81,22 @@ Want to not worry about it? Use the shortcut make command.
 
 1. Make sure you have `AP_API_KEY` in your `.env` file.
 
-2. Build the config files
+2. Make sure your election models are hydrated.
+
+  ```
+  $ cd example
+  $ python manage.py bootstrap_election_events
+  $ python manage.py bootstrap_elections
+  ```
+
+3. Build the config files
 
   ```
   $ cd example
   $ python manage.py bootstrap_results_config <election-date>
   ```
 
-3. Get results
+4. Get results
 
   ```
   $ python manage.py get_results <election-date> --test --run_once
