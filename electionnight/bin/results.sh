@@ -33,22 +33,24 @@ for file in "$OUTPUT"/* ; do
       cat master.json \
       | jq -c --argjson elections "$elections" --argjson levels "$levels" '[
         .[] |
-        select(.raceid as $id | $elections|index($id)) |
-        select(.level as $level | $levels|index($level)) |
-        {
-          fipscode: .fipscode,
-          level: .level,
-          polid: .polid,
-          polnum: .polnum,
-          precinctsreporting: .precinctsreporting,
-          precinctsreportingpct: .precinctsreportingpct,
-          precinctstotal: .precinctstotal,
-          raceid: .raceid,
-          statepostal: .statepostal,
-          votecount: .votecount,
-          votepct: .votepct,
-          winner: .winner
-        }
+        if (.officeid == "H", .level != "state") then empty else (
+          select(.raceid as $id | $elections|index($id)) |
+          select(.level as $level | $levels|index($level)) |
+          {
+            fipscode: .fipscode,
+            level: .level,
+            polid: .polid,
+            polnum: .polnum,
+            precinctsreporting: .precinctsreporting,
+            precinctsreportingpct: .precinctsreportingpct,
+            precinctstotal: .precinctstotal,
+            raceid: .raceid,
+            statepostal: .statepostal,
+            votecount: .votecount,
+            votepct: .votepct,
+            winner: .winner
+          }
+        ) end
       ]' > "$path/results.json"
       last_updated="{\"date\":\"`date`\"}"
       echo $last_updated > "$path/timestamp.json"
