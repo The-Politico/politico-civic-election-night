@@ -77,7 +77,7 @@ Want to not worry about it? Use the shortcut make command.
   ```
 
 
-###### Running results
+##### Running results
 
 1. Make sure you have `AP_API_KEY` in your `.env` file.
 
