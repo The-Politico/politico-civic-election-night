@@ -1,5 +1,5 @@
 from election.models import ElectionDay
-from geography.models import Division
+from geography.models import Division, DivisionLevel
 from government.models import Party
 from rest_framework import serializers
 from rest_framework.reverse import reverse
@@ -50,9 +50,15 @@ class StateSerializer(serializers.ModelSerializer):
         """All elections in division."""
         election_day = ElectionDay.objects.get(
             date=self.context['election_date'])
-        return ElectionSerializer(
-            obj.elections.filter(election_day=election_day),
-            many=True).data
+
+        elections = list(obj.elections.filter(election_day=election_day))
+        district = DivisionLevel.objects.get(name=DivisionLevel.DISTRICT)
+        for district in obj.children.filter(level=district):
+            elections.extend(
+                list(district.elections.filter(election_day=election_day))
+            )
+
+        return ElectionSerializer(elections, many=True).data
 
     def get_content(self, obj):
         """All content for a state's page on an election day."""

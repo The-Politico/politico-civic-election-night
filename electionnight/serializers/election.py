@@ -96,7 +96,7 @@ class CandidateElectionSerializer(FlattenMixin, serializers.ModelSerializer):
     def get_override_winner(self, obj):
         """Winner marked in backend."""
         vote = obj.votes.filter(division=obj.election.division).first()
-        return vote.winning
+        return vote.winning if vote else False
 
     class Meta:
         model = CandidateElection
