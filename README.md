@@ -75,3 +75,21 @@ Want to not worry about it? Use the shortcut make command.
   $ cd example
   $ pipenv run python manage.py migrate
   ```
+
+
+###### Running results
+
+1. Make sure you have `AP_API_KEY` in your `.env` file.
+
+2. Build the config files
+
+  ```
+  $ cd example
+  $ python manage.py bootstrap_results_config <election-date>
+  ```
+
+3. Get results
+
+  ```
+  $ python manage.py get_results <election-date> --test --run_once
+  ```
