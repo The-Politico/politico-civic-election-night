@@ -5,8 +5,9 @@ URL PATTERNS:
 /election-results/{YEAR}/{STATE}/
 """
 from django.shortcuts import get_object_or_404
+from election.models import ElectionDay
 from electionnight.conf import settings
-from electionnight.serializers import StateSerializer
+from electionnight.serializers import StateSerializer, ElectionViewSerializer
 from electionnight.utils.auth import secure
 from geography.models import Division, DivisionLevel
 from rest_framework.reverse import reverse
@@ -47,6 +48,25 @@ class StatePage(BaseView):
         context['year'] = self.year
         context['state'] = self.state
         context['election_date'] = self.election_date
+
+        election_day = ElectionDay.objects.get(
+            date=context['election_date'])
+
+        elections = list(context['division'].elections.filter(
+            election_day=election_day
+        ))
+
+        district = DivisionLevel.objects.get(name=DivisionLevel.DISTRICT)
+        for district in context['division'].children.filter(
+            level=district
+        ).order_by('code'):
+            elections.extend(
+                list(district.elections.filter(election_day=election_day))
+            )
+
+        context['elections'] = ElectionViewSerializer(
+            elections, many=True
+        ).data
 
         return {
             **context,

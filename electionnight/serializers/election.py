@@ -2,11 +2,11 @@ import us
 from election.models import Candidate, CandidateElection, Election
 from electionnight.models import APElectionMeta
 from entity.models import Person
-from geography.models import Division
+from geography.models import Division, DivisionLevel
 from government.models import Office
 from rest_framework import serializers
 
-from .votes import VotesSerializer
+from .votes import TableVotesSerializer, VotesSerializer
 
 
 class FlattenMixin:
@@ -223,7 +223,53 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
             'special',
             'division',
             'candidates',
+            'override_votes'
+        )
+        flatten = (
+            ('meta', APElectionMetaSerializer),
+        )
+
+
+class ElectionViewSerializer(ElectionSerializer):
+    table_votes = serializers.SerializerMethodField()
+
+    def get_primary_party(self, obj):
+        """
+        If primary, party label.
+        """
+        if obj.party:
+            return obj.party.label
+        return None
+
+    def get_table_votes(self, obj):
+        if hasattr(obj, 'meta'):
+            all_votes = None
+            for ce in obj.candidate_elections.all():
+                if all_votes:
+                    all_votes = all_votes | ce.votes.filter(
+                        division__level__name=DivisionLevel.STATE
+                    )
+                else:
+                    all_votes = ce.votes.filter(
+                        division__level__name=DivisionLevel.STATE
+                    )
+            return TableVotesSerializer(all_votes, many=True).data
+        return False
+
+    class Meta:
+        model = Election
+        fields = (
+            'uid',
+            'date',
+            'office',
+            'primary',
+            'primary_party',
+            'runoff',
+            'special',
+            'division',
+            'candidates',
             'override_votes',
+            'table_votes'
         )
         flatten = (
             ('meta', APElectionMetaSerializer),

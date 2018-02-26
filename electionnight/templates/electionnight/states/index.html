@@ -1,4 +1,5 @@
 {% extends 'electionnight/base.html' %}
+{% load humanize %}
 
 {% block page-meta %}
 <!-- Site URL -->
@@ -44,9 +45,35 @@
 
 <div id="app">
   <div class="chatter">{{ content.chatter|safe }}</div>
+
+  {% for election in elections %}
+  <h2>{{ election.office.name }} {{ election.primary_party }}</h2>
+
+  {% if election.table_votes %}
+  <table>
+    <thead>
+      <th>Candidate</th>
+      <th>Vote Count</th>
+      <th>Vote Pct</th>
+      <th>Winner</th>
+    </thead>
+    <tbody>
+      {% for vote in election.table_votes|dictsortreversed:"count" %}
+        <tr>
+          <td>{{ vote.first }} {{ vote.last }}</td>
+          <td>{{ vote.count|intcomma }}</td>
+          <td>{{ vote.pct|floatformat }}%</td>
+          <td>{% if vote.winner %}WINNER{% endif %}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+  {% endfor %}
 </div>
 {%endblock%}
 
 {% block relative_foot %}
-<script type="text/javascript" src="{{ paths.js }}"></script>
+<!-- <script type="text/javascript" src="{{ paths.js }}"></script> -->
 {% endblock %}
