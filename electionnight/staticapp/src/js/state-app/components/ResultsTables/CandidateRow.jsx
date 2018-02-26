@@ -1,7 +1,7 @@
 import React from 'react';
 import { intcomma } from 'journalize';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/fontawesome-free-solid';
+import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
 import {decimalToPercent} from 'CommonUtils/numbers';
 
 const CandidateRow = (props) => (

@@ -3,6 +3,7 @@ import { ORM } from 'redux-orm';
 import Election from './election';
 import Office from './office';
 import Division from './division';
+import Geometry from './geometry';
 import Candidate from './candidate';
 import Party from './party';
 import Result from './result';
@@ -15,6 +16,7 @@ orm.register(
   Election,
   Office,
   Division,
+  Geometry,
   Candidate,
   Party,
   APMeta,

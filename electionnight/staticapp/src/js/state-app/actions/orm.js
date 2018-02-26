@@ -35,10 +35,9 @@ export const createResults = results => ({
   results,
 });
 
-export const updateGeo = (fips, topojson) => ({
-  type: types.UPDATE_GEO,
-  fips,
-  topojson,
+export const createGeometry = (geometry) => ({
+  type: types.CREATE_GEOMETRY,
+  geometry,
 });
 
 export const createOverrideResult = overrideResult => ({

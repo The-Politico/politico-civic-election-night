@@ -1,4 +1,5 @@
 import assign from 'lodash/assign';
+import { DivisionLevels } from 'Common/constants/geography';
 import * as ormActions from './orm';
 import * as fetchActions from './fetch';
 import {createPageTypeContentBlock, createPageContentBlock, createMapAnnotation} from './content';
@@ -23,7 +24,6 @@ function addDivisions (division, dispatch) {
     codeComponents: parent.code_components,
     parent: null,
     postalCode: parent.postal_code,
-    topojson: null,
   };
 
   const divisions = [parentObj];
@@ -38,7 +38,6 @@ function addDivisions (division, dispatch) {
       codeComponents: d.code_components,
       parent: parentObj.id,
       postalCode: d.postal_code,
-      topojson: null,
     };
 
     divisions.push(childObj);
@@ -230,7 +229,7 @@ export const fetchContext = modifiedTime =>
       ]);
     })
     .catch((error) => {
-      console.log('API ERROR', error);
+      console.log('API ERROR fetchContext', error);
     });
 
 let compareResults = null;
@@ -257,21 +256,35 @@ export const fetchResults = modifiedTime =>
       return addResults(data, dispatch);
     })
     .catch((error) => {
-      console.log('API ERROR', error);
+      console.log('API ERROR fetchResults', error);
     });
 
-function updateGeo (geoData, dispatch) {
-  const fips = window.appConfig.stateFips;
-  dispatch(ormActions.updateGeo(fips, geoData));
+function createGeometry (topojson, level, dispatch) {
+  const postal = window.appConfig.statePostal;
+  const geometry = {
+    id: `${postal}-${level}`,
+    level,
+    topojson,
+  };
+  dispatch(ormActions.createGeometry(geometry));
 }
 
-export const fetchGeo = () =>
-  dispatch => fetch(window.appConfig.api.geo, GET)
+export const fetchCountyGeo = () =>
+  dispatch => fetch(window.appConfig.api.geoCounty, GET)
     .then(response => response.json())
     .then(data => Promise.all([
-      updateGeo(data, dispatch),
+      createGeometry(data, DivisionLevels.county, dispatch),
     ])).catch((error) => {
-      console.log('API ERROR GEO', error, error.code);
+      console.log('API ERROR fetchCountyGeo', error, error.code);
+    });
+
+export const fetchDistrictGeo = () =>
+  dispatch => fetch(window.appConfig.api.geoDistrict, GET)
+    .then(response => response.json())
+    .then(data => Promise.all([
+      createGeometry(data, DivisionLevels.district, dispatch),
+    ])).catch((error) => {
+      console.log('API ERROR fetchDistrictGeo', error, error.code);
     });
 
 export const fetchInitialData = () =>
@@ -279,4 +292,8 @@ export const fetchInitialData = () =>
     dispatch(fetchContext()),
     dispatch(fetchResults()),
   ])
-    .then(() => dispatch(fetchGeo()));
+    .then(() =>
+      Promise.all([
+        dispatch(fetchCountyGeo()),
+        dispatch(fetchDistrictGeo()),
+      ]));

@@ -15,7 +15,6 @@ class Division extends Model {
       codeComponents: attr(),
       parent: fk('Division'),
       postalCode: attr(),
-      topojson: attr(),
     };
   }
 }

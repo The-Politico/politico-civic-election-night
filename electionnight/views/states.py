@@ -66,13 +66,13 @@ class StatePage(BaseView):
     def get_extra_static_paths(self, production):
         division = Division.objects.get(slug=self.state)
         geo = (
-            '/election-results/cdn/geography/us-census/cb/500k/'
-            '2016/states/{}/county.json'
+            'election-results/cdn/geography/us-census/cb/500k/2016/states/{}'
         ).format(division.code)
         if production:
             return {
                 'context': 'context.json',
-                'geo': geo,
+                'geo_county': '/{}/county.json'.format(geo),
+                'geo_district': '/{}/district.json'.format(geo),
             }
         return {
             'context': reverse(
@@ -80,7 +80,10 @@ class StatePage(BaseView):
                 args=[self.election_date, self.object.pk],
                 request=self.request
             ),
-            'geo': (
+            'geo_county': (
                 'https://s3.amazonaws.com/'
-                'interactives.politico.com{}').format(geo),
+                'interactives.politico.com/{}/county.json').format(geo),
+            'geo_district': (
+                'https://s3.amazonaws.com/'
+                'interactives.politico.com/{}/district.json').format(geo),
         }

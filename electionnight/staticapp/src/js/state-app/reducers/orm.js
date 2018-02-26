@@ -9,6 +9,7 @@ export default(dbState, action) => {
   const session = orm.session(dbState);
   const {
     Division,
+    Geometry,
     Office,
     APMeta,
     Party,
@@ -40,10 +41,8 @@ export default(dbState, action) => {
     case types.CREATE_RESULTS:
       action.results.map(result => Result.upsert(result));
       break;
-    case types.UPDATE_GEO:
-      Division
-        .filter(d => d.code === action.fips)
-        .update({ topojson: action.topojson });
+    case types.CREATE_GEOMETRY:
+      Geometry.upsert(action.geometry);
       break;
     case types.CREATE_OVERRIDE_RESULT:
       OverrideResult.upsert(action.overrideResult);

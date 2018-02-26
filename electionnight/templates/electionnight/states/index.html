@@ -22,10 +22,11 @@
       results: '{{ paths.results }}',
       context: '{{ paths.context }}?format=json',
       timestamp: '{{ paths.timestamp }}',
-      geo: '{{ paths.geo }}',
+      geoCounty: '{{ paths.geo_county }}',
+      geoDistrict: '{{ paths.geo_district }}',
     },
     stateFips: '{{ division.code }}',
-    statePostal: '',
+    statePostal: '{{ division.code_components.postal }}',
     stateSlug: '{{ division.slug }}',
   };
 </script>
