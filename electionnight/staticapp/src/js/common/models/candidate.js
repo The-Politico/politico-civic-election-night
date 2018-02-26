@@ -2,7 +2,7 @@ import { fk, attr, Model } from 'redux-orm';
 import assign from 'lodash/assign';
 
 class Candidate extends Model {
-  serialize() {
+  serialize () {
     return assign(
       {},
       this.ref,
@@ -16,15 +16,15 @@ class Candidate extends Model {
    * @param  {Model} division   A division model
    * @return {Model}            A result model
    */
-  fetchResult(division) {
-    const code = division.level === 'state' ?
-      division.postalCode : division.id;
+  fetchResult (division) {
+    const code = division.level === 'state'
+      ? division.postalCode : division.id;
     const results = this.resultSet
       .filter(d => d.division === code);
     return results.toModelArray()[0];
   }
 
-  static get fields() {
+  static get fields () {
     return {
       id: attr(),
       firstName: attr(),

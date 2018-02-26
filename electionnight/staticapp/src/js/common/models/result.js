@@ -1,7 +1,7 @@
 import { fk, attr, Model } from 'redux-orm';
 
 class Result extends Model {
-  serialize() {
+  serialize () {
     return this.ref;
   }
 
@@ -10,7 +10,7 @@ class Result extends Model {
    * @return {Object}   Status.
    */
 
-  static get fields() {
+  static get fields () {
     return {
       id: attr(),
       voteCount: attr(),

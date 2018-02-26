@@ -10,6 +10,17 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 module.exports = {
   resolve: {
     extensions: ['*', '.js', '.jsx', '.json'],
+    alias: {
+      'react': 'preact-compat',
+      'react-dom': 'preact-compat',
+      'Common': path.resolve(__dirname, 'src/js/common'),
+      'CommonModels': path.resolve(__dirname, 'src/js/common/models'),
+      'CommonUtils': path.resolve(__dirname, 'src/js/common/utils'),
+      'CommonConstants': path.resolve(__dirname, 'src/js/common/constants'),
+      'CommonComponents': path.resolve(__dirname, 'src/js/common/components'),
+      'SCSS': path.resolve(__dirname, 'src/scss'),
+      'StateApp': path.resolve(__dirname, 'src/js/state-app'),
+    },
   },
   entry: _.zipObject(
     glob.sync('./src/js/main-*.js*').map(f => path.basename(f, path.extname(f))),

@@ -33,7 +33,9 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -115,6 +117,13 @@ CORS_ALLOW_HEADERS = (
     'x-requested-with',
 )
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'tmp/django_cache'),
+    }
+}
+
 #########################
 # electionnight settings
 
@@ -127,6 +136,6 @@ ELECTIONNIGHT_CLOUDFRONT_ALTERNATE_DOMAIN = ''
 ELECTIONNIGHT_S3_UPLOAD_ROOT = ''
 ELECTIONNIGHT_RESULTS_STATIC_DIR = 'static_results'
 
-STATICFILE_DIRS = [
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR, ELECTIONNIGHT_RESULTS_STATIC_DIR)
 ]

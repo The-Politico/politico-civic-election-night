@@ -1,0 +1,9 @@
+@import '~politico-style/scss/base/theme/fonts';
+@import '~politico-style/scss/base/theme/colors/base';
+
+.simple-results{
+  font-family: $franklin;
+  
+  @import 'header_row';
+  @import 'candidate_row';
+}

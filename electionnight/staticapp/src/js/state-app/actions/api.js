@@ -12,7 +12,7 @@ const headers = {
 
 const GET = assign({}, headers, { method: 'GET' });
 
-function addDivisions(division, dispatch) {
+function addDivisions (division, dispatch) {
   const parent = assign({}, division);
   const parentObj = {
     id: parent.postal_code ? parent.postal_code : parent.code,
@@ -44,10 +44,10 @@ function addDivisions(division, dispatch) {
     divisions.push(childObj);
   });
 
-  dispatch(ormActions.createDivisions(divisions))
+  dispatch(ormActions.createDivisions(divisions));
 }
 
-function addOffices(elections, dispatch) {
+function addOffices (elections, dispatch) {
   const offices = [];
 
   elections.forEach((d) => {
@@ -59,7 +59,7 @@ function addOffices(elections, dispatch) {
   dispatch(ormActions.createOffices(offices));
 }
 
-function addApMetas(elections, dispatch) {
+function addApMetas (elections, dispatch) {
   const metadata = [];
 
   elections.forEach((d) => {
@@ -74,10 +74,10 @@ function addApMetas(elections, dispatch) {
     metadata.push(meta);
   });
 
-  dispatch(ormActions.createApMetadata(metadata));  
+  dispatch(ormActions.createApMetadata(metadata));
 }
 
-function addParties(parties, dispatch) {
+function addParties (parties, dispatch) {
   const allParties = [];
   parties.forEach((d) => {
     const partyObj = {
@@ -92,8 +92,8 @@ function addParties(parties, dispatch) {
   dispatch(ormActions.createParties(allParties));
 }
 
-function addCandidates(elections, dispatch) {
-  candidates = [];
+function addCandidates (elections, dispatch) {
+  const candidates = [];
 
   elections.forEach((d) => {
     d.candidates.forEach((e) => {
@@ -113,11 +113,11 @@ function addCandidates(elections, dispatch) {
       candidates.push(candidateObj);
     });
   });
-  
+
   dispatch(ormActions.createCandidates(candidates));
 }
 
-function addElections(elections, dispatch) {
+function addElections (elections, dispatch) {
   const allElections = [];
   elections.forEach((d) => {
     const candidates = [];
@@ -129,7 +129,10 @@ function addElections(elections, dispatch) {
       id: d.ap_election_id,
       date: d.date,
       office: d.office.id,
-      party: d.primary_party,
+      primary: d.primary,
+      primary_party: d.primary_party,
+      runoff: d.runoff,
+      special: d.special,
       candidates,
       division: d.division.code,
       apMeta: d.ap_election_id,
@@ -138,10 +141,10 @@ function addElections(elections, dispatch) {
     allElections.push(electionObj);
   });
 
-  dispatch(ormActions.createElections(allElections));  
+  dispatch(ormActions.createElections(allElections));
 }
 
-function createResultObj(d) {
+function createResultObj (d) {
   const divisionID = d.fipscode ? d.fipscode : d.statepostal;
   const candidateID = d.polid ? `polid-${d.polid}` : `polnum-${d.polnum}`;
   const resultObj = {
@@ -160,7 +163,7 @@ function createResultObj(d) {
   return resultObj;
 }
 
-function addOverrideResults(elections, dispatch) {
+function addOverrideResults (elections, dispatch) {
   elections.forEach((d) => {
     if (!d.override_votes) {
       return;
@@ -172,7 +175,7 @@ function addOverrideResults(elections, dispatch) {
   });
 }
 
-function addResults(results, dispatch) {
+function addResults (results, dispatch) {
   const allResults = [];
 
   results.forEach((d) => {
@@ -180,7 +183,7 @@ function addResults(results, dispatch) {
     allResults.push(resultObj);
   });
 
-  dispatch(ormActions.createResults(allResults));  
+  dispatch(ormActions.createResults(allResults));
 }
 
 const addPageContent = (content, dispatch) =>
@@ -196,9 +199,9 @@ let compareContext = null;
 export const fetchContext = modifiedTime =>
   dispatch => fetch(
     window.appConfig.api.context,
-    assign({}, GET, { 
+    assign({}, GET, {
       'If-Modified-Since': modifiedTime,
-     }),
+    }),
   )
     .then(response => response.json())
     // Checks if we can skip an upsert.
@@ -257,7 +260,7 @@ export const fetchResults = modifiedTime =>
       console.log('API ERROR', error);
     });
 
-function updateGeo(geoData, dispatch) {
+function updateGeo (geoData, dispatch) {
   const fips = window.appConfig.stateFips;
   dispatch(ormActions.updateGeo(fips, geoData));
 }
@@ -268,7 +271,7 @@ export const fetchGeo = () =>
     .then(data => Promise.all([
       updateGeo(data, dispatch),
     ])).catch((error) => {
-      console.log('API ERROR', error);
+      console.log('API ERROR GEO', error, error.code);
     });
 
 export const fetchInitialData = () =>
@@ -276,4 +279,4 @@ export const fetchInitialData = () =>
     dispatch(fetchContext()),
     dispatch(fetchResults()),
   ])
-    // .then(() => dispatch(fetchGeo()));
+    .then(() => dispatch(fetchGeo()));

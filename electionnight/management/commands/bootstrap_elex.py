@@ -8,9 +8,8 @@ import geography.models as geography
 import government.models as government
 import vote.models as vote
 from django.core.management.base import BaseCommand
-from tqdm import tqdm
-
 from electionnight.models import APElectionMeta
+from tqdm import tqdm
 
 
 class Command(BaseCommand):
@@ -39,7 +38,8 @@ class Command(BaseCommand):
             kwargs['code'] = row['fipscode']
         else:
             kwargs['name'] = name
-
+        print('KWARGS', kwargs)
+        print('ROW', row)
         return geography.Division.objects.get(**kwargs)
 
     def get_office(self, row, division):
@@ -307,14 +307,17 @@ class Command(BaseCommand):
                     d['first']
                 )
                 candidates[key].append(d)
-            for candidate_races in candidates.values():
+            for candidate_races in tqdm(candidates.values()):
                 print('Processing {0} {1}: {2}, {3}'.format(
                     candidate_races[0]['statename'],
                     candidate_races[0]['officename'],
                     candidate_races[0]['last'],
                     candidate_races[0]['first'],
                 ))
-                for race in tqdm(candidate_races):
+                for race in candidate_races:
                     if race['level'] == geography.DivisionLevel.TOWNSHIP:
+                        continue
+                    # TODO: Check this with Tyler
+                    if not race.get('level', None):
                         continue
                     self.process_row(race)

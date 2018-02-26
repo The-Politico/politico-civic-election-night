@@ -1,13 +1,26 @@
 import { fk, many, oneToOne, attr, Model } from 'redux-orm';
 import assign from 'lodash/assign';
 import find from 'lodash/find';
+import {ElectionTypes} from './../constants/elections';
 
 class Election extends Model {
+  /**
+   * Returns the type of this election.
+   * @return {string}   The type constant.
+   */
+  getType () {
+    if (this.primary && this.runoff) return ElectionTypes.primaryRunoff;
+    if (this.primary) return ElectionTypes.primary;
+    if (this.special && this.runoff) return ElectionTypes.specialRunoff;
+    if (this.special) return ElectionTypes.special;
+    if (this.runoff) return ElectionTypes.generalRunoff;
+    return ElectionTypes.general;
+  }
   /**
    * Serializes the status of this election.
    * @return {Object}   Status object.
    */
-  serializeStatus() {
+  serializeStatus () {
     if (this.apMeta) {
       return assign(
         {},
@@ -24,7 +37,7 @@ class Election extends Model {
    * @param  {Array} divisions  Divisions.
    * @return {Object}           Serialized results.
    */
-  serializeResults(divisions) {
+  serializeResults (divisions) {
     const status = this.serializeStatus();
     const divisionResults = {};
 
@@ -38,10 +51,10 @@ class Election extends Model {
     divisions.forEach((division) => {
       const obj = assign({}, division.serialize());
       obj.results = [];
-      
+
       const filteredResults = resultSet.filter((d) =>
         d.division === division.id
-      )
+      );
 
       const firstResult = filteredResults.first();
       if (!firstResult) return;
@@ -55,8 +68,8 @@ class Election extends Model {
           candidate: result.candidate.serialize(),
           voteCount: result.voteCount,
           votePct: result.votePct,
-          winner: status.overrideApCall ?
-            result.candidate.overrideWinner : result.winner,
+          winner: status.overrideApCall
+            ? result.candidate.overrideWinner : result.winner,
         };
 
         // Aggregate aggregable candidates' vote totals
@@ -87,11 +100,13 @@ class Election extends Model {
       status,
       office: this.office.serialize(),
       divisions: divisionResults,
-      party: this.party.serialize(),
+      primary: this.primary,
+      primary_party: this.primary_party.serialize(),
+      runoff: this.runoff,
     };
   }
 
-  static get fields() {
+  static get fields () {
     return {
       id: attr(),
       date: attr(),
@@ -99,7 +114,10 @@ class Election extends Model {
       division: fk('Division'),
       candidates: many('Candidate'),
       apMeta: oneToOne('APMeta'),
-      party: fk('Party'),
+      primary: attr(),
+      primary_party: fk('Party'),
+      runoff: attr(),
+      special: attr(),
     };
   }
 }

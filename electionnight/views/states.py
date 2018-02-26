@@ -5,12 +5,11 @@ URL PATTERNS:
 /election-results/{YEAR}/{STATE}/
 """
 from django.shortcuts import get_object_or_404
-from geography.models import Division, DivisionLevel
-from rest_framework.reverse import reverse
-
 from electionnight.conf import settings
 from electionnight.serializers import StateSerializer
 from electionnight.utils.auth import secure
+from geography.models import Division, DivisionLevel
+from rest_framework.reverse import reverse
 
 from .base import BaseView
 
@@ -65,9 +64,15 @@ class StatePage(BaseView):
         }).data
 
     def get_extra_static_paths(self, production):
+        division = Division.objects.get(slug=self.state)
+        geo = (
+            '/election-results/cdn/geography/us-census/cb/500k/'
+            '2016/states/{}/county.json'
+        ).format(division.code)
         if production:
             return {
                 'context': 'context.json',
+                'geo': geo,
             }
         return {
             'context': reverse(
@@ -75,4 +80,7 @@ class StatePage(BaseView):
                 args=[self.election_date, self.object.pk],
                 request=self.request
             ),
+            'geo': (
+                'https://s3.amazonaws.com/'
+                'interactives.politico.com{}').format(geo),
         }

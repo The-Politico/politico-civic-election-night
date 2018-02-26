@@ -9,7 +9,6 @@ import Result from './result';
 import APMeta from './apMeta';
 import OverrideResult from './overrideResult';
 
-
 const orm = new ORM();
 
 orm.register(

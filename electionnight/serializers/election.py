@@ -1,10 +1,10 @@
+import us
 from election.models import Candidate, CandidateElection, Election
+from electionnight.models import APElectionMeta
 from entity.models import Person
 from geography.models import Division
 from government.models import Office
 from rest_framework import serializers
-
-from electionnight.models import APElectionMeta
 
 from .votes import VotesSerializer
 
@@ -39,10 +39,16 @@ class FlattenMixin:
 
 class DivisionSerializer(serializers.ModelSerializer):
     level = serializers.SerializerMethodField()
+    code = serializers.SerializerMethodField()
 
     def get_level(self, obj):
         """DivisionLevel slug"""
         return obj.level.slug
+
+    def get_code(self, obj):
+        if obj.level.name == 'state':
+            return us.states.lookup(obj.code).abbr
+        return obj.code
 
     class Meta:
         model = Division
@@ -135,7 +141,10 @@ class APElectionMetaSerializer(serializers.ModelSerializer):
 
 
 class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
+    primary = serializers.SerializerMethodField()
     primary_party = serializers.SerializerMethodField()
+    runoff = serializers.SerializerMethodField()
+    special = serializers.SerializerMethodField()
     office = serializers.SerializerMethodField()
     candidates = CandidateSerializer(many=True, read_only=True)
     date = serializers.SerializerMethodField()
@@ -168,6 +177,12 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
             many=True
         ).data
 
+    def get_primary(self, obj):
+        """
+        If primary
+        """
+        return obj.election_type.is_primary()
+
     def get_primary_party(self, obj):
         """
         If primary, party AP code.
@@ -175,6 +190,18 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
         if obj.party:
             return obj.party.ap_code
         return None
+
+    def get_runoff(self, obj):
+        """
+        If runoff
+        """
+        return obj.election_type.is_runoff()
+
+    def get_special(self, obj):
+        """
+        If special
+        """
+        return obj.race.special
 
     def get_office(self, obj):
         """Office candidates are running for."""
@@ -190,7 +217,10 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
             'uid',
             'date',
             'office',
+            'primary',
             'primary_party',
+            'runoff',
+            'special',
             'division',
             'candidates',
             'override_votes',

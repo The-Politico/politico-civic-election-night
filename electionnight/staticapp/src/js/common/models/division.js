@@ -1,11 +1,11 @@
 import { fk, attr, Model } from 'redux-orm';
 
 class Division extends Model {
-  serialize() {
+  serialize () {
     return this.ref;
   }
 
-  static get fields() {
+  static get fields () {
     return {
       id: attr(),
       code: attr(),

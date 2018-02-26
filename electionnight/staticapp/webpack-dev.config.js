@@ -9,6 +9,13 @@ module.exports = port => ({
     alias: {
       'react': 'preact-compat',
       'react-dom': 'preact-compat',
+      'Common': path.resolve(__dirname, 'src/js/common'),
+      'CommonModels': path.resolve(__dirname, 'src/js/common/models'),
+      'CommonUtils': path.resolve(__dirname, 'src/js/common/utils'),
+      'CommonConstants': path.resolve(__dirname, 'src/js/common/constants'),
+      'CommonComponents': path.resolve(__dirname, 'src/js/common/components'),
+      'SCSS': path.resolve(__dirname, 'src/scss'),
+      'StateApp': path.resolve(__dirname, 'src/js/state-app'),
     },
   },
   entry: _.zipObject(

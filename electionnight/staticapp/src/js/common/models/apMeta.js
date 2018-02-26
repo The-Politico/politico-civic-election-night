@@ -1,7 +1,7 @@
 import { attr, Model } from 'redux-orm';
 
 class APMeta extends Model {
-  serialize() {
+  serialize () {
     return {
       called: this.called,
       tabulated: this.tabulated,
@@ -10,7 +10,7 @@ class APMeta extends Model {
     };
   }
 
-  static get fields() {
+  static get fields () {
     return {
       id: attr(),
       called: attr(),
