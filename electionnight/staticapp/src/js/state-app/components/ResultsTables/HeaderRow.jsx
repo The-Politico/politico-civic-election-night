@@ -1,20 +1,20 @@
 import React from 'react';
 
 const HeaderRow = () => (
-  <div className='header results-table-row'>
-    <div className='vote-percent'>
+  <tr className='header results-table-row'>
+    <th className='vote-percent'>
       Percent
-    </div>
-    <div className='candidate'>
+    </th>
+    <th className='candidate'>
       Candidate
-    </div>
-    <div className='vote-count'>
+    </th>
+    <th className='vote-count'>
       Votes
-    </div>
-    <div className='winning'>
+    </th>
+    <th className='winning'>
       Winner
-    </div>
-  </div>
+    </th>
+  </tr>
 );
 
 export default HeaderRow;

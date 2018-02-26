@@ -1,6 +1,6 @@
 import React from 'react';
 import { sortByParty } from 'CommonUtils/elections';
-import DetailResult from './../results/Detail';
+import TableMap from './../results/TableMap';
 
 const Senator = (props) => {
   const db = props.session;
@@ -15,14 +15,16 @@ const Senator = (props) => {
 
   elections.sort(sortByParty);
 
-  const detailResults = elections.map(election => (
-    <DetailResult election={election} {...props} />
+  const results = elections.map(election => (
+    <TableMap election={election} {...props} />
   ));
   return (
-    <div>
-      <h3>U.S. Senate</h3>
-      {detailResults}
-    </div>
+    <section className='results-group'>
+      <header>
+        <h3>U.S. Senate</h3>
+      </header>
+      {results}
+    </section>
   );
 };
 

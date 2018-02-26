@@ -9,12 +9,10 @@ import Results from './Results';
 const App = (props) => {
   const actions = bindActionCreators(Actions, props.dispatch);
   return (
-    <div>
-      <Results
-        session={orm.session(props.db.orm)}
-        actions={actions}
-      />
-    </div>
+    <Results
+      session={orm.session(props.db.orm)}
+      actions={actions}
+    />
   );
 };
 

@@ -5,23 +5,23 @@ import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
 import {decimalToPercent} from 'CommonUtils/numbers';
 
 const CandidateRow = (props) => (
-  <div className='candidate results-table-row'>
-    <div className='vote-percent'>
+  <tr className='candidate results-table-row'>
+    <td className='vote-percent'>
       {decimalToPercent(props.result.votePct)}%
-    </div>
-    <div className='candidate'>
+    </td>
+    <td className='candidate'>
       {props.result.candidate.firstName} {props.result.candidate.lastName}
-    </div>
-    <div className='vote-count'>
+    </td>
+    <td className='vote-count'>
       {intcomma(props.result.voteCount)}
-    </div>
-    <div className='winning'>
+    </td>
+    <td className='winning'>
       <FontAwesomeIcon
         icon={faCheck}
         hidden={!props.result.winner}
       />
-    </div>
-  </div>
+    </td>
+  </tr>
 );
 
 export default CandidateRow;

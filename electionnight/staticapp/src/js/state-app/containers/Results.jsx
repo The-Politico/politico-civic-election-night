@@ -4,11 +4,11 @@ import Senator from './offices/Senator';
 import House from './offices/House';
 
 const Results = (props) => (
-  <div>
+  <section className='election-results'>
     <Governor {...props} />
     <Senator {...props} />
     <House {...props} />
-  </div>
+  </section>
 );
 
 export default Results;

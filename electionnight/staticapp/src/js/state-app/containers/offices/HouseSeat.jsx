@@ -1,16 +1,22 @@
 import React from 'react';
-import SimpleResult from './../results/Simple';
+import Table from './../results/Table';
 
 const HouseSeat = (props) => {
-  const simpleResults = props.elections.map(election => (
-    <SimpleResult election={election} {...props} />
+  const results = props.elections.map(election => (
+    <Table election={election} {...props} />
   ));
 
   return (
-    <div>
-      <h4>{props.elections[0].office.label}</h4>
-      {simpleResults}
-    </div>
+    <section className='results-group'>
+      <header>
+        <h4>{props.elections[0].office.label}</h4>
+      </header>
+      <div className='container'>
+        <div className='row'>
+          {results}
+        </div>
+      </div>
+    </section>
   );
 };
 

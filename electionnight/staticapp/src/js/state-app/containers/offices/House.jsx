@@ -19,10 +19,12 @@ const House = (props) => {
   });
 
   return (
-    <div>
-      <h3>U.S. House</h3>
+    <section className='results-list'>
+      <header>
+        <h3>U.S. House</h3>
+      </header>
       {seats}
-    </div>
+    </section>
   );
 };
 

@@ -26,10 +26,12 @@ const SimpleTable = (props) => {
   ));
 
   return (
-    <div className='results-table'>
-      <HeaderRow />
-      {candidateResults}
-    </div>
+    <section className='results-table'>
+      <table>
+        <HeaderRow />
+        {candidateResults}
+      </table>
+    </section>
   );
 };
 
