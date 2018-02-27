@@ -25,6 +25,10 @@ class Command(BaseCommand):
                 results_start = now
 
                 env = os.environ.copy()
+
+                env['AWS_ACCESS_KEY_ID'] = app_settings.AWS_ACCESS_KEY_ID
+                env['AWS_SECRET_ACCESS_KEY'] = app_settings.AWS_SECRET_ACCESS_KEY # noqa
+
                 test_path = os.path.join(
                     self.output_dir,
                     'recordings',
@@ -85,15 +89,16 @@ class Command(BaseCommand):
             project_settings.BASE_DIR,
             app_settings.RESULTS_STATIC_DIR,
         )
-        config_dir = os.path.join(self.output_dir, 'election-config')
 
         script_args = [
             'bash',
             bash_script,
-            '-o',
-            os.path.normpath(config_dir),
+            '-b',
+            app_settings.AWS_S3_BUCKET,
             '-d',
             self.election_date,
+            '-o',
+            os.path.normpath(self.output_dir),
         ]
 
         if options['test']:

@@ -34,6 +34,14 @@ class Command(BaseCommand):
 
         self._write_to_json(elections, config_key, levels, output_key)
 
+        if elections[0].election_type.is_primary():
+            config_key = '{0}-{1}'.format(config_key, 'primary')
+            output_key = os.path.join(output_key, 'primary')
+
+            self._write_to_json(
+                elections, config_key, levels, output_key
+            )
+
     def serialize_federal_body(self, body, elections, cycle):
         """
         /election-results/cycle/senate/
@@ -53,6 +61,14 @@ class Command(BaseCommand):
 
         self._write_to_json(body_elections, config_key, levels, output_key)
 
+        if body_elections[0].election_type.is_primary():
+            config_key = '{0}-{1}'.format(config_key, 'primary')
+            output_key = os.path.join(output_key, 'primary')
+
+            self._write_to_json(
+                body_elections, config_key, levels, output_key
+            )
+
     def serialize_federal_exec(self, office, elections, cycle):
         """
         /election-results/cycle/president/
@@ -71,6 +87,14 @@ class Command(BaseCommand):
 
         self._write_to_json(office_elections, config_key, levels, output_key)
 
+        if office_elections[0].election_type.is_primary():
+            config_key = '{0}-{1}'.format(config_key, 'primary')
+            output_key = os.path.join(output_key, 'primary')
+
+            self._write_to_json(
+                office_elections, config_key, levels, output_key
+            )
+
     def serialize_state(self, state, elections, cycle):
         """
         /election-results/cycle/state/
@@ -88,6 +112,14 @@ class Command(BaseCommand):
         output_key = '{0}/{1}'.format(cycle, state)
 
         self._write_to_json(state_elections, config_key, levels, output_key)
+
+        if state_elections[0].election_type.is_primary():
+            config_key = '{0}-{1}'.format(config_key, 'primary')
+            output_key = os.path.join(output_key, 'primary')
+
+            self._write_to_json(
+                state_elections, config_key, levels, output_key
+            )
 
     def serialize_special(self, state, elections, cycle):
         """
@@ -111,6 +143,14 @@ class Command(BaseCommand):
 
         self._write_to_json(state_elections, config_key, levels, output_key)
 
+        if state_elections[0].election_type.is_primary():
+            config_key = '{0}-{1}'.format(config_key, 'primary')
+            output_key = os.path.join(output_key, 'primary')
+
+            self._write_to_json(
+                state_elections, config_key, levels, output_key
+            )
+
     def serialize_state_federal_body(self, state, body, elections, cycle):
         """
         /election-results/cycle/senate/state/
@@ -125,14 +165,21 @@ class Command(BaseCommand):
         if state_federal_body_elections.count() == 0:
             return
 
-        if len(state_federal_body_elections) > 0:
-            levels = ['state', 'county']
-            config_key = '{0}-{1}'.format(body, state)
-            output_key = '{0}/{1}/{2}'.format(
-                cycle,
-                body,
-                state
-            )
+        levels = ['state', 'county']
+        config_key = '{0}-{1}'.format(body, state)
+        output_key = '{0}/{1}/{2}'.format(
+            cycle,
+            body,
+            state
+        )
+
+        self._write_to_json(
+            state_federal_body_elections, config_key, levels, output_key
+        )
+
+        if state_federal_body_elections[0].election_type.is_primary():
+            config_key = '{0}-{1}'.format(config_key, 'primary')
+            output_key = os.path.join(output_key, 'primary')
 
             self._write_to_json(
                 state_federal_body_elections, config_key, levels, output_key
@@ -152,14 +199,21 @@ class Command(BaseCommand):
         if state_body_elections.count() == 0:
             return
 
-        if len(state_body_elections) > 0:
-            levels = ['state', 'county']
-            config_key = '{0}-state-{1}'.format(state, body)
-            output_key = '{0}/{1}/{2}'.format(
-                cycle,
-                state,
-                body
-            )
+        levels = ['state', 'county']
+        config_key = '{0}-state-{1}'.format(state, body)
+        output_key = '{0}/{1}/{2}'.format(
+            cycle,
+            state,
+            body
+        )
+
+        self._write_to_json(
+            state_body_elections, config_key, levels, output_key
+        )
+
+        if state_body_elections[0].election_type.is_primary():
+            config_key = '{0}-{1}'.format(config_key, 'primary')
+            output_key = os.path.join(output_key, 'primary')
 
             self._write_to_json(
                 state_body_elections, config_key, levels, output_key
@@ -178,14 +232,21 @@ class Command(BaseCommand):
         if state_office_elections.count() == 0:
             return
 
-        if len(state_office_elections) > 0:
-            levels = ['state', 'county']
-            config_key = '{0}-{1}'.format(office, state)
-            output_key = '{0}/{1}/{2}'.format(
-                cycle,
-                office,
-                state
-            )
+        levels = ['state', 'county']
+        config_key = '{0}-{1}'.format(office, state)
+        output_key = '{0}/{1}/{2}'.format(
+            cycle,
+            office,
+            state
+        )
+
+        self._write_to_json(
+            state_office_elections, config_key, levels, output_key
+        )
+
+        if state_office_elections[0].election_type.is_primary():
+            config_key = '{0}-{1}'.format(config_key, 'primary')
+            output_key = os.path.join(output_key, 'primary')
 
             self._write_to_json(
                 state_office_elections, config_key, levels, output_key
@@ -215,6 +276,14 @@ class Command(BaseCommand):
         self._write_to_json(
             state_exec_elections, config_key, levels, output_key
         )
+
+        if state_exec_elections[0].election_type.is_primary():
+            config_key = '{0}-{1}'.format(config_key, 'primary')
+            output_key = os.path.join(output_key, 'primary')
+
+            self._write_to_json(
+                state_exec_elections, config_key, levels, output_key
+            )
 
     def _write_to_json(self, elections, config_key, levels, output_key):
         full_output_path = os.path.join(

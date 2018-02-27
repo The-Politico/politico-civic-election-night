@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from rest_framework.renderers import JSONRenderer
 
 from electionnight.exceptions import StaticFileNotFoundError
+from electionnight.utils.aws import defaults, get_bucket
 
 
 class StaticsPublishingMixin(object):
@@ -90,6 +91,14 @@ class StaticsPublishingMixin(object):
         key = self.get_absolute_js_url()
         # TODO: Publish to AWS
         print('>>> Publish JS to: ', key)
+        bucket = get_bucket()
+        bucket.put_object(
+            Key=key,
+            ACL=defaults.ACL,
+            Body=js_string,
+            CacheControl=defaults.CACHE_HEADER,
+            ContentType='application/javascript'
+        )
 
     def publish_css(self):
         """Publishes CSS bundle."""
@@ -97,6 +106,14 @@ class StaticsPublishingMixin(object):
         key = self.get_absolute_css_url()
         # TODO: Publish to AWS
         print('>>> Publish CSS to: ', key)
+        bucket = get_bucket()
+        bucket.put_object(
+            Key=key,
+            ACL=defaults.ACL,
+            Body=css_string,
+            CacheControl=defaults.CACHE_HEADER,
+            ContentType='text/css'
+        )
 
     def publish_serialized_context(self, subpath=''):
         """Publishes serialized context.
@@ -112,6 +129,14 @@ class StaticsPublishingMixin(object):
         )
         # TODO: Publish to AWS
         print('>>> Publish context to: ', key)
+        bucket = get_bucket()
+        bucket.put_object(
+            Key=key,
+            ACL=defaults.ACL,
+            Body=json_string,
+            CacheControl=defaults.CACHE_HEADER,
+            ContentType='application/json'
+        )
 
     def publish_statics(self, subpath=''):
         self.publish_css()
@@ -138,4 +163,11 @@ class StaticsPublishingMixin(object):
         )
         # TODO: Publish to AWS
         print('>>> Publish template to ', key)
-        print(template_string)
+        bucket = get_bucket()
+        bucket.put_object(
+            Key=key,
+            ACL=defaults.ACL,
+            Body=template_string,
+            CacheControl=defaults.CACHE_HEADER,
+            ContentType='text/html'
+        )

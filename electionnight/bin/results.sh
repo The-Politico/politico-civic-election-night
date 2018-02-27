@@ -21,7 +21,7 @@ if [ $FILE ]
     elex results ${DATE} ${TEST} --national-only -o json > master.json
 fi
 
-for file in "$OUTPUT"/* ; do
+for file in "$OUTPUT"/election-config/* ; do
   if [ -e "$file" ] ; then
     elections=`cat $file | jq '.elections'`
     levels=`cat $file | jq '.levels'`
@@ -60,5 +60,5 @@ done
 
 # deploy to s3
 if [ $BUCKET ] ; then
-  aws s3 cp /election-results/ s3://${BUCKET}/election-results/ --recursive --acl "public-read" --cache-control "max-age=5"
+  aws s3 cp ${OUTPUT}/election-results/ s3://${BUCKET}/election-results/ --recursive --acl "public-read" --cache-control "max-age=5"
 fi
