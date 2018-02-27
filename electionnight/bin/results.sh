@@ -13,8 +13,6 @@ do
   esac
 done
 
-echo $BUCKET
-
 # grab elex results for everything
 if [ $FILE ]
   then
