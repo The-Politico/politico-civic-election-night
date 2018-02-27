@@ -26,6 +26,9 @@
     <title>Election Results {{year}}: Live Map by County, Real-Time Voting Updates</title>
     {% endblock %}
     
+    {% if production %}
+    <link rel="stylesheet" href="{{ paths.css }}" />
+    {% endif %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="https://www.politico.com/interactives/cdn/fonts/base-icons/politico-base-icons.min.css">
     <script
