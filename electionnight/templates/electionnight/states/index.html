@@ -1,5 +1,4 @@
 {% extends 'electionnight/base.html' %}
-{% load humanize %}
 
 {% block page-meta %}
 <!-- Site URL -->
@@ -44,33 +43,51 @@
 </header>
 
 <div id="app">
-  <div class="chatter">{{ content.chatter|safe }}</div>
-
-  {% for election in elections %}
-  <h2>{{ election.office.name }} {{ election.primary_party }}</h2>
-
-  {% if election.table_votes %}
-  <table>
-    <thead>
-      <th>Candidate</th>
-      <th>Vote Count</th>
-      <th>Vote Pct</th>
-      <th>Winner</th>
-    </thead>
-    <tbody>
-      {% for vote in election.table_votes|dictsortreversed:"count" %}
-        <tr>
-          <td>{{ vote.first }} {{ vote.last }}</td>
-          <td>{{ vote.count|intcomma }}</td>
-          <td>{{ vote.pct|floatformat }}%</td>
-          <td>{% if vote.winner %}WINNER{% endif %}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  {% if governor_elections %}
+  <section class="results-group">
+    <header>
+      <h3>Governor</h3>
+    </header>
+    {% for election in governor_elections %}
+    {% if election.table_votes %}
+    {% include 'electionnight/results-table.html' %}
+    {% endif %}
+    {% endfor %}
+  </section>
   {% endif %}
 
-  {% endfor %}
+  {% if senate_elections %}
+  <section class="results-group">
+    <header>
+      <h3>U.S. Senate</h3>
+    </header>
+    {% for election in senate_elections %}
+    {% if election.table_votes %}
+    {% include 'electionnight/results-table.html' %}
+    {% endif %}
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {% if house_elections %}
+  <section class="results-list">
+    <header>
+      <h3>U.S. House</h3>
+    </header>
+    {% for district, elections in house_elections.items %}
+    <section class="results-group">
+      <header>
+        <h4>{{ district }}</h4>
+      </header>
+      {% for election in elections %}
+      {% if election.table_votes %}
+      {% include 'electionnight/results-table.html' %}
+      {% endif %}
+      {% endfor %}
+    </section>
+    {% endfor %}
+  </section>
+  {% endif %}
 </div>
 {%endblock%}
 

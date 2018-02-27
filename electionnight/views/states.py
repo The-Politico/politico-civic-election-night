@@ -52,21 +52,38 @@ class StatePage(BaseView):
         election_day = ElectionDay.objects.get(
             date=context['election_date'])
 
-        elections = list(context['division'].elections.filter(
-            election_day=election_day
+        governor_elections = list(context['division'].elections.filter(
+            election_day=election_day,
+            race__office__slug__contains='governor'
+        ))
+        senate_elections = list(context['division'].elections.filter(
+            election_day=election_day,
+            race__office__body__slug__contains='senate'
         ))
 
+        house_elections = {}
         district = DivisionLevel.objects.get(name=DivisionLevel.DISTRICT)
         for district in context['division'].children.filter(
             level=district
         ).order_by('code'):
-            elections.extend(
-                list(district.elections.filter(election_day=election_day))
-            )
+            district_elections = list(district.elections.filter(
+                election_day=election_day
+            ))
+            serialized = ElectionViewSerializer(
+                district_elections, many=True
+            ).data
 
-        context['elections'] = ElectionViewSerializer(
-            elections, many=True
+            house_elections[district.label] = serialized
+
+        context['governor_elections'] = ElectionViewSerializer(
+            governor_elections, many=True
         ).data
+
+        context['senate_elections'] = ElectionViewSerializer(
+            senate_elections, many=True
+        ).data
+
+        context['house_elections'] = house_elections
 
         return {
             **context,
