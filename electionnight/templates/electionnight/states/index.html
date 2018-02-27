@@ -43,10 +43,54 @@
 </header>
 
 <div id="app">
-  <div class="chatter">{{ content.chatter|safe }}</div>
+  {% if governor_elections %}
+  <section class="results-group">
+    <header>
+      <h3>Governor</h3>
+    </header>
+    {% for election in governor_elections %}
+    {% if election.votes_table %}
+    {% include 'electionnight/results-table.html' %}
+    {% endif %}
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {% if senate_elections %}
+  <section class="results-group">
+    <header>
+      <h3>U.S. Senate</h3>
+    </header>
+    {% for election in senate_elections %}
+    {% if election.vote_table%}
+    {% include 'electionnight/results-table.html' %}
+    {% endif %}
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {% if house_elections %}
+  <section class="results-list">
+    <header>
+      <h3>U.S. House</h3>
+    </header>
+    {% for district, elections in house_elections.items %}
+    <section class="results-group">
+      <header>
+        <h4>{{ district }}</h4>
+      </header>
+      {% for election in elections %}
+      {% if election.votes_table %}
+      {% include 'electionnight/results-table.html' %}
+      {% endif %}
+      {% endfor %}
+    </section>
+    {% endfor %}
+  </section>
+  {% endif %}
 </div>
 {%endblock%}
 
 {% block relative_foot %}
-<script type="text/javascript" src="{{ paths.js }}"></script>
+<!-- <script type="text/javascript" src="{{ paths.js }}"></script> -->
 {% endblock %}

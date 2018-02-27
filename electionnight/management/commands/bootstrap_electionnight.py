@@ -13,5 +13,5 @@ class Command(BaseCommand):
         call_command('bootstrap_fed')
         call_command('bootstrap_offices')
         call_command('bootstrap_parties')
-        call_command('bootstrap_elections')
         call_command('bootstrap_election_events')
+        call_command('bootstrap_elections')

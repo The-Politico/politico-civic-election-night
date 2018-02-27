@@ -5,8 +5,9 @@ URL PATTERNS:
 /election-results/{YEAR}/{STATE}/
 """
 from django.shortcuts import get_object_or_404
+from election.models import ElectionDay
 from electionnight.conf import settings
-from electionnight.serializers import StateSerializer
+from electionnight.serializers import StateSerializer, ElectionViewSerializer
 from electionnight.utils.auth import secure
 from geography.models import Division, DivisionLevel
 from rest_framework.reverse import reverse
@@ -50,8 +51,49 @@ class StatePage(BaseView):
 
         return {
             **context,
-            **self.get_paths_context(production=context['production'])
+            **self.get_paths_context(production=context['production']),
+            **self.get_elections_context(context['division'])
         }
+
+    def get_elections_context(self, division):
+        elections_context = {}
+
+        election_day = ElectionDay.objects.get(date=self.election_date)
+
+        governor_elections = list(division.elections.filter(
+            election_day=election_day,
+            race__office__slug__contains='governor'
+        ))
+        senate_elections = list(division.elections.filter(
+            election_day=election_day,
+            race__office__body__slug__contains='senate'
+        ))
+
+        house_elections = {}
+        district = DivisionLevel.objects.get(name=DivisionLevel.DISTRICT)
+        for district in division.children.filter(
+            level=district
+        ).order_by('code'):
+            district_elections = list(district.elections.filter(
+                election_day=election_day
+            ))
+            serialized = ElectionViewSerializer(
+                district_elections, many=True
+            ).data
+
+            house_elections[district.label] = serialized
+
+        elections_context['governor_elections'] = ElectionViewSerializer(
+            governor_elections, many=True
+        ).data
+
+        elections_context['senate_elections'] = ElectionViewSerializer(
+            senate_elections, many=True
+        ).data
+
+        elections_context['house_elections'] = house_elections
+
+        return elections_context
 
     def get_publish_path(self):
         return 'election-results/{}/{}/'.format(self.year, self.state)

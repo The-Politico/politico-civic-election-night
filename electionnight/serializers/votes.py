@@ -4,6 +4,33 @@ from rest_framework import serializers
 from vote.models import Votes
 
 
+class VotesTableSerializer(serializers.ModelSerializer):
+    count = serializers.IntegerField()
+    pct = serializers.SerializerMethodField()
+    winner = serializers.BooleanField(source='winning')
+    first = serializers.SerializerMethodField()
+    last = serializers.SerializerMethodField()
+
+    def get_first(self, obj):
+        return obj.candidate_election.candidate.person.first_name
+
+    def get_last(self, obj):
+        return obj.candidate_election.candidate.person.last_name
+
+    def get_pct(self, obj):
+        return obj.pct * 100
+
+    class Meta:
+        model = Votes
+        fields = (
+            'count',
+            'pct',
+            'winner',
+            'first',
+            'last'
+        )
+
+
 class VotesSerializer(serializers.ModelSerializer):
     raceid = serializers.SerializerMethodField()
     level = serializers.SerializerMethodField()

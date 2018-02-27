@@ -38,8 +38,6 @@ class Command(BaseCommand):
             kwargs['code'] = row['fipscode']
         else:
             kwargs['name'] = name
-        print('KWARGS', kwargs)
-        print('ROW', row)
         return geography.Division.objects.get(**kwargs)
 
     def get_office(self, row, division):
