@@ -93,8 +93,6 @@ class StatePage(BaseView):
 
         elections_context['house_elections'] = house_elections
 
-        print(elections_context['governor_elections'][0])
-
         return elections_context
 
     def get_publish_path(self):
