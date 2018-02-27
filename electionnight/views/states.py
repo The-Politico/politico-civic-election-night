@@ -49,21 +49,29 @@ class StatePage(BaseView):
         context['state'] = self.state
         context['election_date'] = self.election_date
 
-        election_day = ElectionDay.objects.get(
-            date=context['election_date'])
+        return {
+            **context,
+            **self.get_paths_context(production=context['production']),
+            **self.get_elections_context(context['division'])
+        }
 
-        governor_elections = list(context['division'].elections.filter(
+    def get_elections_context(self, division):
+        elections_context = {}
+
+        election_day = ElectionDay.objects.get(date=self.election_date)
+
+        governor_elections = list(division.elections.filter(
             election_day=election_day,
             race__office__slug__contains='governor'
         ))
-        senate_elections = list(context['division'].elections.filter(
+        senate_elections = list(division.elections.filter(
             election_day=election_day,
             race__office__body__slug__contains='senate'
         ))
 
         house_elections = {}
         district = DivisionLevel.objects.get(name=DivisionLevel.DISTRICT)
-        for district in context['division'].children.filter(
+        for district in division.children.filter(
             level=district
         ).order_by('code'):
             district_elections = list(district.elections.filter(
@@ -75,20 +83,19 @@ class StatePage(BaseView):
 
             house_elections[district.label] = serialized
 
-        context['governor_elections'] = ElectionViewSerializer(
+        elections_context['governor_elections'] = ElectionViewSerializer(
             governor_elections, many=True
         ).data
 
-        context['senate_elections'] = ElectionViewSerializer(
+        elections_context['senate_elections'] = ElectionViewSerializer(
             senate_elections, many=True
         ).data
 
-        context['house_elections'] = house_elections
+        elections_context['house_elections'] = house_elections
 
-        return {
-            **context,
-            **self.get_paths_context(production=context['production'])
-        }
+        print(elections_context['governor_elections'][0])
+
+        return elections_context
 
     def get_publish_path(self):
         return 'election-results/{}/{}/'.format(self.year, self.state)

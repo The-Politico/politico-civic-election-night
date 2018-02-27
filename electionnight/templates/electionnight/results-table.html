@@ -14,7 +14,7 @@
             <th class="vote-count">Votes</th>
             <th class="winning">Winner</th>
           </tr>
-          {% for vote in election.table_votes|dictsortreversed:"count" %}
+          {% for vote in election.votes_table|dictsortreversed:"count" %}
             <tr>
               <td class="vote-percent">{{ vote.pct|floatformat }}%</td>
               <td class="candidate">{{ vote.first }} {{ vote.last }}</td>

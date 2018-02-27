@@ -49,7 +49,7 @@
       <h3>Governor</h3>
     </header>
     {% for election in governor_elections %}
-    {% if election.table_votes %}
+    {% if election.votes_table %}
     {% include 'electionnight/results-table.html' %}
     {% endif %}
     {% endfor %}
@@ -62,7 +62,7 @@
       <h3>U.S. Senate</h3>
     </header>
     {% for election in senate_elections %}
-    {% if election.table_votes %}
+    {% if election.vote_table%}
     {% include 'electionnight/results-table.html' %}
     {% endif %}
     {% endfor %}
@@ -80,7 +80,7 @@
         <h4>{{ district }}</h4>
       </header>
       {% for election in elections %}
-      {% if election.table_votes %}
+      {% if election.votes_table %}
       {% include 'electionnight/results-table.html' %}
       {% endif %}
       {% endfor %}

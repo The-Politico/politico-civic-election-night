@@ -6,7 +6,7 @@ from geography.models import Division, DivisionLevel
 from government.models import Office
 from rest_framework import serializers
 
-from .votes import TableVotesSerializer, VotesSerializer
+from .votes import VotesTableSerializer, VotesSerializer
 
 
 class FlattenMixin:
@@ -231,7 +231,13 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
 
 
 class ElectionViewSerializer(ElectionSerializer):
-    table_votes = serializers.SerializerMethodField()
+    """
+    Serializes the election for passing into template view context.
+    We split these because we have data in here we don't want to reach
+    the deployed JSON.
+    """
+
+    votes_table = serializers.SerializerMethodField()
 
     def get_primary_party(self, obj):
         """
@@ -241,7 +247,7 @@ class ElectionViewSerializer(ElectionSerializer):
             return obj.party.label
         return None
 
-    def get_table_votes(self, obj):
+    def get_votes_table(self, obj):
         if hasattr(obj, 'meta'):
             all_votes = None
             for ce in obj.candidate_elections.all():
@@ -253,7 +259,7 @@ class ElectionViewSerializer(ElectionSerializer):
                     all_votes = ce.votes.filter(
                         division__level__name=DivisionLevel.STATE
                     )
-            return TableVotesSerializer(all_votes, many=True).data
+            return VotesTableSerializer(all_votes, many=True).data
         return False
 
     class Meta:
@@ -269,7 +275,7 @@ class ElectionViewSerializer(ElectionSerializer):
             'division',
             'candidates',
             'override_votes',
-            'table_votes'
+            'votes_table'
         )
         flatten = (
             ('meta', APElectionMetaSerializer),

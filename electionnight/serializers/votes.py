@@ -4,7 +4,7 @@ from rest_framework import serializers
 from vote.models import Votes
 
 
-class TableVotesSerializer(serializers.ModelSerializer):
+class VotesTableSerializer(serializers.ModelSerializer):
     count = serializers.IntegerField()
     pct = serializers.SerializerMethodField()
     winner = serializers.BooleanField(source='winning')
