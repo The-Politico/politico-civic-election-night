@@ -2,7 +2,7 @@
 <html>
   <head>
     {% include "electionnight/meta.html" %}
-    
+
     {% block universal-meta %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -21,11 +21,11 @@
     <meta property="og:image:width" content="600" />
     <meta property="og:image:height" content="325" />
     {% endblock %}
-    
+
     {% block title %}
     <title>Election Results {{year}}: Live Map by County, Real-Time Voting Updates</title>
     {% endblock %}
-    
+
     {% if production %}
     <link rel="stylesheet" href="{{ paths.css }}" />
     {% endif %}
@@ -41,7 +41,7 @@
 
     {% block api %}
     {% endblock %}
-    
+
     {% block relative_head %}
     {% endblock %}
   </head>
@@ -60,6 +60,9 @@
 
     {%block relative_foot%}
     {%endblock%}
+
+    {% block footer_links %}
+    {% endblock %}
 
     {% block footer %}
     {% include 'electionnight/footer.html' %}

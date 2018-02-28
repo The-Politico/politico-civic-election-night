@@ -6,11 +6,13 @@ URL PATTERNS:
 """
 from django.shortcuts import get_object_or_404
 from election.models import ElectionDay
-from electionnight.conf import settings
-from electionnight.serializers import StateSerializer, ElectionViewSerializer
-from electionnight.utils.auth import secure
 from geography.models import Division, DivisionLevel
 from rest_framework.reverse import reverse
+
+from electionnight.conf import settings
+from electionnight.models import PageContent
+from electionnight.serializers import ElectionViewSerializer, StateSerializer
+from electionnight.utils.auth import secure
 
 from .base import BaseView
 
@@ -41,6 +43,7 @@ class StatePage(BaseView):
         context = super().get_context_data(**kwargs)
 
         # Set kwargs to properties on class.
+        self.division = context['division']
         self.year = self.kwargs.get('year')
         self.state = self.kwargs.get('state')
         self.election_date = self.kwargs.get('election_date')
@@ -48,11 +51,30 @@ class StatePage(BaseView):
         context['year'] = self.year
         context['state'] = self.state
         context['election_date'] = self.election_date
+        context['content'] = PageContent.objects.division_content(
+            ElectionDay.objects.get(date=self.election_date),
+            self.division
+        )
 
         return {
             **context,
             **self.get_paths_context(production=context['production']),
-            **self.get_elections_context(context['division'])
+            **self.get_elections_context(context['division']),
+            **self.get_nav_links(),
+        }
+
+    def get_nav_links(self):
+        state_level = DivisionLevel.objects.get(name=DivisionLevel.STATE)
+        states = Division.objects.filter(level=state_level).order_by('label')
+        return {
+            'nav': {
+                'states': [
+                    {
+                        'link': '../{}/'.format(state.slug),
+                        'name': state.label,
+                    } for state in states
+                ],
+            }
         }
 
     def get_elections_context(self, division):
