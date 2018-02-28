@@ -55,7 +55,10 @@ class StateSerializer(serializers.ModelSerializer):
         district = DivisionLevel.objects.get(name=DivisionLevel.DISTRICT)
         for district in obj.children.filter(level=district):
             elections.extend(
-                list(district.elections.filter(election_day=election_day))
+                list(district.elections.filter(
+                    election_day=election_day,
+                    meta__isnull=False
+                ))
             )
 
         return ElectionSerializer(elections, many=True).data
