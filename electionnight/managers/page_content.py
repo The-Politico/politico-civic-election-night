@@ -66,17 +66,25 @@ class PageContentManager(models.Manager):
         """
         Return serialized content for a division page.
         """
+        from electionnight.models import PageType
         division_type = ContentType.objects.get_for_model(division)
+        page_type = PageType.objects.get(
+            model_type=division_type,
+            election_day=election_day,
+            division_level=division.level,
+        )
 
-        try:
-            content = self.get(
-                content_type__pk=division_type.pk,
-                object_id=division.pk,
-                election_day=election_day
-            )
-        except exceptions.ObjectDoesNotExist:
-            return None
+        page_content = self.get(
+            content_type__pk=division_type.pk,
+            object_id=division.pk,
+            election_day=election_day
+        )
+        page_type_content = self.get(
+            content_type=ContentType.objects.get_for_model(page_type),
+            object_id=page_type.pk,
+            election_day=election_day,
+        )
         return {
-            'page': self.serialize_content_blocks(content),
-            'page_type': None  # TODO
+            'page': self.serialize_content_blocks(page_content),
+            'page_type': self.serialize_content_blocks(page_type_content),
         }

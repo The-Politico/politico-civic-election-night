@@ -28,6 +28,7 @@
     stateFips: '{{ division.code }}',
     statePostal: '{{ division.code_components.postal }}',
     stateSlug: '{{ division.slug }}',
+    nav: {{nav|safe}},
   };
 </script>
 {% endblock %}
@@ -93,4 +94,15 @@
 
 {% block relative_foot %}
 <!-- <script type="text/javascript" src="{{ paths.js }}"></script> -->
+{% endblock %}
+
+{% block footer_links %}
+<div class="state-links temp">
+  <h4>2018 Elections</h4>
+  {% for state in nav.states%}
+    <div class="link">
+      <a href="{{state.link}}">{{state.name}}</a>
+    </div>
+  {% endfor %}
+</div>
 {% endblock %}
