@@ -211,7 +211,7 @@ class Command(BaseCommand):
         CandidateElection object using the model method on the election.
         """
         return election.update_or_create_candidate(
-            candidate, party.aggregate_candidates
+            candidate, party.aggregate_candidates, row['uncontested']
         )
 
     def get_or_create_ap_election_meta(self, row, election):
