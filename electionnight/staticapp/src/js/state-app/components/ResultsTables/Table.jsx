@@ -27,7 +27,7 @@ const SimpleTable = (props) => {
 
   return (
     <section className='results-table'>
-      <table>
+      <table className="table">
         <HeaderRow />
         {candidateResults}
       </table>

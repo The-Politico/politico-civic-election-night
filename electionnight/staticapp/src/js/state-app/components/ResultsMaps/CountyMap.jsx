@@ -15,7 +15,7 @@ class CountyMap extends React.Component {
   }
 
   render () {
-    console.log('CountyResults', this.getCountyResults());
+    // console.log('CountyResults', this.getCountyResults());
     return (
       <section className='results-map col-6'>
         <div className='map' />

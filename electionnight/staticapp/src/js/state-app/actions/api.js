@@ -124,6 +124,10 @@ function addElections (elections, dispatch) {
       candidates.push(candidate.ap_candidate_id);
     });
 
+    if (!d.ap_election_id) {
+      console.log(d);
+    }
+
     const electionObj = {
       id: d.ap_election_id,
       date: d.date,
@@ -140,6 +144,7 @@ function addElections (elections, dispatch) {
     allElections.push(electionObj);
   });
 
+  console.log('dispatch election creation');
   dispatch(ormActions.createElections(allElections));
 }
 
@@ -175,14 +180,24 @@ function addOverrideResults (elections, dispatch) {
 }
 
 function addResults (results, dispatch) {
-  const allResults = [];
+  const stateResults = [];
+  const countyResults = [];
 
   results.forEach((d) => {
     const resultObj = createResultObj(d);
-    allResults.push(resultObj);
+    
+    if (d.level === 'state') {
+      stateResults.push(resultObj);
+    } else if (d.level === 'county') {
+      countyResults.push(resultObj);
+    }
   });
 
-  dispatch(ormActions.createResults(allResults));
+  console.log(Date.now(), 'results objects created');
+  dispatch(ormActions.createResults(stateResults));
+  setTimeout(() => {
+    dispatch(ormActions.createResults(countyResults))
+  }, 0);
 }
 
 const addPageContent = (content, dispatch) =>

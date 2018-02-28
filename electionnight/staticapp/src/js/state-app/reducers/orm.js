@@ -40,6 +40,7 @@ export default(dbState, action) => {
       break;
     case types.CREATE_RESULTS:
       action.results.map(result => Result.upsert(result));
+      console.log(Date.now(), 'results objects inserted');
       break;
     case types.CREATE_GEOMETRY:
       Geometry.upsert(action.geometry);
