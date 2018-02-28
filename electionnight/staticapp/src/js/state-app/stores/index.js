@@ -16,15 +16,15 @@ store.dispatch(actions.fetchInitialData());
  * Set intervals to refresh context and results.
  * Fetched with a last modified timestamp.
  */
-// setInterval(() => {
-//   const { resultsModified } = store.getState().fetch;
-//   store.dispatch(actions.fetchResults(resultsModified));
-// }, refreshRates.results);
+setInterval(() => {
+  const { resultsModified } = store.getState().fetch;
+  store.dispatch(actions.fetchResults(resultsModified));
+}, refreshRates.results);
 
-// setInterval(() => {
-//   const { contextModified } = store.getState().fetch;
-//   store.dispatch(actions.fetchContext(contextModified));
-// }, refreshRates.context);
+setInterval(() => {
+  const { contextModified } = store.getState().fetch;
+  store.dispatch(actions.fetchContext(contextModified));
+}, refreshRates.context);
 
 
 store.subscribe(() => {
