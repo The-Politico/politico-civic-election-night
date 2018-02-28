@@ -60,10 +60,10 @@ class StatePage(BaseView):
             **context,
             **self.get_paths_context(production=context['production']),
             **self.get_elections_context(context['division']),
-            **self.get_nav_links(production=context['production']),
+            **self.get_nav_links(),
         }
 
-    def get_nav_links(self, production):
+    def get_nav_links(self):
         state_level = DivisionLevel.objects.get(name=DivisionLevel.STATE)
         states = Division.objects.filter(level=state_level).order_by('label')
         return {
