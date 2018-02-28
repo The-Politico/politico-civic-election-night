@@ -2,6 +2,7 @@ import json
 import subprocess
 
 from django.core.management.base import BaseCommand
+from django.core.management import call_command
 from tqdm import tqdm
 
 from election.models import Candidate, CandidateElection
@@ -94,3 +95,8 @@ class Command(BaseCommand):
 
         for result in tqdm(data):
             self.process_result(result)
+
+        call_command(
+            'bake_elections',
+            options['election_date'],
+        )
