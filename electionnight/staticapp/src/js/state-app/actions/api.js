@@ -108,6 +108,7 @@ function addCandidates (elections, dispatch) {
         incumbent: e.incumbent,
         uncontested: e.uncontested,
         images: e.images,
+        order: e.order,
       };
 
       candidates.push(candidateObj);
