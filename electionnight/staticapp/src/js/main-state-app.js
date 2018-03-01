@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 import App from './state-app/containers/App';
 import store from './state-app/stores/';
 
-import 'politico-style/scss/base/main.scss';
-import '../scss/main.scss';
+import 'politico-style/scss/elections/states/main.scss';
+import 'SCSS/main.scss';
 
 const StateApp = () => (
   <Provider store={store}>

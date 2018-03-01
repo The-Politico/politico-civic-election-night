@@ -3,7 +3,7 @@ import ResultsTable from 'StateApp/components/ResultsTables/Table';
 
 const Table = (props) => {
   return (
-    <article className='results'>
+    <article className='results fifty'>
       <header>
         <h4>{props.election.primary_party.label} Primary</h4>
       </header>

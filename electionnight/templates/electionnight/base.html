@@ -36,8 +36,10 @@
       integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
       crossorigin="anonymous">
     </script>
-    <script src="https://use.typekit.net/ijp3uro.js"></script>
+    <!--Typekit-->
+    <link rel="stylesheet" href="https://use.typekit.net/ogn0czn.css">
     <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    <!-- end -->
 
     {% block api %}
     {% endblock %}
@@ -54,14 +56,16 @@
     {% block content %}
     {% endblock %}
 
-    {% block credits %}
-    {% include 'electionnight/credits.html' %}
-    {% endblock %}
+
 
     {%block relative_foot%}
     {%endblock%}
 
     {% block footer_links %}
+    {% endblock %}
+
+    {% block credits %}
+    {% include 'electionnight/credits.html' %}
     {% endblock %}
 
     {% block footer %}

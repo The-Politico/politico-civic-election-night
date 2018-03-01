@@ -1,8 +1,35 @@
 import React from 'react';
-import ResultsTable from 'StateApp/components/ResultsTables/Table';
+import { DivisionLevels } from 'CommonConstants/geography';
+import ResultsTable from 'StateApp/components/ResultsTables/Map/Table';
 import CountyMap from 'StateApp/components/ResultsMaps/CountyMap';
+import { primaryColors } from 'StateApp/constants/colors';
 
 const TableMap = (props) => {
+  const election = props.election;
+
+  const state = props.session.Division.filter({
+    level: DivisionLevels.state,
+  }).toModelArray();
+
+  const results = election.serializeResults(state);
+
+  const stateLevel = results.divisions[state[0].postalCode];
+
+  if (!stateLevel) return (<div />);
+
+  const stateLevelResults = stateLevel.results;
+
+  stateLevelResults.sort((a, b) => b.candidate.id > a.candidate.id);
+  const candidateKeys = {};
+  const candidateColors = {};
+
+  stateLevelResults.forEach((d, i) => {
+    candidateKeys[d.candidate.id] = i + 1;
+    candidateColors[d.candidate.id] = primaryColors[i + 1];
+  });
+
+  stateLevelResults.sort((a, b) => b.votePct - a.votePct);
+
   return (
     <article className='results'>
       <header>
@@ -10,8 +37,16 @@ const TableMap = (props) => {
       </header>
       <div className='container'>
         <div className='row'>
-          <ResultsTable {...props} />
-          <CountyMap {...props} />
+          <ResultsTable
+            results={stateLevelResults}
+            candidateKeys={candidateKeys}
+            {...props}
+          />
+          <CountyMap
+            candidateColors={candidateColors}
+            {...props}
+          />
+          <div className='clear' />
         </div>
       </div>
     </article>

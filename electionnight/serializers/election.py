@@ -1,12 +1,13 @@
 import us
 from election.models import Candidate, CandidateElection, Election
-from electionnight.models import APElectionMeta
 from entity.models import Person
 from geography.models import Division, DivisionLevel
 from government.models import Office
 from rest_framework import serializers
 
-from .votes import VotesTableSerializer, VotesSerializer
+from electionnight.models import APElectionMeta
+
+from .votes import VotesSerializer, VotesTableSerializer
 
 
 class FlattenMixin:

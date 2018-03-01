@@ -14,6 +14,7 @@ const HouseSeat = (props) => {
       <div className='container'>
         <div className='row'>
           {results}
+          <div className='clear' />
         </div>
       </div>
     </section>

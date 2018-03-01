@@ -28,8 +28,10 @@ const SimpleTable = (props) => {
   return (
     <section className='results-table'>
       <table>
-        <HeaderRow />
-        {candidateResults}
+        <tbody>
+          <HeaderRow />
+          {candidateResults}
+        </tbody>
       </table>
     </section>
   );

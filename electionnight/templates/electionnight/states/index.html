@@ -39,8 +39,9 @@
      <a href="" class="icon icon-facebook" target="_blank"></a>
      <a href="" class="icon icon-twitter" target="_blank"></a>
      <a class="icon icon-mail" target="_blank"></a>
-  </div>
   <h1>{{ year }} {{ state|title }} Election Results</h1>
+    <p class="time"><span class="live">LIVE</span> results last updated <span class="timestamp"><time datetime="{{META.timestamp}}">March 6, 9:54pm EST</time>
+    <p class="results-bar">[---checking results----]</p>
 </header>
 
 <div id="app">
@@ -97,12 +98,18 @@
 {% endblock %}
 
 {% block footer_links %}
-<div class="state-links temp">
+<section class="elex-footer results-list app">
   <h4>2018 Elections</h4>
-  {% for state in nav.states%}
-    <div class="link">
-      <a href="{{state.link}}">{{state.name}}</a>
-    </div>
-  {% endfor %}
-</div>
+  <ul>
+    {% for state in nav.states%}
+      <li>
+        <a href="{{state.link}}">{{state.name}}</a>
+      </li>
+      {%if forloop.counter|divisibleby:"10" %}
+  </ul><ul>
+      {%endif%}
+    {% endfor %}
+  </ul>
+  <div class="clear"></div>
+</section>
 {% endblock %}

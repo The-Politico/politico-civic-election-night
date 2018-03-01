@@ -1,0 +1,12 @@
+.county-map{
+    min-height: 350px;
+}
+
+td.vote-count{
+  text-align: right;
+}
+svg.map-hatch-definitions{
+  position: fixed;
+  bottom: 0;
+  pointer-events: none;
+}
