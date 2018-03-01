@@ -104,9 +104,11 @@ function addCandidates (elections, dispatch) {
         party: e.party,
         aggregable: e.aggregable,
         overrideWinner: e.override_winner,
+        overrideRunoff: e.override_runoff,
         incumbent: e.incumbent,
         uncontested: e.uncontested,
         images: e.images,
+        order: e.order,
       };
 
       candidates.push(candidateObj);
@@ -159,6 +161,7 @@ function createResultObj (d) {
     precinctsTotal: d.precinctstotal,
     precinctsReportingPct: d.precinctsreportingpct,
     winner: d.winner,
+    runoff: d.runoff,
     division: divisionID,
     candidate: candidateID,
     election: d.raceid,

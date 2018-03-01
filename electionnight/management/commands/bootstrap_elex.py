@@ -8,7 +8,7 @@ import geography.models as geography
 import government.models as government
 import vote.models as vote
 from django.core.management.base import BaseCommand
-from electionnight.models import APElectionMeta
+from electionnight.models import APElectionMeta, CandidateColorOrder
 from tqdm import tqdm
 
 
@@ -228,13 +228,23 @@ class Command(BaseCommand):
         """
         Gets or creates the Vote object for the given row of AP data.
         """
-
         vote.Votes.objects.get_or_create(
             division=division,
             count=row['votecount'],
             pct=row['votepct'],
             winning=row['winner'],
+            runoff=row['runoff'],
             candidate_election=candidate_election
+        )
+
+    def get_or_create_candidate_color_order(self, row, candidate):
+        """
+        Gets or creates the CandidateColorOrder object for the given row
+        of AP data.
+        """
+        CandidateColorOrder.objects.get_or_create(
+            candidate=candidate,
+            order=row['ballotorder']
         )
 
     def process_row(self, row):
@@ -254,6 +264,7 @@ class Command(BaseCommand):
 
         self.get_or_create_ap_election_meta(row, election)
         self.get_or_create_votes(row, division, candidate_election)
+        self.get_or_create_candidate_color_order(row, candidate)
 
     def add_arguments(self, parser):
         parser.add_argument('election_date', type=str)

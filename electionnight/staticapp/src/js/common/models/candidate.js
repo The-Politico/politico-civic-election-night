@@ -33,9 +33,11 @@ class Candidate extends Model {
       suffix: attr(),
       aggregable: attr(),
       overrideWinner: attr(),
+      overrideRunoff: attr(),
       incumbent: attr(),
       uncontested: attr(),
       images: attr(),
+      order: attr(),
       party: fk('Party'),
     };
   }

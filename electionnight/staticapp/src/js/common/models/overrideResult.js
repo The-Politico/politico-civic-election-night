@@ -19,6 +19,7 @@ class OverrideResult extends Model {
       precinctsTotal: attr(),
       precinctsReportingPct: attr(),
       winner: attr(),
+      runoff: attr(),
       division: fk('Division'),
       candidate: fk('Candidate'),
       election: fk('Election'),

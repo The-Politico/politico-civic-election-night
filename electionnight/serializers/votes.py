@@ -8,6 +8,7 @@ class VotesTableSerializer(serializers.ModelSerializer):
     count = serializers.IntegerField()
     pct = serializers.SerializerMethodField()
     winner = serializers.BooleanField(source='winning')
+    runoff = serializers.BooleanField()
     first = serializers.SerializerMethodField()
     last = serializers.SerializerMethodField()
 
@@ -26,6 +27,7 @@ class VotesTableSerializer(serializers.ModelSerializer):
             'count',
             'pct',
             'winner',
+            'runoff',
             'first',
             'last'
         )
