@@ -7,6 +7,7 @@ const Table = (props) => {
     <CandidateRow
       result={result}
       candidateKeys={props.candidateKeys}
+      candidateColors={props.candidateColors}
     />
   ));
 

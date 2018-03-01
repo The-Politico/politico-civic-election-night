@@ -20,11 +20,9 @@ const TableMap = (props) => {
   const stateLevelResults = stateLevel.results;
 
   stateLevelResults.sort((a, b) => b.candidate.id > a.candidate.id);
-  const candidateKeys = {};
   const candidateColors = {};
 
   stateLevelResults.forEach((d, i) => {
-    candidateKeys[d.candidate.id] = i + 1;
     candidateColors[d.candidate.id] = primaryColors[i + 1];
   });
 
@@ -39,7 +37,7 @@ const TableMap = (props) => {
         <div className='row'>
           <ResultsTable
             results={stateLevelResults}
-            candidateKeys={candidateKeys}
+            candidateColors={candidateColors}
             {...props}
           />
           <CountyMap

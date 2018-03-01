@@ -5,9 +5,9 @@ URL PATTERNS:
 /election-results/{YEAR}/{STATE}/
 """
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from election.models import ElectionDay
 from geography.models import Division, DivisionLevel
-from rest_framework.reverse import reverse
 
 from electionnight.conf import settings
 from electionnight.models import PageContent
@@ -142,7 +142,7 @@ class StatePage(BaseView):
             'context': reverse(
                 'electionnight_api_state-election-detail',
                 args=[self.election_date, self.object.pk],
-                request=self.request
+                # request=self.request
             ),
             'geo_county': (
                 'https://s3.amazonaws.com/'

@@ -5,14 +5,15 @@ import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
 import {decimalToPercent} from 'CommonUtils/numbers';
 
 const CandidateRow = (props) => {
-  const {candidateKeys, result} = props;
-  const colorI = candidateKeys[result.candidate.id];
+  const {result} = props;
   return (
     <tr
       className={`candidate results-table-row ${props.result.winner ? 'winner' : ''}`}
     >
       <td className='candidate-color key'>
-        <span className={`primary${colorI}`} />
+        <span
+          style={{backgroundColor: props.candidateColors[result.candidate.id]}}
+        />
       </td>
       <td className='vote-percent'>
         {decimalToPercent(props.result.votePct)}%

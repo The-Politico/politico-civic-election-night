@@ -1,13 +1,32 @@
 import React from 'react';
+import {Link} from 'react-scroll';
 
 const Nav = (props) => {
   return (
     <div className='jumpto'>
       <p>
         Jump to
-        <a className='space-case'>Governor</a>
-        <a className='space-case'>Senate</a>
-        <a className='space-case' >House</a>
+        <Link
+          className='space-case'
+          offset={-50}
+          duration={500}
+          smooth
+          to='governor-anchor'
+        >Governor</Link>
+        <Link
+          className='space-case'
+          offset={-50}
+          duration={500}
+          smooth
+          to='senate-anchor'
+        >Senate</Link>
+        <Link
+          className='space-case'
+          offset={-50}
+          duration={500}
+          smooth
+          to='house-anchor'
+        >House</Link>
       </p>
     </div>
   );

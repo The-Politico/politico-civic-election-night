@@ -1,6 +1,7 @@
 import React from 'react';
 import { sortByParty } from 'CommonUtils/elections';
 import TableMap from './../results/TableMap';
+import {Element} from 'react-scroll';
 
 const Senator = (props) => {
   const db = props.session;
@@ -20,10 +21,12 @@ const Senator = (props) => {
   ));
   return (
     <section className='results-group'>
-      <header>
-        <h3>U.S. Senate</h3>
-      </header>
-      {results}
+      <Element name='senate-anchor'>
+        <header>
+          <h3>U.S. Senate</h3>
+        </header>
+        {results}
+      </Element>
     </section>
   );
 };

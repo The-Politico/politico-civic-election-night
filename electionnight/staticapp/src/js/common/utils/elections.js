@@ -1,6 +1,6 @@
 
 export const sortByParty = (a, b) =>
-  a.primary_party < b.primary_party;
+  a.primary_party > b.primary_party;
 
 export const getHouseDistrict = (name) => {
   const matches = /(\d+)$/g.exec(name);

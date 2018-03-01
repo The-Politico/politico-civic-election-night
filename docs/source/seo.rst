@@ -5,24 +5,34 @@ SEO strategy and page hierarchy
 Pages
 -----
 
-These are pages we will publish as part of the midterm elections. At the state level, we optimize for search on specific races *and* comprehensive state results.
+This is the pattern of pages we will publish during the midterm elections.
+
+
 
 - ``/2018/``
 - ``/2018/senate/``
 - ``/2018/house/``
 - ``/2018/texas/``
-- ``/2018/texas/calendar/``
+- ``/2018/texas/schedule/``
 - ``/2018/senate/texas/``
 - ``/2018/house/texas/``
 - ``/2018/texas/governor/``
 - ``/2018/texas/primary/``
 - ``/2018/texas/primary/runoff/``
+- ``/2018/senate/texas/primary/``
+- ``/2018/house/texas/primary/``
+- ``/2018/senate/texas/primary/runoff/``
+- ``/2018/house/texas/primary/runoff/``
 
+
+.. note::
+
+  At the state level, we double publish results on pages optimized for search for specific races -- e.g., "Texas senate races" at ``/senate/texas/`` -- *and* comprehensive state results -- e.g., "Texas election results" at ``/texas/``.
 
 Page content
 ------------
 
-The content we publish at each page level. Note the geographic level of granularity for results we put on each page.
+The content we publish at each page level. Note the geographic level for the results we publish on each page.
 
 - ``/2018/``
 
@@ -44,7 +54,7 @@ The content we publish at each page level. Note the geographic level of granular
   - Texas governor, U.S. Senate *state-level* and U.S. House *district-level* results
   - Texas governor, U.S. Senate *county-level* maps
 
-- ``/2018/texas/calendar/``
+- ``/2018/texas/schedule/``
 
   - Texas state elections calendar.
 
@@ -84,7 +94,7 @@ The earlier we publish pages with content to the eventual home of general electi
 
 In order to get general election pages published with content we publish whatever we know about the midterms when we know it. We use election calendars as placeholder content before we know about candidates or have results.
 
-For **national pages** like ``/2018/`` will have 2 phases of content:
+For **national pages** like ``/2018/`` and ``/2018/senate/`` will have 2 phases of content:
 
 1. As early as possible, we will publish the national calendar to the page.
 2. Before polls close for the general, we will publish results to the page.
@@ -113,14 +123,14 @@ For **state pages** like ``/2018/california/``, we will have 5 different phases 
 Internal navigation hierarchy
 -----------------------------
 
-We will emphasize this path through pages:
+We will emphasize these paths through pages:
 
 - ``/2018/`` >>> ``/2018/texas/`` >>> ``/2018/{senate|house}/texas/``
 - ``/2018/`` >>> ``/2018/senate/`` >>> ``/2018/senate/texas/``
 - ``/2018/`` >>> ``/2018/house/`` >>> ``/2018/house/texas/``
 
-Homepage, story and social link strategy
-----------------------------------------
+Homepage, referral and social link strategy
+-------------------------------------------
 
 Homepage should link to national and state-level pages:
 
@@ -129,7 +139,7 @@ Homepage should link to national and state-level pages:
 - ``/2018/house/``
 - ``/2018/texas/``
 
-Social and story refs should link to state senate and house breakdown pages whenever referencing the results for any specific race:
+Social and referral links should point to state senate and house breakdown pages whenever referencing the results for any specific race:
 
 - ``/2018/senate/texas/``
 - ``/2018/house/texas/``

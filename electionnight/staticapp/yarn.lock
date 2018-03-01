@@ -1653,7 +1653,7 @@ circular-json@^0.3.1:
 
 "civic_map-county-primary-results@git+ssh://git@github.com/The-Politico/politico-civic-graphics_map_county-primary-results.git":
   version "1.0.0"
-  resolved "git+ssh://git@github.com/The-Politico/politico-civic-graphics_map_county-primary-results.git#4f2e728dfb03c9f2bc96f1c315ffb5c15c0f22b3"
+  resolved "git+ssh://git@github.com/The-Politico/politico-civic-graphics_map_county-primary-results.git#6fc018c83a93853825ba1a9d05bda5551a384a04"
   dependencies:
     "@babel/core" "^7.0.0-beta.40"
     autoprefixer "^8.0.0"
@@ -4639,6 +4639,10 @@ lodash.templatesettings@^3.0.0:
     lodash._reinterpolate "^3.0.0"
     lodash.escape "^3.0.0"
 
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+
 lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
@@ -5546,12 +5550,6 @@ pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
 
-politico-style@0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/politico-style/-/politico-style-0.0.3.tgz#b755bc2de59376864bb5d9039794b6b1f3783b84"
-  dependencies:
-    bootstrap-sass "^3.3.7"
-
 "politico-style@https://github.com/The-Politico/politico-style":
   version "0.0.3"
   resolved "https://github.com/The-Politico/politico-style#7ea79b90f7a5256bca1d446ac54c17f98a129001"
@@ -6078,6 +6076,13 @@ react-redux@^5.0.7:
     lodash-es "^4.17.5"
     loose-envify "^1.1.0"
     prop-types "^15.6.0"
+
+react-scroll@^1.7.7:
+  version "1.7.7"
+  resolved "https://registry.yarnpkg.com/react-scroll/-/react-scroll-1.7.7.tgz#948c40c9a189b62bf4a53ee0fd50e5d89d37260a"
+  dependencies:
+    lodash.throttle "^4.1.1"
+    prop-types "^15.5.8"
 
 react@^16.2.0:
   version "16.2.0"
