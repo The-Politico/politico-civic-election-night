@@ -234,6 +234,7 @@ class Command(BaseCommand):
             count=row['votecount'],
             pct=row['votepct'],
             winning=row['winner'],
+            runoff=row['runoff'],
             candidate_election=candidate_election
         )
 

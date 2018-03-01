@@ -83,6 +83,7 @@ class Command(BaseCommand):
 
         if not ap_meta.override_ap_call:
             kwargs['winning'] = result['winner']
+            kwargs['runoff'] = result['runoff']
 
         Votes.objects.filter(**filter_kwargs).update(**kwargs)
 

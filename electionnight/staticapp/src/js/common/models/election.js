@@ -70,6 +70,8 @@ class Election extends Model {
           votePct: result.votePct,
           winner: status.overrideApCall
             ? result.candidate.overrideWinner : result.winner,
+          runoff: status.overrideApCall
+            ? result.candidate.overrideRunoff : result.runoff,
         };
 
         // Aggregate aggregable candidates' vote totals
