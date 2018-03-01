@@ -45,6 +45,7 @@ for file in "$OUTPUT"/election-config/* ; do
             precinctsreportingpct: .precinctsreportingpct,
             precinctstotal: .precinctstotal,
             raceid: .raceid,
+            runoff: .runoff,
             statepostal: .statepostal,
             votecount: .votecount,
             votepct: .votepct,

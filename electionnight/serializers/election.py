@@ -99,11 +99,16 @@ class CandidateSerializer(FlattenMixin, serializers.ModelSerializer):
 
 class CandidateElectionSerializer(FlattenMixin, serializers.ModelSerializer):
     override_winner = serializers.SerializerMethodField()
+    override_runoff = serializers.SerializerMethodField()
 
     def get_override_winner(self, obj):
         """Winner marked in backend."""
         vote = obj.votes.filter(division=obj.election.division).first()
         return vote.winning if vote else False
+
+    def get_override_runoff(self, obj):
+        vote = obj.votes.filter(division=obj.election.division).first()
+        return vote.runoff if vote else False
 
     class Meta:
         model = CandidateElection
@@ -111,6 +116,7 @@ class CandidateElectionSerializer(FlattenMixin, serializers.ModelSerializer):
             'aggregable',
             'uncontested',
             'override_winner',
+            'override_runoff',
         )
         flatten = (
             ('candidate', CandidateSerializer),
