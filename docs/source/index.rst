@@ -9,6 +9,7 @@ Welcome to django-politico-civic-election-night's documentation!
 
    Why this? <why>
    Quickstart <quickstart>
+   SEO/hierarchy <seo>
 
 
 
