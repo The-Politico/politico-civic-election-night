@@ -37,6 +37,7 @@ class Candidate extends Model {
       incumbent: attr(),
       uncontested: attr(),
       images: attr(),
+      order: attr(),
       party: fk('Party'),
     };
   }

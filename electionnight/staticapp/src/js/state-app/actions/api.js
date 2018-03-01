@@ -96,6 +96,7 @@ function addCandidates (elections, dispatch) {
 
   elections.forEach((d) => {
     d.candidates.forEach((e) => {
+      console.log(e);
       const candidateObj = {
         id: e.ap_candidate_id,
         firstName: e.first_name,
@@ -108,6 +109,7 @@ function addCandidates (elections, dispatch) {
         incumbent: e.incumbent,
         uncontested: e.uncontested,
         images: e.images,
+        order: e.order,
       };
 
       candidates.push(candidateObj);
