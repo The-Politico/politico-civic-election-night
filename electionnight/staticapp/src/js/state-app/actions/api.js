@@ -96,7 +96,6 @@ function addCandidates (elections, dispatch) {
 
   elections.forEach((d) => {
     d.candidates.forEach((e) => {
-      console.log(e);
       const candidateObj = {
         id: e.ap_candidate_id,
         firstName: e.first_name,
