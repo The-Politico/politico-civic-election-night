@@ -32,6 +32,7 @@ class CountyMap extends React.Component {
   }
 
   render () {
+    // console.log('CountyResults', this.getCountyResults());
     return (
       <section className='results-map forty-five'>
         <div

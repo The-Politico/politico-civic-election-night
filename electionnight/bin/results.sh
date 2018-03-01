@@ -33,7 +33,7 @@ for file in "$OUTPUT"/election-config/* ; do
       cat master.json \
       | jq -c --argjson elections "$elections" --argjson levels "$levels" '[
         .[] |
-        if (.officeid == "H", .level != "state") then empty else (
+        if (.officeid == "H" and .level != "state") then empty else (
           select(.raceid as $id | $elections|index($id)) |
           select(.level as $level | $levels|index($level)) |
           {

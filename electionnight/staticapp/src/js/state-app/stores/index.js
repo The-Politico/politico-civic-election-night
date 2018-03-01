@@ -27,9 +27,9 @@ setInterval(() => {
 }, refreshRates.context);
 
 
-store.subscribe(() => {
-  window.state = store.getState();
-});
+// store.subscribe(() => {
+//   window.state = store.getState();
+// });
 
 
 export default store;
