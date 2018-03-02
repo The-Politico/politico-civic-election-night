@@ -3,7 +3,7 @@ import React from 'react';
 const HeaderRow = () => (
   <tr className='header results-table-row'>
     <th className='key'>
-      Key
+      Map
     </th>
     <th className='vote-percent'>
       Percent

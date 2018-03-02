@@ -1,11 +1,11 @@
 import os
 import subprocess
 import sys
-
-from django.core.management.base import BaseCommand
 from time import sleep, time
 
 from django.conf import settings as project_settings
+from django.core.management.base import BaseCommand
+
 from electionnight.conf import settings as app_settings
 
 
@@ -98,7 +98,7 @@ class Command(BaseCommand):
             '-d',
             self.election_date,
             '-o',
-            os.path.normpath(self.output_dir),
+            self.output_dir,
         ]
 
         if options['test']:

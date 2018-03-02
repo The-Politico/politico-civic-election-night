@@ -21,7 +21,7 @@ class CountyMap extends React.Component {
       electionData,
       {
         candidateColors: this.props.candidateColors,
-        tieColor: '#fede75',
+        tieColor: '#282828',
       }
     );
   }

@@ -126,10 +126,6 @@ function addElections (elections, dispatch) {
       candidates.push(candidate.ap_candidate_id);
     });
 
-    if (!d.ap_election_id) {
-      console.log(d);
-    }
-
     const electionObj = {
       id: d.ap_election_id,
       date: d.date,
@@ -188,7 +184,6 @@ function addResults (results, dispatch) {
 
   results.forEach((d) => {
     const resultObj = createResultObj(d);
-    
     if (d.level === 'state') {
       stateResults.push(resultObj);
     } else if (d.level === 'county') {
@@ -199,7 +194,7 @@ function addResults (results, dispatch) {
   console.log(Date.now(), 'results objects created');
   dispatch(ormActions.createResults(stateResults));
   setTimeout(() => {
-    dispatch(ormActions.createResults(countyResults))
+    dispatch(ormActions.createResults(countyResults));
   }, 0);
 }
 
@@ -223,6 +218,7 @@ export const fetchContext = modifiedTime =>
     .then(response => response.json())
     // Checks if we can skip an upsert.
     .then((data) => {
+      console.log(data);
       const context = JSON.stringify(data);
       // If context is same, bug out.
       if (context === compareContext) return null;
@@ -241,8 +237,8 @@ export const fetchContext = modifiedTime =>
         addCandidates(data.elections, dispatch),
         addElections(data.elections, dispatch),
         addOverrideResults(data.elections, dispatch),
-        // addPageContent(data.content.page, dispatch),
-        // addPageTypeContent(data.content.page_type, dispatch),
+        addPageContent(data.content.page, dispatch),
+        addPageTypeContent(data.content.page_type, dispatch),
         // addMapAnnotation(data.cities, dispatch),
       ]);
     })

@@ -1,54 +1,118 @@
 import React from 'react';
+import keys from 'lodash/keys';
+import uniq from 'lodash/uniq';
 import { DivisionLevels } from 'CommonConstants/geography';
+import { aliases } from 'CommonConstants/parties';
 import ResultsTable from 'StateApp/components/ResultsTables/Map/Table';
 import CountyMap from 'StateApp/components/ResultsMaps/CountyMap';
-import { primaryColors } from 'StateApp/constants/colors';
+import { primaryColorsDem, primaryColorsGOP } from 'StateApp/constants/colors';
 
-const TableMap = (props) => {
-  const election = props.election;
+class TableMap extends React.Component {
+  constructor (props) {
+    super(props);
+    this.getStateResults = this.getStateResults.bind(this);
+    this.getCountyWinners = this.getCountyWinners.bind(this);
+    this.buildCandidateColors = this.buildCandidateColors.bind(this);
+  }
 
-  const state = props.session.Division.filter({
-    level: DivisionLevels.state,
-  }).toModelArray();
+  getStateResults () {
+    const { election } = this.props;
 
-  const results = election.serializeResults(state);
+    const state = this.props.session.Division.filter({
+      level: DivisionLevels.state,
+    }).toModelArray();
 
-  const stateLevel = results.divisions[state[0].postalCode];
+    const results = election.serializeResults(state);
 
-  if (!stateLevel) return (<div />);
+    return results.divisions[state[0].postalCode];
+  }
 
-  const stateLevelResults = stateLevel.results;
+  getCountyWinners () {
+    const { election } = this.props;
+    const counties = this.props.session.Division.filter({
+      level: DivisionLevels.county,
+    }).toModelArray();
+    const results = election.serializeResults(counties);
+    const winners = keys(results.divisions).map(fips => {
+      const countyResults = results.divisions[fips].results;
+      countyResults.sort((a, b) => b.votePct - a.votePct);
+      return countyResults[0].candidate.id;
+    });
+    return uniq(winners);
+  }
 
-  stateLevelResults.sort((a, b) => b.candidate.id > a.candidate.id);
-  const candidateColors = {};
+  checkRunoff (results) {
+    const runoffs = results.map(r => r.runoff);
+    return runoffs.indexOf(true) > -1;
+  }
 
-  stateLevelResults.forEach((d, i) => {
-    candidateColors[d.candidate.id] = primaryColors[i + 1];
-  });
+  buildCandidateColors (results) {
+    results.sort((a, b) => b.candidate.id > a.candidate.id);
+    const { election } = this.props;
+    const countyWinners = this.getCountyWinners();
 
-  stateLevelResults.sort((a, b) => b.votePct - a.votePct);
+    // TODO: Add general color palette...
+    const colorPalette = election.primary_party.id === 'Dem'
+      ? primaryColorsDem : primaryColorsGOP;
 
-  return (
-    <article className='results'>
-      <header>
-        <h4>{props.election.primary_party.label} Primary</h4>
-      </header>
-      <div className='container'>
-        <div className='row'>
-          <ResultsTable
-            results={stateLevelResults}
-            candidateColors={candidateColors}
-            {...props}
-          />
-          <CountyMap
-            candidateColors={candidateColors}
-            {...props}
-          />
-          <div className='clear' />
+    const candidateColors = {};
+    results.forEach((d, i) => {
+      const {id, order} = d.candidate;
+      if (countyWinners.indexOf(id) > -1) {
+        candidateColors[id] = colorPalette[order];
+      } else {
+        candidateColors[id] = 'transparent';
+      }
+    });
+    return candidateColors;
+  }
+
+  render () {
+    const { election } = this.props;
+    const state = this.getStateResults();
+
+    if (!state) return (<div />);
+
+    const { results, precinctsReporting, precinctsTotal } = state;
+
+    const status = {
+      reporting: precinctsReporting,
+      total: precinctsTotal,
+    };
+
+    if (!results) return (<div />);
+
+    const candidateColors = this.buildCandidateColors(results);
+
+    results.sort((a, b) => b.votePct - a.votePct);
+
+    const runoff = this.checkRunoff(results) ? (
+      <span className='runoff'>Race goes to runoff</span>
+    ) : null;
+
+    return (
+      <article className='results'>
+        <header>
+          <h4>{aliases.adj[election.primary_party.label]} Primary {runoff}</h4>
+        </header>
+        <div className='container'>
+          <div className='row'>
+            <ResultsTable
+              results={results}
+              status={status}
+              candidateColors={candidateColors}
+              {...this.props}
+            />
+            <CountyMap
+              candidateColors={candidateColors}
+              {...this.props}
+            />
+            <div className='clear' />
+          </div>
         </div>
-      </div>
-    </article>
-  );
+      </article>
+    );
+  }
 };
 
 export default TableMap;

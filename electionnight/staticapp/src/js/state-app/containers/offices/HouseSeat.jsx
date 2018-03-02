@@ -9,7 +9,9 @@ const HouseSeat = (props) => {
   return (
     <section className='results-group'>
       <header>
-        <h4>{props.elections[0].office.label}</h4>
+        <h4 className='district'>
+          {props.elections[0].office.label}
+        </h4>
       </header>
       <div className='container'>
         <div className='row'>

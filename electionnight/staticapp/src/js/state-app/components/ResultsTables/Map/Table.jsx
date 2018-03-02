@@ -1,4 +1,5 @@
 import React from 'react';
+import { intcomma } from 'journalize';
 import CandidateRow from './CandidateRow';
 import HeaderRow from './HeaderRow';
 
@@ -17,6 +18,15 @@ const Table = (props) => {
         <tbody>
           <HeaderRow />
           {candidateResults}
+          <tr>
+            <td
+              colSpan='5'
+              className='precincts-reporting'
+            >
+              {intcomma(props.status.reporting)}/
+              {intcomma(props.status.total)} precincts reporting
+            </td>
+          </tr>
         </tbody>
       </table>
     </section>

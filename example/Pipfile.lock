@@ -64,17 +64,17 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:68a5219f64790e663957e5ceb0162c3c3c6b0115ead68e50b7134c4d34b875c0",
-                "sha256:74e38e9fd0d6450d8a95dae2158cb6f4c7279bb3249b486b4ebe00819db643b9"
+                "sha256:d817c21abcb41f390cec28e444d180db7d40ec2786ff5f54813af52e53598362",
+                "sha256:cf5768f1b9f26d5f82369ef97e11eee0010d10f8723b081c61ff17a1cd199bea"
             ],
-            "version": "==1.5.35"
+            "version": "==1.6.3"
         },
         "botocore": {
             "hashes": [
-                "sha256:fe78e5944701c59178bc3a0968070636039de434741ef5acda41d99f9b72ceac",
-                "sha256:fe0b45216e3a34507aefdf7a67bf53f9303abb23ba4b1899824d16ecfa0433fd"
+                "sha256:8a8c59f4c7b4e3521d82aee4b8cba55e80de44617649c2320823505bfebbcaa4",
+                "sha256:d5b892ab86cd3e8d6cb570dd5275bf1c600cbbf9f07a40a22bcdd9023c0e844f"
             ],
-            "version": "==1.8.49"
+            "version": "==1.9.3"
         },
         "cachecontrol": {
             "hashes": [
@@ -111,10 +111,10 @@
         },
         "dj-database-url": {
             "hashes": [
-                "sha256:e16d94c382ea0564c48038fa7fe8d9c890ef1ab1a8ec4cb48e732c124b9482fd",
-                "sha256:a6832d8445ee9d788c5baa48aef8130bf61fdc442f7d9a548424d25cd85c9f08"
+                "sha256:851785365761ebe4994a921b433062309eb882fedd318e1b0fcecc607ed02da9",
+                "sha256:4aeaeb1f573c74835b0686a2b46b85990571159ffc21aa57ecd4d1e1cb334163"
             ],
-            "version": "==0.4.2"
+            "version": "==0.5.0"
         },
         "django": {
             "hashes": [
@@ -125,10 +125,10 @@
         },
         "django-cors-headers": {
             "hashes": [
-                "sha256:4e02be61ffaaab5917f1fd7cc3c305c4fb7ccd0156a649c96f49bc0a09c5f572",
-                "sha256:451bc37a514792c2b46c52362368f7985985933ecdbf1a85f82652579a5cbe01"
+                "sha256:0e9532628b3aa8806442d4d0b15e56112e6cfbef3735e13401935c98b842a2b4",
+                "sha256:c7ec4816ec49416517b84f317499d1519db62125471922ab78d670474ed9b987"
             ],
-            "version": "==2.1.0"
+            "version": "==2.2.0"
         },
         "django-storages": {
             "hashes": [
@@ -391,9 +391,9 @@
         },
         "pycountry": {
             "hashes": [
-                "sha256:173c5e3a8884c5616c6595078cc8f27e65ce59c6d9aa8864bace0c6b1281c57a"
+                "sha256:46e4b1a21516e41fe6f8c0ef7a9876da8ce9ac3f719e3fed79cf79fd9b6206ee"
             ],
-            "version": "==17.9.23"
+            "version": "==18.2.23"
         },
         "pyflakes": {
             "hashes": [
@@ -482,10 +482,10 @@
         },
         "tqdm": {
             "hashes": [
-                "sha256:4c041f8019f7be65b8028ddde9a836f7ccc51c4637f1ff2ba9b5813d38d19d5a",
-                "sha256:df32e6f127dc0ccbc675eadb33f749abbcb8f174c5cb9ec49c0cdb73aa737377"
+                "sha256:f66468c14ccd011a627734c9b3fd72f20ce16f8faecc47384eb2507af5924fb9",
+                "sha256:5ec0d4442358e55cdb4a0471d04c6c831518fd8837f259db5537d90feab380df"
             ],
-            "version": "==4.19.5"
+            "version": "==4.19.6"
         },
         "traitlets": {
             "hashes": [

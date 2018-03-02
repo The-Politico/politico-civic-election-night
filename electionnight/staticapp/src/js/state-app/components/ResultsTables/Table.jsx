@@ -1,27 +1,12 @@
 import React from 'react';
-import { DivisionLevels } from './../../../common/constants/geography';
+import { intcomma } from 'journalize';
 import CandidateRow from './CandidateRow';
 import HeaderRow from './HeaderRow';
 
 import 'SCSS/state-app/components/results_tables/simple.scss';
 
 const SimpleTable = (props) => {
-  const election = props.election;
-
-  const state = props.session.Division.filter({
-    level: DivisionLevels.state,
-  }).toModelArray();
-
-  const results = election.serializeResults(state);
-  const stateLevel = results.divisions[state[0].postalCode];
-
-  if (!stateLevel) return (<div>No results.</div>);
-
-  const stateLevelResults = stateLevel.results;
-
-  stateLevelResults.sort((a, b) => b.votePct - a.votePct);
-
-  const candidateResults = stateLevelResults.map(result => (
+  const candidateResults = props.results.map(result => (
     <CandidateRow result={result} />
   ));
 
@@ -31,6 +16,15 @@ const SimpleTable = (props) => {
         <tbody>
           <HeaderRow />
           {candidateResults}
+          <tr>
+            <td
+              colSpan='5'
+              className='precincts-reporting'
+            >
+              {intcomma(props.status.reporting)}/
+              {intcomma(props.status.total)} precincts reporting
+            </td>
+          </tr>
         </tbody>
       </table>
     </section>
