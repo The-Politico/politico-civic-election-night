@@ -51,7 +51,7 @@ class Command(BaseCommand):
                     env['ELEX_RECORDING'] = 'flat'
                     env['ELEX_RECORDING_DIR'] = test_path
 
-                subprocess.run(script_args, env=env)
+                subprocess.run(script_args)
 
             if run_once:
                 print('run once specified, exiting')
