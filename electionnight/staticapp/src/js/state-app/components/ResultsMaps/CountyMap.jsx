@@ -33,12 +33,13 @@ class CountyMap extends React.Component {
     );
   }
   getCountyResults () {
-    const {counties, countyResults, election, candidates} = this.props;
+    const {counties, countyResults, overrideCountyResults, election, candidates} = this.props;
+    const resultsSet = election.apMeta.overrideApVotes ?  overrideCountyResults : countyResults;
 
     return election.serializeWithResults(
       counties,
       candidates,
-      countyResults
+      resultsSet
     );
   }
 

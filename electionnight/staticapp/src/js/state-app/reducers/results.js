@@ -5,6 +5,8 @@ export default(currentState, action) => {
   const initialState = {
     state: [],
     county: [],
+    overrideState: [],
+    overrideCounty: [],
   };
 
   if (typeof currentState === 'undefined') {
@@ -19,6 +21,14 @@ export default(currentState, action) => {
     case types.SET_COUNTY_RESULTS:
       return assign({}, currentState, {
         county: action.results,
+      });
+    case types.SET_OVERRIDE_STATE_RESULTS:
+      return assign({}, currentState, {
+        overrideState: action.results,
+      });
+    case types.SET_OVERRIDE_COUNTY_RESULTS:
+      return assign({}, currentState, {
+        overrideCounty: action.results,
       });
     default:
       break;

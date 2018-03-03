@@ -16,27 +16,29 @@ class TableMap extends React.Component {
   }
 
   getStateResults () {
-    const {state, stateResults, election, candidates} = this.props;
+    const {state, stateResults, overrideStateResults, election, candidates} = this.props;
+    const resultsSet = election.apMeta.overrideApVotes ? overrideStateResults : stateResults;
 
     const results = election.serializeWithResults(
       state,
       candidates,
-      stateResults
+      resultsSet
     );
     return results.divisions[state[0].postalCode];
   }
 
   getCountyWinners () {
-    const { election, countyResults } = this.props;
+    const { election, countyResults, overrideCountyResults } = this.props;
     // Filter to election results
-    const electionResults = countyResults.filter(d =>
+    const resultsSet = election.apMeta.overrideApVotes ? overrideCountyResults : countyResults;
+    const electionResults = resultsSet.filter(d =>
       d.election === election.id);
 
     // Get top candidates by each county
     const winners = values(groupBy(electionResults, d => d.division))
-      .map(countyResults => {
-        countyResults.sort((a, b) => b.votePct - a.votePct);
-        return countyResults[0].candidate;
+      .map(resultsSet => {
+        resultsSet.sort((a, b) => b.votePct - a.votePct);
+        return resultsSet[0].candidate;
       });
 
     return uniq(winners);
@@ -92,6 +94,13 @@ class TableMap extends React.Component {
       <span className='runoff'>Race goes to runoff</span>
     ) : null;
 
+    const map = election.apMeta.overrideApVotes ? null : (
+      <CountyMap
+        candidateColors={candidateColors}
+        {...this.props}
+      />
+    )
+
     return (
       <article className='results'>
         <header>
@@ -104,10 +113,7 @@ class TableMap extends React.Component {
               status={status}
               candidateColors={candidateColors}
             />
-            <CountyMap
-              candidateColors={candidateColors}
-              {...this.props}
-            />
+            {map}
             <div className='clear' />
           </div>
         </div>

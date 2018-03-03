@@ -10,12 +10,13 @@ class Table extends React.Component {
   }
 
   getStateResults () {
-    const {state, stateResults, election, candidates} = this.props;
+    const {state, stateResults, overrideStateResults, election, candidates} = this.props;
+    const resultsSet = election.apMeta.overrideApVotes ? overrideStateResults : stateResults;
 
     const results = election.serializeWithResults(
       state,
       candidates,
-      stateResults
+      resultsSet
     );
     return results.divisions[state[0].postalCode];
   }

@@ -12,7 +12,9 @@ const App = (props) => {
     <Results
       session={orm.session(props.db.orm)}
       countyResults={props.db.results.county}
+      overrideCountyResults={props.db.results.overrideCounty}
       stateResults={props.db.results.state}
+      overrideStateResults={props.db.results.overrideState}
       actions={actions}
       fetch={props.db.fetch}
     />

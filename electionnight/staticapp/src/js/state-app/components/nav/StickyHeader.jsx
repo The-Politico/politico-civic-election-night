@@ -4,7 +4,7 @@ import FlipCard from 'react-flipcard';
 import { DivisionLevels } from 'CommonConstants/geography';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faTimes from '@fortawesome/fontawesome-free-solid/faTimes';
-import USA from './../../../../img/usa.svg';
+// import USA from './../../../../img/usa.svg';
 import StateNav from './StateNavTop';
 import FetchRefresh from 'StateApp/components/nav/FetchRefresh';
 
@@ -60,7 +60,6 @@ class StickyHeader extends React.Component {
               <button
                 onClick={() => this.setState({navDropped: true})}
               >
-                <USA height={'100%'} width={'90%'} />
               </button>
               <button
                 onClick={() => this.setState({navDropped: false})}

@@ -85,10 +85,15 @@ class Command(BaseCommand):
             kwargs['winning'] = result['winner']
             kwargs['runoff'] = result['runoff']
 
+        if ap_meta.precincts_reporting != result['precinctsreporting']:
+            ap_meta.precincts_reporting = result['precinctsreporting']
+            ap_meta.precincts_total = result['precinctstotal']
+            ap_meta.precincts_reporting_pct = result['precinctsreportingpct']
+
         if result['precinctsreportingpct'] == 1 or result['uncontested']:
             ap_meta.tabulated = True
-            ap_meta.save()
 
+        ap_meta.save()    
         Votes.objects.filter(**filter_kwargs).update(**kwargs)
 
     def handle(self, *args, **options):

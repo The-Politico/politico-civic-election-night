@@ -151,10 +151,16 @@ function addOverrideResults (elections, dispatch) {
     if (!d.override_votes) {
       return;
     }
-    d.override_votes.forEach((e) => {
-      const resultObj = createResultObj(e);
-      dispatch(ormActions.createOverrideResult(resultObj));
-    });
+
+    const stateResults = d.override_votes
+      .filter(r => r.level === DivisionLevels.state)
+      .map(r => createResultObj(r));
+    const countyResults = d.override_votes
+      .filter(r => r.level === DivisionLevels.county)
+      .map(r => createResultObj(r));
+
+    dispatch(resultsActions.setOverrideCountyResults(countyResults));
+    dispatch(resultsActions.setOverrideStateResults(stateResults));
   });
 }
 
