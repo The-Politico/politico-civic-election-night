@@ -65,7 +65,10 @@ class StatePage(BaseView):
 
     def get_nav_links(self):
         state_level = DivisionLevel.objects.get(name=DivisionLevel.STATE)
-        states = Division.objects.filter(level=state_level).order_by('label')
+        # All states except DC
+        states = Division.objects.filter(
+            level=state_level,
+        ).exclude(code='11').order_by('label')
         return {
             'nav': {
                 'states': [

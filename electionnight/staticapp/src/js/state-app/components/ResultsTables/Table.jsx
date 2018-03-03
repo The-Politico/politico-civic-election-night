@@ -7,7 +7,10 @@ import 'SCSS/state-app/components/results_tables/simple.scss';
 
 const SimpleTable = (props) => {
   const candidateResults = props.results.map(result => (
-    <CandidateRow result={result} />
+    <CandidateRow
+      result={result}
+      key={result.candidate.id}
+    />
   ));
 
   return (

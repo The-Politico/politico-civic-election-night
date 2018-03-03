@@ -1,18 +1,25 @@
 import React from 'react';
 import { DivisionLevels } from 'CommonConstants/geography';
 import PrimaryCountyResults from 'civic_map-county-primary-results';
+import debounce from 'lodash/debounce';
 import 'SCSS/state-app/components/county-map.scss';
+
+const ResultsMap = PrimaryCountyResults();
 
 class CountyMap extends React.Component {
   constructor (props) {
     super(props);
     this.getCountyResults = this.getCountyResults.bind(this);
   }
+  componentDidMount () {
+    window.addEventListener('resize', debounce(() => {
+      ResultsMap.resize();
+    }, 400));
+  }
   componentDidUpdate () {
     const geometry = this.props.session.Geometry
       .filter({level: DivisionLevels.county}).toModelArray();
     if (geometry.length === 0) return;
-    const ResultsMap = PrimaryCountyResults();
     const geoData = geometry[0].topojson;
     const electionData = this.getCountyResults();
     ResultsMap.create(

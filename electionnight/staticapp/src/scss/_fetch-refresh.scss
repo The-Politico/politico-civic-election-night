@@ -1,0 +1,14 @@
+$CountdownFetch-container: '.fetch-refresh';
+@import '~politico-countdown-fetch/src/scss/_chart-styles';
+
+#{$CountdownFetch-container} {
+  font-family: $franklin;
+  &:after{
+    content: "";
+    display: table;
+    clear: both;
+  }
+  & > div{
+    margin: 0 auto;
+  }
+}

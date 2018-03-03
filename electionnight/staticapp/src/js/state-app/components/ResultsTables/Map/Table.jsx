@@ -6,6 +6,7 @@ import HeaderRow from './HeaderRow';
 const Table = (props) => {
   const candidateResults = props.results.map((result, i) => (
     <CandidateRow
+      key={result.candidate.id}
       result={result}
       candidateKeys={props.candidateKeys}
       candidateColors={props.candidateColors}

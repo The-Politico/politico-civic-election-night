@@ -4,13 +4,15 @@ import TableMap from './../results/TableMap';
 import {Element} from 'react-scroll';
 
 const Governor = (props) => {
-  const db = props.session;
-  const governor = db.Office.filter(
+  const {session, state} = props;
+
+  // Wait on context to render
+  if (state.length === 0) return (<div />);
+
+  const governor = session.Office.filter(
     d => d.name.includes('Governor')).toModelArray();
 
-  if (governor.length === 0) return null;
-
-  const elections = db.Election.filter({
+  const elections = session.Election.filter({
     office: governor[0].id,
   }).toModelArray();
 

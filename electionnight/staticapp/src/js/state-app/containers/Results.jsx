@@ -1,10 +1,11 @@
 import React from 'react';
 import { DivisionLevels } from 'CommonConstants/geography';
-import StickyHeader from 'StateApp/components/StickyHeader';
+import StickyHeader from 'StateApp/components/nav/StickyHeader';
 import Governor from './offices/Governor';
 import Senator from './offices/Senator';
 import House from './offices/House';
-import Nav from './offices/Nav';
+import JumpLinks from 'StateApp/components/nav/JumpLinks';
+import FetchRefresh from 'StateApp/components/FetchRefresh';
 
 const Results = (props) => {
   // We do some queries higher up so we don't need
@@ -29,7 +30,11 @@ const Results = (props) => {
   return (
     <section className='election-results'>
       <StickyHeader {...props} />
-      <Nav {...props} />
+      <FetchRefresh
+        actions={props.actions}
+        fetch={props.fetch}
+      />
+      <JumpLinks />
       <Governor {...props} />
       <Senator {...props} />
       <House {...props} />

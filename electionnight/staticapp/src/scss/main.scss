@@ -1,6 +1,8 @@
 @import '~politico-style/scss/elections/states/theme/fonts';
 @import '~politico-style/scss/base/theme/colors/base';
 @import 'sticky-nav';
+@import 'fetch-refresh';
+
 .county-map{
     min-height: 350px;
 }
@@ -44,6 +46,10 @@ section.results-map{
   .candidate{
     font-weight: bold;
   }
+}
+
+div.share{
+  margin-bottom: -5px;
 }
 
 

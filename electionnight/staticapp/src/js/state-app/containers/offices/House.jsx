@@ -4,13 +4,17 @@ import HouseSeat from './HouseSeat';
 import {Element} from 'react-scroll';
 
 const House = (props) => {
-  const db = props.session;
-  const houseOffices = db.Office.filter(
+  const {session, state} = props;
+
+  // Wait on context to render
+  if (state.length === 0) return (<div />);
+
+  const houseOffices = session.Office.filter(
     d => d.name.includes('U.S. House')).toModelArray();
   houseOffices.sort(sortByDistrict);
   // Array of election arrays for each office
   const elections = houseOffices.map(
-    office => db.Election.filter({office: office.id}).toModelArray());
+    office => session.Election.filter({office: office.id}).toModelArray());
 
   const seats = elections.map(officeElections => {
     officeElections.sort(sortByParty);
