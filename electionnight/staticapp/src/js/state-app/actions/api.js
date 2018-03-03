@@ -293,7 +293,6 @@ export const fetchInitialData = () =>
   dispatch => Promise.all([
     dispatch(fetchContext()),
     dispatch(fetchResults()),
-    dispatch(fetchDistrictGeo()),
   ])
     .then(() => dispatch(fetchCountyGeo()))
     .then(() => dispatch(fetchDistrictGeo()));
