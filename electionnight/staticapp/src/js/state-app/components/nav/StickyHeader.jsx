@@ -39,6 +39,13 @@ class StickyHeader extends React.Component {
     }).toModelArray();
     if (!state[0]) return (<div />);
 
+    const fetchRefresh = this.props.tabulated ? null : (
+      <FetchRefresh
+        actions={this.props.actions}
+        fetch={this.props.fetch}
+      />
+    );
+
     const open = this.state.sticky ? 'open' : '';
     return (
       <div>
@@ -74,10 +81,7 @@ class StickyHeader extends React.Component {
               <h2>{state[0].label}</h2>
             </div>
           </div>
-          <FetchRefresh
-            actions={this.props.actions}
-            fetch={this.props.fetch}
-          />
+          {fetchRefresh}
         </div>
       </div>
     );

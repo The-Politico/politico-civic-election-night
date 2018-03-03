@@ -1,0 +1,10 @@
+.candidate.results-table-row {
+  font-size: 14px;
+  div{
+    display: inline-block;
+    margin: 2px 7px;
+  }
+  div.winning svg{
+    color: green;
+  }
+}

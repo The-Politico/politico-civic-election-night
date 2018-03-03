@@ -47,7 +47,7 @@
     "open": "latest",
     "optimize-css-assets-webpack-plugin": "latest",
     "politico-countdown-fetch": "git+ssh://git@github.com/The-Politico/module_elections-countdown-to-fetch.git",
-    "politico-style": "https://github.com/The-Politico/politico-style",
+    "politico-style": "git+ssh://git@github.com/The-Politico/politico-style",
     "postcss-loader": "latest",
     "preact": "^8.2.7",
     "preact-compat": "^3.18.0",

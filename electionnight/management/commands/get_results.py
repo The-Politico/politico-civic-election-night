@@ -38,7 +38,7 @@ class Command(BaseCommand):
                         file = '{0}/{1}'.format(test_path, files[i])
                         script_args.extend(['-f', file])
                         print(file, i)
-                        i += 10
+                        i += 2
                     else:
                         print('reached end of test directory, exiting')
                         sys.exit(0)

@@ -11,7 +11,7 @@ const Results = (props) => {
   // We do some queries higher up so we don't need
   // to repeat them in sibling components...
   // ... Serialize candidates
-  const {Candidate, Division} = props.session;
+  const {Candidate, Division, APMeta} = props.session;
   const candidates = {};
   Candidate.all().toModelArray().forEach(candidate => {
     if (!candidate.id) return;
@@ -27,13 +27,24 @@ const Results = (props) => {
     .filter(d => d.level === DivisionLevels.state)
     .toModelArray();
 
+  props.tabulated = true;
+  APMeta.all().toModelArray().forEach(meta => {
+    if (!meta.tabulated) {
+      props.tabulated = false;
+    }
+  });
+
+  const fetchRefresh = props.tabulated ? null : (
+    <FetchRefresh
+      actions={props.actions}
+      fetch={props.fetch}
+    />
+  );
+
   return (
     <section className='election-results'>
       <StickyHeader {...props} />
-      <FetchRefresh
-        actions={props.actions}
-        fetch={props.fetch}
-      />
+      {fetchRefresh}
       <JumpLinks />
       <Governor {...props} />
       <Senator {...props} />
