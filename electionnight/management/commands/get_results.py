@@ -24,11 +24,6 @@ class Command(BaseCommand):
             if (now - results_start) > app_settings.RESULTS_DAEMON_INTERVAL:
                 results_start = now
 
-                env = os.environ.copy()
-
-                env['AWS_ACCESS_KEY_ID'] = app_settings.AWS_ACCESS_KEY_ID
-                env['AWS_SECRET_ACCESS_KEY'] = app_settings.AWS_SECRET_ACCESS_KEY # noqa
-
                 test_path = os.path.join(
                     self.output_dir,
                     'recordings',
@@ -47,9 +42,6 @@ class Command(BaseCommand):
                     else:
                         print('reached end of test directory, exiting')
                         sys.exit(0)
-                elif self.test:
-                    env['ELEX_RECORDING'] = 'flat'
-                    env['ELEX_RECORDING_DIR'] = test_path
 
                 subprocess.run(script_args)
 

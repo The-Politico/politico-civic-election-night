@@ -13,6 +13,11 @@ do
   esac
 done
 
+if [ $TEST ] ; then
+  export ELEX_RECORDING="flat"
+  export ELEX_RECORDING_DIR="${OUTPUT}/recordings/${DATE}"
+fi
+
 # grab elex results for everything
 if [ $FILE ]
   then

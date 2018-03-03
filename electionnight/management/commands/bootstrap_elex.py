@@ -198,6 +198,7 @@ class Command(BaseCommand):
         candidate, created = election.Candidate.objects.get_or_create(
             person=person,
             race=race,
+            incumbent=row['incumbent'],
             ap_candidate_id=candidate_id,
             defaults=defaults)
 
