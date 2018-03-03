@@ -20,22 +20,22 @@ class Table extends React.Component {
     return results.divisions[state[0].postalCode];
   }
 
-  checkRunoff (results) {
+  checkIfRunoff (results) {
     const runoffs = results.map(r => r.runoff);
     return runoffs.indexOf(true) > -1;
   }
 
-  checkUncontested (results) {
+  checkIfUncontested (results) {
     return results[0].candidate.uncontested;
   }
 
   render () {
     const {election} = this.props;
-    const state = this.getStateResults();
+    const stateResults = this.getStateResults();
 
-    if (!state) return (<div />);
+    if (!stateResults) return (<div />);
 
-    const { results, precinctsReporting, precinctsTotal } = state;
+    const { results, precinctsReporting, precinctsTotal } = stateResults;
 
     const status = {
       reporting: precinctsReporting,
@@ -46,17 +46,16 @@ class Table extends React.Component {
 
     results.sort((a, b) => b.votePct - a.votePct);
 
-    const runoff = this.checkRunoff(results) ? (
+    const runoff = this.checkIfRunoff(results) ? (
       <span className='runoff'>Race goes to runoff</span>
     ) : null;
 
-    const table = this.checkUncontested(results) ? (
+    const table = this.checkIfUncontested(results) ? (
       <Uncontested candidate={results[0].candidate} />
     ) : (
       <ResultsTable
         results={results}
         status={status}
-        {...this.props}
       />
     );
 

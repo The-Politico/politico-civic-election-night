@@ -295,4 +295,5 @@ export const fetchInitialData = () =>
     dispatch(fetchResults()),
     dispatch(fetchDistrictGeo()),
   ])
-    .then(() => dispatch(fetchCountyGeo()));
+    .then(() => dispatch(fetchCountyGeo()))
+    .then(() => dispatch(fetchDistrictGeo()));

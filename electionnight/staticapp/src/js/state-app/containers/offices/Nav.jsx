@@ -8,21 +8,21 @@ const Nav = (props) => {
         Jump to
         <Link
           className='space-case'
-          offset={-50}
+          offset={-70}
           duration={500}
           smooth
           to='governor-anchor'
         >Governor</Link>
         <Link
           className='space-case'
-          offset={-50}
+          offset={-70}
           duration={500}
           smooth
           to='senate-anchor'
         >Senate</Link>
         <Link
           className='space-case'
-          offset={-50}
+          offset={-70}
           duration={500}
           smooth
           to='house-anchor'

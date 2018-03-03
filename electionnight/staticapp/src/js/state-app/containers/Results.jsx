@@ -7,7 +7,9 @@ import House from './offices/House';
 import Nav from './offices/Nav';
 
 const Results = (props) => {
-  // Serialize candidates
+  // We do some queries higher up so we don't need
+  // to repeat them in sibling components...
+  // ... Serialize candidates
   const {Candidate, Division} = props.session;
   const candidates = {};
   Candidate.all().toModelArray().forEach(candidate => {
@@ -15,11 +17,11 @@ const Results = (props) => {
     candidates[candidate.id] = candidate.serialize();
   });
   props.candidates = candidates;
-  // Serialize Counties
+  // ... County Divisions
   props.counties = Division
     .filter(d => d.level === DivisionLevels.county)
     .toModelArray();
-  // Serialize State
+  // ... State Divisions
   props.state = Division
     .filter(d => d.level === DivisionLevels.state)
     .toModelArray();

@@ -103,7 +103,6 @@ class TableMap extends React.Component {
               results={results}
               status={status}
               candidateColors={candidateColors}
-              {...this.props}
             />
             <CountyMap
               candidateColors={candidateColors}

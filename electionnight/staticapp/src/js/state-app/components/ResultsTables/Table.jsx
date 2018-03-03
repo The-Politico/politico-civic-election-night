@@ -18,7 +18,7 @@ const SimpleTable = (props) => {
           {candidateResults}
           <tr>
             <td
-              colSpan='5'
+              colSpan='4'
               className='precincts-reporting'
             >
               {intcomma(props.status.reporting)}/
