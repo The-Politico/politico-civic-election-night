@@ -6,7 +6,6 @@ import Division from './division';
 import Geometry from './geometry';
 import Candidate from './candidate';
 import Party from './party';
-import Result from './result';
 import APMeta from './apMeta';
 import OverrideResult from './overrideResult';
 
@@ -20,7 +19,6 @@ orm.register(
   Candidate,
   Party,
   APMeta,
-  Result,
   OverrideResult,
 );
 

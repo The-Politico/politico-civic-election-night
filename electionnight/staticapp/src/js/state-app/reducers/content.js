@@ -27,7 +27,7 @@ export default(currentState, action) => {
       const mapAnnotation = assign({}, currentState.mapAnnotation, action.mapAnnotation);
       return assign({}, currentState, {
         mapAnnotation,
-      })
+      });
     default:
       break;
   }

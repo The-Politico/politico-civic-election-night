@@ -69,6 +69,10 @@ module.exports = port => ({
           },
         ],
       },
+      {
+        test: /\.svg$/,
+        loader: 'svgr/webpack'
+      },
     ],
   },
   plugins: [

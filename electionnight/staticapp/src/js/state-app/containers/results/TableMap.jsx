@@ -1,7 +1,7 @@
 import React from 'react';
-import keys from 'lodash/keys';
 import uniq from 'lodash/uniq';
-import { DivisionLevels } from 'CommonConstants/geography';
+import groupBy from 'lodash/groupBy';
+import values from 'lodash/values';
 import { aliases } from 'CommonConstants/parties';
 import ResultsTable from 'StateApp/components/ResultsTables/Map/Table';
 import CountyMap from 'StateApp/components/ResultsMaps/CountyMap';
@@ -16,28 +16,29 @@ class TableMap extends React.Component {
   }
 
   getStateResults () {
-    const { election } = this.props;
+    const {state, stateResults, election, candidates} = this.props;
 
-    const state = this.props.session.Division.filter({
-      level: DivisionLevels.state,
-    }).toModelArray();
-
-    const results = election.serializeResults(state);
-
+    const results = election.serializeWithResults(
+      state,
+      candidates,
+      stateResults
+    );
     return results.divisions[state[0].postalCode];
   }
 
   getCountyWinners () {
-    const { election } = this.props;
-    const counties = this.props.session.Division.filter({
-      level: DivisionLevels.county,
-    }).toModelArray();
-    const results = election.serializeResults(counties);
-    const winners = keys(results.divisions).map(fips => {
-      const countyResults = results.divisions[fips].results;
-      countyResults.sort((a, b) => b.votePct - a.votePct);
-      return countyResults[0].candidate.id;
-    });
+    const { election, countyResults } = this.props;
+    // Filter to election results
+    const electionResults = countyResults.filter(d =>
+      d.election === election.id);
+
+    // Get top candidates by each county
+    const winners = values(groupBy(electionResults, d => d.division))
+      .map(countyResults => {
+        countyResults.sort((a, b) => b.votePct - a.votePct);
+        return countyResults[0].candidate;
+      });
+
     return uniq(winners);
   }
 
@@ -49,6 +50,7 @@ class TableMap extends React.Component {
   buildCandidateColors (results) {
     results.sort((a, b) => b.candidate.id > a.candidate.id);
     const { election } = this.props;
+
     const countyWinners = this.getCountyWinners();
 
     // TODO: Add general color palette...

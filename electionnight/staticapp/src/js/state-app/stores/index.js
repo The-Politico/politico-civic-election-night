@@ -3,7 +3,6 @@ import thunkMiddleware from 'redux-thunk';
 import reducers from '../reducers/';
 import actions from '../actions/';
 import refreshRates from '../constants/api';
-import { COMPARE_RESULTS, COMPARE_CONTEXT } from '../constants/actions';
 
 const store = createStore(reducers, compose(
   applyMiddleware(thunkMiddleware),
@@ -26,10 +25,8 @@ setInterval(() => {
   store.dispatch(actions.fetchContext(contextModified));
 }, refreshRates.context);
 
-
 // store.subscribe(() => {
 //   window.state = store.getState();
 // });
-
 
 export default store;

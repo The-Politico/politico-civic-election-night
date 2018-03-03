@@ -37,7 +37,8 @@ class Map extends React.Component {
       .attr('fill', (d) => {
         return d.properties.district === this.props.district.toString()
           ? '#333' : '#eee';
-      });
+      })
+      .attr('stroke', '#eee');
   }
   render () {
     if (!this.props.district) return (<div />);

@@ -30,11 +30,6 @@ export const createCandidates = candidates => ({
   candidates,
 });
 
-export const createResults = results => ({
-  type: types.CREATE_RESULTS,
-  results,
-});
-
 export const createGeometry = (geometry) => ({
   type: types.CREATE_GEOMETRY,
   geometry,

@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import content from './content';
 import orm from './orm';
 import fetch from './fetch';
+import results from './results';
 
 /**
  * We store the last run action type to intercept updates
@@ -13,5 +14,6 @@ export default combineReducers({
   content,
   orm,
   fetch,
+  results,
   lastAction,
 });

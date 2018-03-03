@@ -1,5 +1,4 @@
 import React from 'react';
-import { DivisionLevels } from 'CommonConstants/geography';
 import { aliases } from 'CommonConstants/parties';
 import ResultsTable from 'StateApp/components/ResultsTables/Table';
 import Uncontested from 'StateApp/components/ResultsTables/Uncontested';
@@ -11,14 +10,13 @@ class Table extends React.Component {
   }
 
   getStateResults () {
-    const { election } = this.props;
+    const {state, stateResults, election, candidates} = this.props;
 
-    const state = this.props.session.Division.filter({
-      level: DivisionLevels.state,
-    }).toModelArray();
-
-    const results = election.serializeResults(state);
-
+    const results = election.serializeWithResults(
+      state,
+      candidates,
+      stateResults
+    );
     return results.divisions[state[0].postalCode];
   }
 

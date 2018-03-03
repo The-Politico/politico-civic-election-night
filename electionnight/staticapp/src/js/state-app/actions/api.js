@@ -2,7 +2,8 @@ import assign from 'lodash/assign';
 import { DivisionLevels } from 'Common/constants/geography';
 import * as ormActions from './orm';
 import * as fetchActions from './fetch';
-import {createPageTypeContentBlock, createPageContentBlock, createMapAnnotation} from './content';
+import * as resultsActions from './results';
+import {createPageTypeContentBlock, createPageContentBlock} from './content';
 
 const headers = {
   headers: {
@@ -72,7 +73,6 @@ function addApMetas (elections, dispatch) {
 
     metadata.push(meta);
   });
-
   dispatch(ormActions.createApMetadata(metadata));
 }
 
@@ -88,6 +88,7 @@ function addParties (parties, dispatch) {
 
     allParties.push(partyObj);
   });
+
   dispatch(ormActions.createParties(allParties));
 }
 
@@ -142,8 +143,19 @@ function addElections (elections, dispatch) {
     allElections.push(electionObj);
   });
 
-  console.log('dispatch election creation');
   dispatch(ormActions.createElections(allElections));
+}
+
+function addOverrideResults (elections, dispatch) {
+  elections.forEach((d) => {
+    if (!d.override_votes) {
+      return;
+    }
+    d.override_votes.forEach((e) => {
+      const resultObj = createResultObj(e);
+      dispatch(ormActions.createOverrideResult(resultObj));
+    });
+  });
 }
 
 function createResultObj (d) {
@@ -166,45 +178,22 @@ function createResultObj (d) {
   return resultObj;
 }
 
-function addOverrideResults (elections, dispatch) {
-  elections.forEach((d) => {
-    if (!d.override_votes) {
-      return;
-    }
-    d.override_votes.forEach((e) => {
-      const resultObj = createResultObj(e);
-      dispatch(ormActions.createOverrideResult(resultObj));
-    });
-  });
-}
-
 function addResults (results, dispatch) {
-  const stateResults = [];
-  const countyResults = [];
+  const stateResults = results
+    .filter(d => d.level === DivisionLevels.state)
+    .map(d => createResultObj(d));
+  const countyResults = results
+    .filter(d => d.level === DivisionLevels.county)
+    .map(d => createResultObj(d));
 
-  results.forEach((d) => {
-    const resultObj = createResultObj(d);
-    if (d.level === 'state') {
-      stateResults.push(resultObj);
-    } else if (d.level === 'county') {
-      countyResults.push(resultObj);
-    }
-  });
-
-  console.log(Date.now(), 'results objects created');
-  dispatch(ormActions.createResults(stateResults));
-  setTimeout(() => {
-    dispatch(ormActions.createResults(countyResults));
-  }, 0);
+  dispatch(resultsActions.setCountyResults(countyResults));
+  dispatch(resultsActions.setStateResults(stateResults));
 }
 
 const addPageContent = (content, dispatch) =>
   dispatch(createPageContentBlock(content));
 const addPageTypeContent = (content, dispatch) =>
   dispatch(createPageTypeContentBlock(content));
-
-const addMapAnnotation = (cities, dispatch) =>
-  dispatch(createMapAnnotation({ cities }));
 
 let compareContext = null;
 
@@ -218,7 +207,6 @@ export const fetchContext = modifiedTime =>
     .then(response => response.json())
     // Checks if we can skip an upsert.
     .then((data) => {
-      console.log(data);
       const context = JSON.stringify(data);
       // If context is same, bug out.
       if (context === compareContext) return null;
@@ -305,9 +293,6 @@ export const fetchInitialData = () =>
   dispatch => Promise.all([
     dispatch(fetchContext()),
     dispatch(fetchResults()),
+    dispatch(fetchDistrictGeo()),
   ])
-    .then(() =>
-      Promise.all([
-        dispatch(fetchCountyGeo()),
-        dispatch(fetchDistrictGeo()),
-      ]));
+    .then(() => dispatch(fetchCountyGeo()));

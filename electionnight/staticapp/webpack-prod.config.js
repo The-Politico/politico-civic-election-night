@@ -70,6 +70,10 @@ module.exports = {
           use: ['css-loader'],
         }),
       },
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
+      },
     ],
   },
   plugins: [

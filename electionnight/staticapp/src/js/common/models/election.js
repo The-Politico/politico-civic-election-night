@@ -34,53 +34,46 @@ class Election extends Model {
   /**
    * Serializes the results of this election in
    * the given divisions.
-   * @param  {Array} divisions  Divisions.
-   * @return {Object}           Serialized results.
+   * @param  {Array} divisions              Divisions.
+   * @param  {Object} candidates            Object of serialized candidates
+   * @param  {Array} divisionLevelResults   State or county-level results.
+   * @return {Object}                        Serialized results.
    */
-  serializeResults (divisions) {
-    const status = this.serializeStatus();
-    const divisionResults = {};
+  serializeWithResults (divisions, candidates, divisionLevelResults) {
+    // Get results for this election
+    const electionResults = divisionLevelResults
+      .filter(d => d.election === this.id);
 
-    let resultSet;
-    if (status && status.overrideApVotes) {
-      resultSet = this.overrideresultSet;
-    } else {
-      resultSet = this.resultSet;
-    }
+    const divisionResults = {};
 
     divisions.forEach((division) => {
       const obj = assign({}, division.serialize());
       obj.results = [];
+      // Filter to results for this division
+      const results = electionResults
+        .filter(result => result.division === division.id);
 
-      const filteredResults = resultSet.filter((d) =>
-        d.division === division.id
-      );
-
-      const firstResult = filteredResults.first();
+      const firstResult = results[0];
       if (!firstResult) return;
-
+      // Set results status from first candidate
       obj.precinctsReporting = firstResult.precinctsReporting;
       obj.precinctsReportingPct = firstResult.precinctsReportingPct;
       obj.precinctsTotal = firstResult.precinctsTotal;
 
-      filteredResults.toModelArray().forEach((result) => {
+      results.forEach((result) => {
+        const candidate = candidates[result.candidate];
         const resultObj = {
-          candidate: result.candidate.serialize(),
+          candidate,
           voteCount: result.voteCount,
           votePct: result.votePct,
-          winner: status.overrideApCall
-            ? result.candidate.overrideWinner : result.winner,
-          runoff: status.overrideApCall
-            ? result.candidate.overrideRunoff : result.runoff,
+          winner: result.winner,
+          runoff: result.runoff,
         };
 
         // Aggregate aggregable candidates' vote totals
         // and percents by division
-        if (result.candidate.aggregable) {
-          const other = find(
-            obj.results,
-            d => d.candidate === 'other',
-          );
+        if (candidate.aggregable) {
+          const other = find(obj.results, d => d.candidate === 'other');
           if (other) {
             const otherIndex = obj.results.indexOf(other);
             other.voteCount += resultObj.voteCount;
@@ -96,16 +89,16 @@ class Election extends Model {
       });
       divisionResults[division.id] = obj;
     });
-
-    return {
+    const serializedElection = {
       id: this.id,
-      status,
-      office: this.office.serialize(),
+      status: this.serializeStatus(),
+      office: this.office.serialize,
       divisions: divisionResults,
       primary: this.primary,
       primary_party: this.primary_party.serialize(),
       runoff: this.runoff,
     };
+    return serializedElection;
   }
 
   static get fields () {

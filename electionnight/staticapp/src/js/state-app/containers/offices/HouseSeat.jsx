@@ -6,6 +6,7 @@ const HouseSeat = (props) => {
   const results = props.elections.map(election => (
     <Table election={election} {...props} />
   ));
+  if (!props.elections[0]) return (<div />);
   return (
     <section className='results-group'>
       <header>

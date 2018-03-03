@@ -10,7 +10,7 @@ class CountyMap extends React.Component {
   }
   componentDidUpdate () {
     const geometry = this.props.session.Geometry
-      .filter({level: 'county'}).toModelArray();
+      .filter({level: DivisionLevels.county}).toModelArray();
     if (geometry.length === 0) return;
     const ResultsMap = PrimaryCountyResults();
     const geoData = geometry[0].topojson;
@@ -26,14 +26,16 @@ class CountyMap extends React.Component {
     );
   }
   getCountyResults () {
-    const divisions = this.props.session.Division.filter(d =>
-      d.level === DivisionLevels.county ||
-      d.level === DivisionLevels.state).toModelArray();
-    return this.props.election.serializeResults(divisions);
+    const {counties, countyResults, election, candidates} = this.props;
+
+    return election.serializeWithResults(
+      counties,
+      candidates,
+      countyResults
+    );
   }
 
   render () {
-    // console.log('CountyResults', this.getCountyResults());
     return (
       <section className='results-map forty-five'>
         <div

@@ -50,8 +50,10 @@
     "postcss-loader": "latest",
     "preact": "^8.2.7",
     "preact-compat": "^3.18.0",
+    "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-flipcard": "^0.2.1",
     "react-redux": "^5.0.7",
     "react-scroll": "^1.7.7",
     "react-waypoint": "^8.0.0",
@@ -71,6 +73,8 @@
   },
   "devDependencies": {
     "exports-loader": "^0.7.0",
-    "imports-loader": "^0.8.0"
+    "imports-loader": "^0.8.0",
+    "svg-inline-loader": "^0.8.0",
+    "svgr": "^1.8.1"
   }
 }

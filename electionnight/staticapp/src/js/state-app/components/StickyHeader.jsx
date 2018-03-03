@@ -1,12 +1,18 @@
 import React from 'react';
 import throttle from 'lodash/throttle';
+import FlipCard from 'react-flipcard';
 import { DivisionLevels } from 'CommonConstants/geography';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faTimes from '@fortawesome/fontawesome-free-solid/faTimes';
+import USA from './../../../img/usa.svg';
+import StateNav from './StateNavTop';
 
 class StickyHeader extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       sticky: false,
+      navDropped: false,
     };
     this.setStickyNav = this.setStickyNav.bind(this);
   }
@@ -22,6 +28,7 @@ class StickyHeader extends React.Component {
     if (window.scrollY < 200 && this.state.sticky) {
       this.setState({
         sticky: false,
+        navDropped: false,
       });
     }
   }
@@ -33,15 +40,38 @@ class StickyHeader extends React.Component {
 
     const open = this.state.sticky ? 'open' : '';
     return (
-      <div className={`sticky-header ${open}`}>
-        <div className='title'>
-          <div className='logo'>
-            <span className='icon icon-politico' />
-            <span className='icon-text'>POLITICO</span>
-            <span className='elex-tag'> Elections</span>
+      <div>
+        <StateNav open={this.state.navDropped} />
+        <div className={`sticky-header ${open}`}>
+          <div className='statenav-button'>
+            <FlipCard
+              type='vertical'
+              disabled
+              flipped={this.state.navDropped}
+            >
+              <button
+                onClick={() => this.setState({navDropped: true})}
+              >
+                <USA height={'auto'} width={'90%'} />
+              </button>
+              <button
+                onClick={() => this.setState({navDropped: false})}
+              >
+                <FontAwesomeIcon
+                  icon={faTimes}
+                />
+              </button>
+            </FlipCard>
           </div>
-          <div className='page-title'>
-            <h2>{state[0].label}</h2>
+          <div className='title'>
+            <div className='logo'>
+              <span className='icon icon-politico' />
+              <span className='icon-text'>POLITICO</span>
+              <span className='elex-tag'> Elections</span>
+            </div>
+            <div className='page-title'>
+              <h2>{state[0].label}</h2>
+            </div>
           </div>
         </div>
       </div>
