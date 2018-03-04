@@ -79,6 +79,16 @@ div.share{
   margin-bottom: 20px;
 }
 
+.row section.results-map{
+  @media(max-width: 768px) {
+    padding-left: 0;
+    .county-map {
+      max-width: 350px;
+      margin: 0 auto;
+    }
+  }
+}
+
 
 //table override
 section.results-group {
@@ -101,6 +111,12 @@ section.results-group {
 
   .row section.results-map {
       padding-left: 0;
-      margin-bottom: 2rem;
+      margin-bottom: -60px;
+  }
+}
+
+@media(max-width: 600px){
+  td{
+    font-size:.9rem;
   }
 }

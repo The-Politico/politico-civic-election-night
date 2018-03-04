@@ -38,6 +38,12 @@
     margin: 0;
     text-align: left;
     margin-top: -7px;
+
+    @media(max-width: 600px){
+      .sticky-header h2{
+        font-size: 22px;
+      }
+    }
   }
   .title{
     display: inline-block;
@@ -148,16 +154,6 @@
         text-decoration: none;
         color: #666;
       }
-    }
-  }
-}
-
-.row section.results-map{
-  @media(max-width: 768px) {
-    padding-left: 0;
-    .county-map {
-      max-width: 350px;
-      margin: 0 auto;
     }
   }
 }
