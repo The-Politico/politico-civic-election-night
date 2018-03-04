@@ -8,8 +8,9 @@ import geography.models as geography
 import government.models as government
 import vote.models as vote
 from django.core.management.base import BaseCommand
-from electionnight.models import APElectionMeta, CandidateColorOrder
 from tqdm import tqdm
+
+from electionnight.models import APElectionMeta, CandidateColorOrder
 
 
 class Command(BaseCommand):
@@ -192,15 +193,16 @@ class Command(BaseCommand):
         )
 
         defaults = {
-            'party': party
+            'party': party,
+            'incumbent': row.get('incumbent')
         }
 
-        candidate, created = election.Candidate.objects.get_or_create(
+        candidate, created = election.Candidate.objects.update_or_create(
             person=person,
             race=race,
-            incumbent=row['incumbent'],
             ap_candidate_id=candidate_id,
-            defaults=defaults)
+            defaults=defaults
+        )
 
         return candidate
 
@@ -245,7 +247,9 @@ class Command(BaseCommand):
         """
         CandidateColorOrder.objects.get_or_create(
             candidate=candidate,
-            order=row['ballotorder']
+            defaults={
+                'order': row['ballotorder']
+            }
         )
 
     def process_row(self, row):
@@ -317,14 +321,21 @@ class Command(BaseCommand):
                     d['first']
                 )
                 candidates[key].append(d)
-            for candidate_races in tqdm(candidates.values()):
-                print('Processing {0} {1}: {2}, {3}'.format(
+            for candidate_races in tqdm(
+                candidates.values(),
+                desc='Candidates'
+            ):
+                tqdm.write('{0} {1}: {2}, {3}'.format(
                     candidate_races[0]['statename'],
                     candidate_races[0]['officename'],
                     candidate_races[0]['last'],
                     candidate_races[0]['first'],
                 ))
-                for race in candidate_races:
+                for race in tqdm(
+                    candidate_races,
+                    desc='Contests',
+                    leave=False
+                ):
                     if race['level'] == geography.DivisionLevel.TOWNSHIP:
                         continue
                     # TODO: Check this with Tyler
