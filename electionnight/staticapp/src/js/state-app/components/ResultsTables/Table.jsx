@@ -13,6 +13,8 @@ const SimpleTable = (props) => {
     />
   ));
 
+  const incumbent = props.results.map(d => d.candidate.incumbent).some(d => d);
+
   return (
     <section className='results-table'>
       <table>
@@ -27,6 +29,12 @@ const SimpleTable = (props) => {
               {intcomma(props.status.reporting)}/
               {intcomma(props.status.total)} precincts reporting
             </td>
+          </tr>
+          <tr hidden={!incumbent}>
+            <td
+              colSpan='5'
+              className='incumbent'
+            >*Incumbent</td>
           </tr>
         </tbody>
       </table>

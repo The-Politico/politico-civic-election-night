@@ -28,6 +28,17 @@ section.results-map{
   font-weight: bold;
 }
 
+.results-group table tr td.precincts-reporting{
+  padding-bottom: 2px;
+}
+.results-table .incumbent{
+  font-size: 10px;
+  color: #7b7b7b;
+  border: 0;
+  padding-top:0;
+  padding-bottom:0;
+}
+
 .results h4 span.runoff{
   display: inline-block;
   background-color: #9e0000;

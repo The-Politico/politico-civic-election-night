@@ -13,6 +13,7 @@ const CandidateRow = (props) => {
     ? Color(candidateColor).fade(0.85).string() : null;
   const winnerClass = result.winner || result.runoff
     ? 'winner' : '';
+  const incumbent = result.candidate.incumbent ? '*' : '';
   return (
     <tr
       className={`candidate results-table-row ${winnerClass}`}
@@ -29,7 +30,7 @@ const CandidateRow = (props) => {
         {decimalToPercent(result.votePct)}%
       </td>
       <td className='candidate'>
-        {result.candidate.firstName} {result.candidate.lastName}
+        {result.candidate.firstName} {result.candidate.lastName}{incumbent}
       </td>
       <td className='vote-count'>
         {intcomma(result.voteCount)}
