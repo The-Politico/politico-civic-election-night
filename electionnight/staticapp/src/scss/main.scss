@@ -12,6 +12,7 @@
 td.vote-count{
   text-align: right;
 }
+
 svg.map-hatch-definitions{
   position: fixed;
   bottom: 0;
@@ -25,6 +26,7 @@ svg.map-hatch-definitions{
 section.results-list{
   margin-bottom: 2.5rem;
 }
+
 
 section.results-map{
   padding-left: 50px;
@@ -53,13 +55,17 @@ section.results-map{
   font-size: 12px;
   color: white;
   vertical-align: top;
-  margin-top: 1px;
+  margin-top: 3px;
 }
 
 .uncontested{
   font-family: $franklin;
   font-size: 18px;
   margin-top: 20px;
+  border-top: 1px dashed #ddd;
+  padding-top: 10px;
+  margin-top: px;
+
   .candidate{
     font-weight: bold;
   }
@@ -82,5 +88,64 @@ section.introduction{
   p{
     font-size: 18px;
     line-height: 21px;
+  }
+}
+
+.row section.results-map{
+  @media(max-width: 768px) {
+    padding-left: 0;
+    .county-map {
+      max-width: 350px;
+      margin: 0 auto;
+    }
+  }
+}
+
+
+//table override
+section.results-group {
+  margin-bottom: 3rem;
+}
+
+
+@media(max-width: 860px){
+  td{
+    font-size:1rem;
+  }
+}
+
+@media(max-width: 768px){
+  article.results{
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .row section.results-map {
+      padding-left: 0;
+      margin-bottom: -60px;
+  }
+}
+
+@media(max-width: 600px){
+  td{
+    font-size:.9rem;
+    padding: 10px 5px;
+
+    &.key{
+      padding-left: 8px;
+    }
+  }
+  section.results-list section.results-group {
+    margin-top: 5rem;
+  }
+
+  .header th.winning{
+    padding: 0;
+    text-align: center;
+  }
+
+  td.winning{
+    text-align: center;
   }
 }
