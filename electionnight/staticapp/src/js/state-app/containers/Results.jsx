@@ -34,6 +34,16 @@ const Results = (props) => {
     }
   });
 
+  const live = document.querySelector('.time .live');
+  const results = document.querySelector('.time .results');
+  if (props.tabulated) {
+    live.textContent = '';
+    results.textContent = 'Results';
+  } else {
+    live.textContent = 'LIVE';
+    results.textContent = 'results';
+  }
+
   const fetchRefresh = props.tabulated ? null : (
     <FetchRefresh
       actions={props.actions}
