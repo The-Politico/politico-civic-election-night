@@ -23,7 +23,7 @@ if [ $FILE ]
   then
     elex results ${DATE} ${TEST} --national-only -o json -d ${FILE} > master.json
   else
-    elex results ${DATE} ${TEST} --national-only -o json --set-zero-counts > master.json
+    elex results ${DATE} ${TEST} --national-only -o json > master.json
 fi
 
 for file in "$OUTPUT"/election-config/* ; do
