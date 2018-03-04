@@ -38,12 +38,6 @@
     margin: 0;
     text-align: left;
     margin-top: -7px;
-
-    @media(max-width: 600px){
-      .sticky-header h2{
-        font-size: 22px;
-      }
-    }
   }
   .title{
     display: inline-block;
@@ -155,5 +149,12 @@
         color: #666;
       }
     }
+  }
+}
+
+
+@media(max-width: 600px){
+  .sticky-header h2{
+    font-size: 22px;
   }
 }

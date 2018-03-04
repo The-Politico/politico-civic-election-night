@@ -118,5 +118,9 @@ section.results-group {
 @media(max-width: 600px){
   td{
     font-size:.9rem;
+    padding: 10px 5px;
+  }
+  section.results-list section.results-group {
+    margin-top: 5rem;
   }
 }
