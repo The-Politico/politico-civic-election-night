@@ -44,7 +44,10 @@ const Results = (props) => {
 
   return (
     <div>
-      <MarkdownText content={props.content} />
+      <MarkdownText
+        content={props.content}
+        results={props.stateResults}
+      />
       <section className='election-results'>
         <StickyHeader {...props} />
         {fetchRefresh}

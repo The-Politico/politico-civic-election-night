@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import os
+import sys
 
+import django
+
+sys.path.insert(0, os.path.abspath('../src'))
+os.environ['DJANGO_SETTINGS_MODULE'] = 'exampleapp.settings'
+django.setup()
 
 # -- General configuration ------------------------------------------------
 
@@ -16,6 +23,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.githubpages',
+    'sphinxcontrib_django',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

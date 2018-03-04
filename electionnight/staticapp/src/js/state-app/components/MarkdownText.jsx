@@ -1,9 +1,22 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import {textTypes} from 'StateApp/constants/text';
 
 const MarkdownText = (props) => {
-  const content = props.content.page['pre-results'];
-  console.log(content);
+  let status;
+  if (props.results[0]) {
+    status = props.results[0].precinctsReportingPct;
+  } else {
+    status = 0;
+  }
+  let content = '';
+  if (status === 0) {
+    content = props.content.page[textTypes.pre] || '';
+  } else if (status < 1) {
+    content = props.content.page[textTypes.live] || '';
+  } else {
+    content = props.content.page[textTypes.post] || '';
+  }
   return (
     <section className='introduction'>
       <ReactMarkdown

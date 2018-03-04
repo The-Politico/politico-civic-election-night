@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f9ffb1b38156c8bb379481e9aeb6a00005ad8b4db9ded46c1b1b2b06ece14a9b"
+            "sha256": "48d14e18ddde5c9634875d0b0a1265a291d6247f2d1c64018433b41a0c56dcf1"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -129,6 +129,36 @@
                 "sha256:c7ec4816ec49416517b84f317499d1519db62125471922ab78d670474ed9b987"
             ],
             "version": "==2.2.0"
+        },
+        "django-politico-civic-almanac": {
+            "editable": true,
+            "git": "ssh://git@github.com/The-Politico/politico-civic-almanac",
+            "ref": "e32536453979f26f1237fee4e248350295fa1819"
+        },
+        "django-politico-civic-election": {
+            "editable": true,
+            "git": "ssh://git@github.com/The-Politico/politico-civic-election",
+            "ref": "531bd46d6083c6477cd6485a18527f51d59e8113"
+        },
+        "django-politico-civic-entity": {
+            "editable": true,
+            "git": "ssh://git@github.com/The-Politico/politico-civic-entity",
+            "ref": "4c0ca5372f51e417e087c62d660cb806f0c13172"
+        },
+        "django-politico-civic-geography": {
+            "editable": true,
+            "git": "ssh://git@github.com/The-Politico/politico-civic-geography",
+            "ref": "186d50c54050ed1f1fad6d10ceca5358717adadb"
+        },
+        "django-politico-civic-government": {
+            "editable": true,
+            "git": "ssh://git@github.com/The-Politico/politico-civic-government",
+            "ref": "e6492ab93eca8e1e3e1e26864613fd071e53a892"
+        },
+        "django-politico-civic-vote": {
+            "editable": true,
+            "git": "ssh://git@github.com/The-Politico/politico-civic-vote",
+            "ref": "fa7bfede23f055dd49ea34c4a26b72b55693aa3c"
         },
         "django-storages": {
             "hashes": [
@@ -479,6 +509,13 @@
                 "sha256:70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9"
             ],
             "version": "==1.11.0"
+        },
+        "sphinxcontrib-django": {
+            "hashes": [
+                "sha256:53fe239bef8dbbd0ec6bc623c082387abb3966d77dae0a38fb78366ed5595a94",
+                "sha256:8d1b4c53feaf2e71ec0623cc66e3ef9f32324b78574b0336e9323704bdd037ed"
+            ],
+            "version": "==0.3"
         },
         "tqdm": {
             "hashes": [
