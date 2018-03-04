@@ -1,6 +1,10 @@
 .elex-footer{
   border-top: dashed 2px #ddd;
   padding: 10px 20px;
+
+  h4{
+    text-align:center;
+  }
   @media (max-width: 400px){
     padding: 10px;
   }

@@ -25,6 +25,7 @@ section.results-list{
   margin-bottom: 2.5rem;
 }
 
+
 section.results-map{
   padding-left: 50px;
 }
@@ -52,13 +53,17 @@ section.results-map{
   font-size: 12px;
   color: white;
   vertical-align: top;
-  margin-top: 1px;
+  margin-top: 3px;
 }
 
 .uncontested{
   font-family: $franklin;
   font-size: 18px;
   margin-top: 20px;
+  border-top: 1px dashed #ddd;
+  padding-top: 10px;
+  margin-top: px;
+
   .candidate{
     font-weight: bold;
   }
@@ -72,4 +77,30 @@ div.share{
 .mapContainer .map{
   text-align: center;
   margin-bottom: 20px;
+}
+
+
+//table override
+section.results-group {
+  margin-bottom: 3rem;
+}
+
+
+@media(max-width: 860px){
+  td{
+    font-size:1rem;
+  }
+}
+
+@media(max-width: 768px){
+  article.results{
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .row section.results-map {
+      padding-left: 0;
+      margin-bottom: 2rem;
+  }
 }
