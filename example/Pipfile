@@ -30,6 +30,8 @@ electionnight = {path = "./..", editable = true}
 ipython = "*"
 django-cors-headers = "*"
 sphinxcontrib-django = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
 
 
 [dev-packages]

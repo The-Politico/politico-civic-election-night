@@ -5,7 +5,7 @@ import sys
 
 import django
 
-sys.path.insert(0, os.path.abspath('../src'))
+sys.path.insert(0, os.path.abspath('../../example'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'exampleapp.settings'
 django.setup()
 
