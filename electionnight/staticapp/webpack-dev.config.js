@@ -71,7 +71,12 @@ module.exports = port => ({
       },
       {
         test: /\.svg$/,
-        loader: 'svgr/webpack'
+        use: ['babel-loader', {
+            loader: 'svgr/webpack',
+            options: {
+                icon: true,
+            },
+        }],
       },
     ],
   },

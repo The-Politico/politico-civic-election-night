@@ -97,16 +97,13 @@
 {% endblock %}
 
 {% block footer_links %}
-<section class="elex-footer results-list app">
+<section class="elex-footer">
   <h4>2018 Elections</h4>
   <ul>
     {% for state in nav.states%}
       <li>
         <a href="{{state.link}}">{{state.name}}</a>
       </li>
-      {%if forloop.counter|divisibleby:"10" %}
-  </ul><ul>
-      {%endif%}
     {% endfor %}
   </ul>
   <div class="clear"></div>

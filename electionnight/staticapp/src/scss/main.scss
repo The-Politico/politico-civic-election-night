@@ -2,6 +2,7 @@
 @import '~politico-style/scss/base/theme/colors/base';
 @import 'sticky-nav';
 @import 'fetch-refresh';
+@import 'footer-nav';
 
 .county-map{
     min-height: 350px;
@@ -18,6 +19,10 @@ svg.map-hatch-definitions{
 
 .county-map .legend .legend-labels .legend-label.tie{
   background: #292929;
+}
+
+section.results-list{
+  margin-bottom: 2.5rem;
 }
 
 section.results-map{
