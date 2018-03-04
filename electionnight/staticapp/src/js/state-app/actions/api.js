@@ -1,4 +1,5 @@
 import assign from 'lodash/assign';
+import Dateline from 'dateline';
 import { DivisionLevels } from 'Common/constants/geography';
 import * as ormActions from './orm';
 import * as fetchActions from './fetch';
@@ -201,6 +202,12 @@ const addPageContent = (content, dispatch) =>
 const addPageTypeContent = (content, dispatch) =>
   dispatch(createPageTypeContentBlock(content));
 
+function updateTimestamp (time) {
+  const domTime = document.querySelector('time');
+  const apDate = Dateline(time);
+  domTime.textContent = `${apDate.getAPDate()}, ${apDate.getFullYear()} ${apDate.getAPTime()} EST`;
+}
+
 let compareContext = null;
 
 export const fetchContext = modifiedTime =>
@@ -255,8 +262,11 @@ export const fetchResults = modifiedTime =>
       if (results === compareResults) return null;
       // If not, reset Modified Time and return new data.
       compareResults = results;
-      dispatch(fetchActions.setResultsModifiedTime(new Date().toUTCString()));
+      const newTime = new Date();
+      dispatch(fetchActions.setResultsModifiedTime(newTime.toUTCString()));
       dispatch(fetchActions.notifyNewResults());
+      updateTimestamp(newTime);
+
       return data;
     })
     .then((data) => {

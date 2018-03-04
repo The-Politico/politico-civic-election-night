@@ -58,8 +58,6 @@ for file in "$OUTPUT"/election-config/* ; do
           }
         ) end
       ]' > "$path/results.json"
-      last_updated="{\"date\":\"`date`\"}"
-      echo $last_updated > "$path/timestamp.json"
     fi
   fi
 done

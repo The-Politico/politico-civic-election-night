@@ -1,6 +1,7 @@
 """
 Base context for all pages, e.g., data needed to render navigation.
 """
+from datetime import datetime
 from django.views.generic import DetailView
 
 from electionnight.conf import settings
@@ -25,5 +26,6 @@ class BaseView(DetailView, StaticsPathsMixin, StaticsPublishingMixin):
         # different static path handling
         production = self.request.GET.get('env', 'dev') == 'prod'
         context['production'] = production
-        
+        context['now'] = datetime.now()
+
         return context
