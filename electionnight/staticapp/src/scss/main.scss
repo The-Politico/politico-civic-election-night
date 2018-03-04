@@ -11,6 +11,7 @@
 td.vote-count{
   text-align: right;
 }
+
 svg.map-hatch-definitions{
   position: fixed;
   bottom: 0;
@@ -119,8 +120,21 @@ section.results-group {
   td{
     font-size:.9rem;
     padding: 10px 5px;
+
+    &.key{
+      padding-left: 8px;
+    }
   }
   section.results-list section.results-group {
     margin-top: 5rem;
+  }
+
+  .header th.winning{
+    padding: 0;
+    text-align: center;
+  }
+
+  td.winning{
+    text-align: center;
   }
 }
