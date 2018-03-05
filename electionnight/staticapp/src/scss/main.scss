@@ -1,6 +1,7 @@
 @import '~politico-style/scss/elections/states/theme/fonts';
 @import '~politico-style/scss/base/theme/colors/base';
 @import '~politico-style/scss/base/theme/fonts';
+@import '~politico-style/scss/base/components/ads';
 @import 'sticky-nav';
 @import 'fetch-refresh';
 @import 'footer-nav';
@@ -39,7 +40,7 @@ section.results-map{
 .results-group table tr td.precincts-reporting{
   padding-bottom: 2px;
 }
-.results-table .incumbent{
+.incumbent{
   font-size: 10px;
   color: #7b7b7b;
   border: 0;

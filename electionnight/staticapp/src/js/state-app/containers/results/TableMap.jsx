@@ -38,6 +38,8 @@ class TableMap extends React.Component {
     const winners = values(groupBy(electionResults, d => d.division))
       .map(resultsSet => {
         resultsSet.sort((a, b) => b.votePct - a.votePct);
+        // Can't be a winner if you don't get any votes.
+        if (resultsSet[0].voteCount === 0) return null;
         return resultsSet[0].candidate;
       });
 
