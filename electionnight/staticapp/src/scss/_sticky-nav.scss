@@ -50,6 +50,11 @@
     height: 42px;
     width: 42px;
 
+    img{
+      vertical-align: text-bottom;
+      width: 100%;
+    }
+
     @media(max-width: 400px) {
       margin-right: 5px;
     }

@@ -60,7 +60,7 @@ class StickyHeader extends React.Component {
               <button
                 onClick={() => this.setState({navDropped: true})}
               >
-                <USA width='90%' height='100%' />
+                <img src='https://www.politico.com/election-results/cdn/img/2018/common/us-map.png' />
               </button>
               <button
                 onClick={() => this.setState({navDropped: false})}

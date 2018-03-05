@@ -7,6 +7,7 @@ import House from './offices/House';
 import JumpLinks from 'StateApp/components/nav/JumpLinks';
 import FetchRefresh from 'StateApp/components/FetchRefresh';
 import MarkdownText from 'StateApp/components/Markdowntext';
+import Advertisement from 'StateApp/components/Advertisement';
 
 const Results = (props) => {
   // We do some queries higher up so we don't need
@@ -64,8 +65,12 @@ const Results = (props) => {
         <JumpLinks />
         <Governor {...props} />
         <Senator {...props} />
+      </section>
+      <Advertisement adID='pol-06' />
+      <section className='election-results'>
         <House {...props} />
       </section>
+      <Advertisement adID='pol-07' />
     </div>
   );
 };

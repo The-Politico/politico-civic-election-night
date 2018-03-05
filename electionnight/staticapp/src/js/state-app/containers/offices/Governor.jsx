@@ -28,7 +28,7 @@ const Governor = (props) => {
     <section className='results-group'>
       <Element name='governor-anchor'>
         <header>
-          <h3>{elections[0].division.label} state governor</h3>
+          <h3>{elections[0].division.label} governor</h3>
         </header>
         {results}
       </Element>
