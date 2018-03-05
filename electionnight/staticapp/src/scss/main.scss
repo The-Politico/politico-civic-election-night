@@ -127,7 +127,15 @@ section.results-group {
   }
 
   .row section.results-map .county-map {
-    margin: 0 auto 5em;
+    margin: 0 auto 4.5em;
+  }
+
+  header + section.results-group{
+    margin-top: 1rem;
+  }
+
+  header + section.results-group h4.district{
+    margin-top: 0;
   }
 }
 
@@ -141,7 +149,7 @@ section.results-group {
     }
   }
   section.results-list section.results-group {
-    margin-top: 5rem;
+    margin-top: 0rem;
   }
 
   .header th.winning{
