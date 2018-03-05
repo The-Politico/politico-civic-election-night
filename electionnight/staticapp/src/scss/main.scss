@@ -112,7 +112,11 @@ section.results-group {
 
   .row section.results-map {
       padding-left: 0;
-      margin-bottom: -60px;
+      margin-bottom: -40px;
+  }
+
+  .row section.results-map .county-map {
+    margin: 0 auto 5em;
   }
 }
 
