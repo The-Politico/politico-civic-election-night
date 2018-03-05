@@ -1,9 +1,8 @@
 from django.core.management.base import BaseCommand
 from election.models import ElectionDay
+from electionnight.views import StatePage
 from geography.models import DivisionLevel
 from tqdm import tqdm
-
-from electionnight.views import StatePage
 
 
 # TODO: Clean this up and split methods out...
