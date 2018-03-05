@@ -4,7 +4,6 @@ import FlipCard from 'react-flipcard';
 import { DivisionLevels } from 'CommonConstants/geography';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faTimes from '@fortawesome/fontawesome-free-solid/faTimes';
-import USA from './../../../../img/usa.svg';
 import StateNav from './StateNavTop';
 import FetchRefresh from 'StateApp/components/nav/FetchRefresh';
 
