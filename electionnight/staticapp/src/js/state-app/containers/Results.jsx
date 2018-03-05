@@ -6,6 +6,7 @@ import Senator from './offices/Senator';
 import House from './offices/House';
 import JumpLinks from 'StateApp/components/nav/JumpLinks';
 import FetchRefresh from 'StateApp/components/FetchRefresh';
+import MarkdownText from 'StateApp/components/Markdowntext';
 
 const Results = (props) => {
   // We do some queries higher up so we don't need
@@ -34,6 +35,16 @@ const Results = (props) => {
     }
   });
 
+  const live = document.querySelector('.time .live');
+  const results = document.querySelector('.time .results');
+  if (props.tabulated) {
+    live.textContent = '';
+    results.textContent = 'Results';
+  } else {
+    live.textContent = 'LIVE';
+    results.textContent = 'results';
+  }
+
   const fetchRefresh = props.tabulated ? null : (
     <FetchRefresh
       actions={props.actions}
@@ -42,14 +53,20 @@ const Results = (props) => {
   );
 
   return (
-    <section className='election-results'>
-      <StickyHeader {...props} />
-      {fetchRefresh}
-      <JumpLinks />
-      <Governor {...props} />
-      <Senator {...props} />
-      <House {...props} />
-    </section>
+    <div>
+      <MarkdownText
+        content={props.content}
+        results={props.stateResults}
+      />
+      <section className='election-results'>
+        <StickyHeader {...props} />
+        {fetchRefresh}
+        <JumpLinks />
+        <Governor {...props} />
+        <Senator {...props} />
+        <House {...props} />
+      </section>
+    </div>
   );
 };
 

@@ -1,11 +1,14 @@
 import json
 import subprocess
+import sys
 
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
+from time import sleep, time
 from tqdm import tqdm
 
 from election.models import Candidate, CandidateElection
+from electionnight.conf import settings as app_settings
 from electionnight.models import APElectionMeta
 from vote.models import Votes
 
@@ -15,19 +18,6 @@ class Command(BaseCommand):
         'Ingests master results JSON file from Elex and updates the results '
         'models in Django.'
     )
-
-    def add_arguments(self, parser):
-        parser.add_argument('election_date', type=str)
-        parser.add_argument(
-            '--test',
-            dest='test',
-            action='store_true',
-        )
-        parser.add_argument(
-            '--download',
-            dest='download',
-            action='store_true'
-        )
 
     def download_results(self, options):
         writefile = open('master.json', 'w')
@@ -93,20 +83,54 @@ class Command(BaseCommand):
         if result['precinctsreportingpct'] == 1 or result['uncontested']:
             ap_meta.tabulated = True
 
-        ap_meta.save()    
+        ap_meta.save()
         Votes.objects.filter(**filter_kwargs).update(**kwargs)
 
-    def handle(self, *args, **options):
-        if options['download']:
-            self.download_results(options)
+    def main(self, options):
+        start = 0
 
-        with open('master.json') as f:
-            data = json.load(f)
+        while True:
+            now = time()
+            if (now - start) > app_settings.DATABASE_UPLOAD_DAEMON_INTERVAL:
+                start = now
 
-        for result in tqdm(data):
-            self.process_result(result)
+                if options['download']:
+                    self.download_results(options)
 
-        call_command(
-            'bake_elections',
-            options['election_date'],
+                with open('master.json') as f:
+                    data = json.load(f)
+
+                for result in tqdm(data):
+                    self.process_result(result)
+
+                call_command(
+                    'bake_elections',
+                    options['election_date'],
+                )
+
+            if options['run_once']:
+                print('run once specified, exiting')
+                sys.exit(0)
+
+            sleep(1)
+
+    def add_arguments(self, parser):
+        parser.add_argument('election_date', type=str)
+        parser.add_argument(
+            '--test',
+            dest='test',
+            action='store_true',
         )
+        parser.add_argument(
+            '--download',
+            dest='download',
+            action='store_true'
+        )
+        parser.add_argument(
+            '--run_once',
+            dest='run_once',
+            action='store_true'
+        )
+
+    def handle(self, *args, **options):
+        self.main(options)

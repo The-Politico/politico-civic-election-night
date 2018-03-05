@@ -1,5 +1,6 @@
 @import '~politico-style/scss/elections/states/theme/fonts';
 @import '~politico-style/scss/base/theme/colors/base';
+@import '~politico-style/scss/base/theme/fonts';
 @import 'sticky-nav';
 @import 'fetch-refresh';
 @import 'footer-nav';
@@ -78,6 +79,16 @@ div.share{
 .mapContainer .map{
   text-align: center;
   margin-bottom: 20px;
+}
+
+section.introduction{
+  font-family: Georgia, Times, 'Times New Roman', serif;
+  margin: 40px auto;
+  max-width: 600px;
+  p{
+    font-size: 18px;
+    line-height: 21px;
+  }
 }
 
 .row section.results-map{

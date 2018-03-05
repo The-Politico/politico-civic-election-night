@@ -3,10 +3,9 @@ import os
 from django.conf import settings as project_settings
 from django.test.client import RequestFactory
 from django.utils.text import slugify
-from rest_framework.renderers import JSONRenderer
-
 from electionnight.exceptions import StaticFileNotFoundError
 from electionnight.utils.aws import defaults, get_bucket
+from rest_framework.renderers import JSONRenderer
 
 
 class StaticsPublishingMixin(object):
@@ -16,7 +15,7 @@ class StaticsPublishingMixin(object):
     Bundles are published to a directory at paths with this pattern:
     election-results/cdn/{view_name}/{election_date}/{bundle_file}
     """
-    def get_request(self, production=False):
+    def get_request(self, production=False, subpath=''):
         """Construct a request we can use to render the view.
 
         Send environment variable in querystring to determine whether
@@ -25,7 +24,11 @@ class StaticsPublishingMixin(object):
             env = {'env': 'prod'}
         else:
             env = {'env': 'dev'}
-        return RequestFactory().get('', env)
+        kwargs = {
+            **{"subpath": subpath},
+            **env
+        }
+        return RequestFactory().get('', kwargs)
 
     def get_serialized_context(self):
         """OVERWRITE this method to return serialized context data.
@@ -154,7 +157,7 @@ class StaticsPublishingMixin(object):
         ... kwargs should be like:
             {"year": 2018, "state": "texas", "election_date": "2018-03-06"}
         """
-        request = self.get_request(production=True)
+        request = self.get_request(production=True, subpath=subpath)
         template_string = self.__class__.as_view()(
             request, **kwargs).rendered_content
         key = os.path.join(

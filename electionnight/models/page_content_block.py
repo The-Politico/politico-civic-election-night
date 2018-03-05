@@ -2,6 +2,8 @@ import uuid
 
 from django.db import models
 
+from electionnight.fields import MarkdownField
+
 
 class PageContentBlock(models.Model):
     """
@@ -12,7 +14,7 @@ class PageContentBlock(models.Model):
         'PageContent', related_name='blocks', on_delete=models.PROTECT)
     content_type = models.ForeignKey(
         'PageContentType', related_name='+', on_delete=models.PROTECT)
-    content = models.TextField()
+    content = MarkdownField()
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)

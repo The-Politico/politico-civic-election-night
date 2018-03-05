@@ -72,6 +72,23 @@
     {% include 'electionnight/footer.html' %}
     {% endblock %}
 
+    {% block utag %}
+    <script type="text/javascript">
+    var utag_data = {
+      "page_level_1":"interactives",
+      "free_paid_content":"free",
+      "ad_unit_section":"2018-election",
+      "site_section":"elections",
+      "page_type":"election results",
+      "site_domain":"www.politico.com",
+      "internal_site_id":"politico",
+      "page_name":"2018 Election:Results",
+      "content_author":"Tyler Fisher|Sarah Frostenson|Jeremy C.F. Lin|Jon McClure|Lily Mihalik ",
+      "content_byline":"By Tyler Fisher, Sarah Frostenson, Jeremy C.F. Lin, Jon McClure and Lily Mihalik ",
+    };
+    </script>
+    {% endblock %}
+
     <script type="text/javascript">
       (function(a,b,c,d){
       a='//tags.tiqcdn.com/utag/politico/main/prod/utag.js';
@@ -80,18 +97,6 @@
       d.async=true;
       a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a)
       })();
-      var utag_data = {
-      "page_level_1":"interactives",
-      "free_paid_content":"free",
-      "site_section":"elections",
-      "ad_unit_section":"elections-2017",
-      "page_type":"election results",
-      "content_author":"Tyler Fisher|Sarah Frostenson"|"Jeremy C.F. Lin|Jon McClure|Lily Mihalik ",
-      "content_byline":"By Tyler Fisher, Sarah Frostenson, Jeremy C.F. Lin, Jon McClure and Lily Mihalik ",
-      "site_domain":"www.politico.com",
-      "internal_site_id":"politico",
-      "page_name":"{{year}} {{state}} Election Results: Live map, real-time voting updates",
-      };
 
       window.$('.icon-facebook').click(function(e){
         e.preventDefault();
@@ -102,7 +107,7 @@
       window.$('.icon-twitter').click(function(e){
       e.preventDefault();
       const uri = window.location.href;
-      const status = encodeURIComponent('{{year}} {{state}} Election Results: Live map, real-time voting updates ' + uri);
+      const status = encodeURIComponent('2018 Election Results: Live map and real-time voting updates ' + uri);
       window.open('https://twitter.com/home?status=' + status);
       });
     </script>

@@ -29,6 +29,9 @@ vote = {git = "ssh://git@github.com/The-Politico/politico-civic-vote", editable 
 electionnight = {path = "./..", editable = true}
 ipython = "*"
 django-cors-headers = "*"
+sphinxcontrib-django = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
 
 
 [dev-packages]

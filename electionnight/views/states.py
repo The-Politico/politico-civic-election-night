@@ -7,12 +7,11 @@ URL PATTERNS:
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from election.models import ElectionDay
-from geography.models import Division, DivisionLevel
-
 from electionnight.conf import settings
 from electionnight.models import PageContent
 from electionnight.serializers import ElectionViewSerializer, StateSerializer
 from electionnight.utils.auth import secure
+from geography.models import Division, DivisionLevel
 
 from .base import BaseView
 
@@ -60,20 +59,29 @@ class StatePage(BaseView):
             **context,
             **self.get_paths_context(production=context['production']),
             **self.get_elections_context(context['division']),
-            **self.get_nav_links(),
+            **self.get_nav_links(subpath=context['subpath']),
         }
 
-    def get_nav_links(self):
+    def get_nav_links(self, subpath=''):
         state_level = DivisionLevel.objects.get(name=DivisionLevel.STATE)
         # All states except DC
         states = Division.objects.filter(
             level=state_level,
         ).exclude(code='11').order_by('label')
+        # Nav links should always refer to main state page. We can use subpath
+        # to determine how deep publish path is relative to state pages.
+        relative_prefix = ''
+        depth = subpath.lstrip('/').count('/')
+        for i in range(depth):
+            relative_prefix += '../'
         return {
             'nav': {
                 'states': [
                     {
-                        'link': '../{}/'.format(state.slug),
+                        'link': '../{0}{1}/'.format(
+                            relative_prefix,
+                            state.slug
+                        ),
                         'name': state.label,
                     } for state in states
                 ],
@@ -145,7 +153,6 @@ class StatePage(BaseView):
             'context': reverse(
                 'electionnight_api_state-election-detail',
                 args=[self.election_date, self.object.pk],
-                # request=self.request
             ),
             'geo_county': (
                 'https://s3.amazonaws.com/'

@@ -55,6 +55,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-flipcard": "^0.2.1",
+    "react-markdown": "^3.2.2",
     "react-redux": "^5.0.7",
     "react-scroll": "^1.7.7",
     "react-waypoint": "^8.0.0",
@@ -67,7 +68,7 @@
     "uglifyjs-webpack-plugin": "1.1.8",
     "webpack": "3.10.0",
     "webpack-dev-middleware": "2.0.6",
-    "webpack-hot-middleware": "latest",
+    "webpack-hot-middleware": "^2.21.2",
     "webpack-stream": "latest",
     "whatwg-fetch": "latest",
     "yargs": "latest"

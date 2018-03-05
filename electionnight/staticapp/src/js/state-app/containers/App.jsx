@@ -17,6 +17,7 @@ const App = (props) => {
       overrideStateResults={props.db.results.overrideState}
       actions={actions}
       fetch={props.db.fetch}
+      content={props.db.content}
     />
   );
 };
