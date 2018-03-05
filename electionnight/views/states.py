@@ -62,7 +62,7 @@ class StatePage(BaseView):
             **self.get_nav_links(subpath=context['subpath']),
         }
 
-    def get_nav_links(self, subpath=None):
+    def get_nav_links(self, subpath=''):
         state_level = DivisionLevel.objects.get(name=DivisionLevel.STATE)
         # All states except DC
         states = Division.objects.filter(

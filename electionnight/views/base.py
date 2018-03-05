@@ -27,6 +27,6 @@ class BaseView(DetailView, StaticsPathsMixin, StaticsPublishingMixin):
         production = self.request.GET.get('env', 'dev') == 'prod'
         context['production'] = production
         # When publishing, we use a subpath to determine relative paths
-        context['subpath'] = self.request.GET.get('subpath')
+        context['subpath'] = self.request.GET.get('subpath', '')
         context['now'] = datetime.now()
         return context
