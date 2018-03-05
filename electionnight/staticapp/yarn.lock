@@ -5302,7 +5302,14 @@ js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-js-yaml@^3.4.3, js-yaml@^3.5.1, js-yaml@^3.9.1, js-yaml@~3.10.0:
+js-yaml@^3.4.3, js-yaml@^3.5.1, js-yaml@^3.9.1:
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.11.0.tgz#597c1a8bd57152f26d622ce4117851a51f5ebaef"
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^4.0.0"
+
+js-yaml@~3.10.0:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.10.0.tgz#2e78441646bd4682e963f22b6e92823c309c62dc"
   dependencies:
@@ -5453,13 +5460,6 @@ last-call-webpack-plugin@^2.1.2:
   dependencies:
     lodash "^4.17.4"
     webpack-sources "^1.0.1"
-
-last-call-webpack-plugin@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/last-call-webpack-plugin/-/last-call-webpack-plugin-3.0.0.tgz#9742df0e10e3cf46e5c0381c2de90d3a7a2d7555"
-  dependencies:
-    lodash "^4.17.5"
-    webpack-sources "^1.1.0"
 
 lazy-cache@^1.0.3:
   version "1.0.4"
@@ -6349,19 +6349,12 @@ open@^0.0.5, open@latest:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/open/-/open-0.0.5.tgz#42c3e18ec95466b6bf0dc42f3a2945c3f0cad8fc"
 
-optimize-css-assets-webpack-plugin@^3.2.0:
+optimize-css-assets-webpack-plugin@3.2.0, optimize-css-assets-webpack-plugin@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/optimize-css-assets-webpack-plugin/-/optimize-css-assets-webpack-plugin-3.2.0.tgz#09a40c4cefde1dd0142444a873c56aa29eb18e6f"
   dependencies:
     cssnano "^3.4.0"
     last-call-webpack-plugin "^2.1.2"
-
-optimize-css-assets-webpack-plugin@latest:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/optimize-css-assets-webpack-plugin/-/optimize-css-assets-webpack-plugin-4.0.0.tgz#d5f80041fb1391b358a1f35273c3b53de814e8fe"
-  dependencies:
-    cssnano "^3.4.0"
-    last-call-webpack-plugin "^3.0.0"
 
 optionator@^0.8.1, optionator@^0.8.2:
   version "0.8.2"
