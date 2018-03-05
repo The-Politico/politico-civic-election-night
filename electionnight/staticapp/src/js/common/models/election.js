@@ -66,8 +66,8 @@ class Election extends Model {
           candidate,
           voteCount: result.voteCount,
           votePct: result.votePct,
-          winner: result.winner,
-          runoff: result.runoff,
+          winner: this.apMeta.overrideApCall ? candidate.overrideWinner : result.winner,
+          runoff: this.apMeta.overrideApCall ? candidate.overrideRunoff : result.runoff,
         };
 
         // Aggregate aggregable candidates' vote totals
