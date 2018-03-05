@@ -3,6 +3,7 @@ from django.contrib import admin
 
 class CandidateColorOrderAdmin(admin.ModelAdmin):
     list_display = ('name', 'race', 'party', 'order')
+    list_editable = ('order',)
     ordering = (
         'candidate__race__office__division__code',
         'candidate__race',
