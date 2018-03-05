@@ -66,7 +66,7 @@ Settings.RESULTS_STATIC_DIR = getattr(
     project_settings, 'ELECTIONNIGHT_RESULTS_STATIC_DIR', 'static_results')
 
 Settings.RESULTS_DAEMON_INTERVAL = getattr(
-    project_settings, 'ELECTIONNIGHT_RESULTS_DAEMON_INTERVAL', 30)
+    project_settings, 'ELECTIONNIGHT_RESULTS_DAEMON_INTERVAL', 10)
 
 Settings.DATABASE_UPLOAD_DAEMON_INTERVAL = getattr(
     project_settings, 'ELECTIONNIGHT_DATABASE_UPLOAD_DAEMON_INTERVAL', 60)
