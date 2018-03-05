@@ -67,6 +67,10 @@ class TableMap extends React.Component {
       } else {
         candidateColors[id] = 'transparent';
       }
+      // Can't get a color if you don't have any votes.
+      if (d.voteCount === 0) {
+        candidateColors[id] = 'transparent';
+      }
     });
     return candidateColors;
   }
@@ -99,7 +103,7 @@ class TableMap extends React.Component {
         candidateColors={candidateColors}
         {...this.props}
       />
-    )
+    );
 
     return (
       <article className='results'>
