@@ -180,3 +180,9 @@ section.results-group {
     text-align: center;
   }
 }
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}

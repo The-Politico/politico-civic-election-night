@@ -58,56 +58,74 @@
 </header>
 
 <div id="app">
-  {% if governor_elections %}
-  <section class="results-group">
-    <header>
-      <h3>Governor</h3>
-    </header>
-    {% for election in governor_elections %}
-    {% if election.votes_table %}
-    {% include 'electionnight/results-table.html' %}
-    {% endif %}
-    {% endfor %}
-  </section>
-  {% endif %}
-
-  {% if senate_elections %}
-  <section class="results-group">
-    <header>
-      <h3>U.S. Senate</h3>
-    </header>
-    {% for election in senate_elections %}
-    {% if election.vote_table%}
-    {% include 'electionnight/results-table.html' %}
-    {% endif %}
-    {% endfor %}
-  </section>
-  {% endif %}
-
-  {% if house_elections %}
-  <section class="results-list">
-    <header>
-      <h3>U.S. House</h3>
-    </header>
-    {% for district, elections in house_elections.items %}
-    <section class="results-group">
+  <section class="election-results">
+    {% if governor_elections %}
+    <section class="results-list">
       <header>
-        <h4>{{ district }}</h4>
+        <h3>Governor</h3>
       </header>
-      {% for election in elections %}
-      {% if election.votes_table %}
-      {% include 'electionnight/results-table.html' %}
-      {% endif %}
+      <section class="results-group">
+        <div class="container">
+          <div class="row clearfix">
+            {% for election in governor_elections %}
+            {% if election.votes_table %}
+            {% include 'electionnight/results-table.html' %}
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </section>
+    {% endif %}
+
+    {% if senate_elections %}
+    <section class="results-list">
+      <header>
+        <h3>U.S. Senate</h3>
+      </header>
+      <section class="results-group">
+        <div class="container">
+          <div class="row clearfix">
+            {% for election in senate_elections %}
+            {% if election.votes_table %}
+            {% include 'electionnight/results-table.html' %}
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </section>
+    {% endif %}
+
+    {% if house_elections %}
+    <section class="results-list">
+      <header>
+        <h3>U.S. House</h3>
+      </header>
+      {% for district, elections in house_elections.items %}
+      <section class="results-group">
+        <header>
+          <h4 class="district">{{ district }}</h4>
+        </header>
+        <div class="container">
+          <div class="row clearfix">
+            {% for election in elections %}
+            {% if election.votes_table %}
+            {% include 'electionnight/results-table.html' %}
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </section>
       {% endfor %}
     </section>
-    {% endfor %}
+    {% endif %}
   </section>
-  {% endif %}
 </div>
 {%endblock%}
 
 {% block relative_foot %}
-<script type="text/javascript" src="{{ paths.js }}"></script>
+<!-- <script type="text/javascript" src="{{ paths.js }}"></script> -->
 {% endblock %}
 
 {% block footer_links %}
