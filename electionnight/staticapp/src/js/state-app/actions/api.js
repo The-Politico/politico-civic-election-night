@@ -257,6 +257,11 @@ export const fetchResults = modifiedTime =>
     .then(response => response.json())
     // Checks if we can skip an upsert.
     .then((data) => {
+      let updateTime = true;
+      if (!compareResults) {
+        updateTime = false;
+      }
+
       const results = JSON.stringify(data);
       // If results are same, bug out.
       if (results === compareResults) return null;
@@ -265,7 +270,10 @@ export const fetchResults = modifiedTime =>
       const newTime = new Date();
       dispatch(fetchActions.setResultsModifiedTime(newTime.toUTCString()));
       dispatch(fetchActions.notifyNewResults());
-      updateTimestamp(newTime);
+
+      if (updateTime) {
+        updateTimestamp(newTime);
+      }
 
       return data;
     })
