@@ -26,6 +26,8 @@ if [ $FILE ]
     elex results ${DATE} ${TEST} --national-only -o json > master.json
 fi
 
+cp master.json reup.json
+
 for file in "$OUTPUT"/election-config/* ; do
   if [ -e "$file" ] ; then
     elections=`cat $file | jq '.elections'`

@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 import sys
 
@@ -97,8 +98,12 @@ class Command(BaseCommand):
                 if options['download']:
                     self.download_results(options)
 
-                with open('master.json') as f:
-                    data = json.load(f)
+                try:
+                    data = json.load(open('reup.json'))
+                except json.decoder.JSONDecodeError:
+                    print('waiting for file to be available')
+                    sleep(5)
+                    data = json.load(open('reup.json'))
 
                 for result in tqdm(data):
                     self.process_result(result)
