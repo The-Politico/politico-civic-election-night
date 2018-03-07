@@ -152,5 +152,6 @@ venv.bak/
 tmp/
 example/bootstrap.json
 example/master.json
+example/reup.json
 example/static_results
 electionnight/static/
