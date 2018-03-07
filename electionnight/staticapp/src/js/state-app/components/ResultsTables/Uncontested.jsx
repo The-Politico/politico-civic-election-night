@@ -3,7 +3,7 @@ import React from 'react';
 const Uncontested = (props) => {
   const {candidate} = props;
   let asterisk = '';
-  if (candidate.uncontested) {
+  if (candidate.incumbent) {
     asterisk = '*';
   }
   return (
@@ -12,7 +12,7 @@ const Uncontested = (props) => {
       <br />
       <span
         className='incumbent'
-        hidden={!candidate.uncontested}
+        hidden={!candidate.incumbent}
       >
         *Incumbent
       </span>
