@@ -11,16 +11,13 @@ const HouseSeat = (props) => {
     <section className='results-group'>
       <div className='container'>
         <div className='row'>
-          <div className='fifty'>
-            {results}
-          </div>
-          <div className='fifty'>
-            <DistrictMap
-              {...props}
-              district={props.elections[0].division.code}
-            />
-          </div>
-          <div className='clear' />
+          <DistrictMap
+            {...props}
+            district={props.elections[0].division.code}
+          />
+        </div>
+        <div className='row'>
+          {results}
         </div>
       </div>
     </section>

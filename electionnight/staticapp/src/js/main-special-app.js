@@ -15,5 +15,5 @@ const SpecialApp = () => (
 
 render(
   <SpecialApp />,
-  document.getElementById('app'),
+  document.getElementById('special-app'),
 );

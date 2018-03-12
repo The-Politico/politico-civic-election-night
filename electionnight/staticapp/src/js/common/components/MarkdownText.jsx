@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import {textTypes} from 'StateApp/constants/text';
+import {textTypes} from 'SpecialApp/constants/text';
 
 const MarkdownText = (props) => {
   let status;
@@ -15,6 +15,7 @@ const MarkdownText = (props) => {
   } else if (status < 1) {
     content = props.content.page[textTypes.live] || '';
   } else {
+    console.log('post');
     content = props.content.page[textTypes.post] || '';
   }
   return (

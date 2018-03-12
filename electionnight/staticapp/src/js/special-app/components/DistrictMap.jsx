@@ -6,7 +6,7 @@ import { DivisionLevels } from 'CommonConstants/geography';
 class Map extends React.Component {
   componentDidUpdate () {
     if (!this.props.district) return;
-    const square = 75;
+    const square = 100;
     const {session, district} = this.props;
     const districts = session.Geometry.filter({
       level: DivisionLevels.district,

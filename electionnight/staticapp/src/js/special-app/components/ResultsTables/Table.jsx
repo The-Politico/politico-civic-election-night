@@ -3,7 +3,7 @@ import { intcomma } from 'journalize';
 import CandidateRow from './CandidateRow';
 import HeaderRow from './HeaderRow';
 
-import 'SCSS/state-app/components/results_tables/simple.scss';
+import 'SCSS/special-app/components/results_tables/simple.scss';
 
 const SimpleTable = (props) => {
   const candidateResults = props.results.map(result => (

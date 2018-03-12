@@ -9,8 +9,9 @@ const CandidateRow = (props) => {
   const winnerClass = result.winner || result.runoff
     ? 'winner' : '';
   const incumbent = result.candidate.incumbent ? '*' : '';
+  console.log(result.candidate.party);
   return (
-    <tr className={`candidate results-table-row ${winnerClass}`}>
+    <tr className={`candidate results-table-row ${winnerClass} ${result.candidate.party.id.toLowerCase()}`}>
       <td className='vote-percent'>
         {decimalToPercent(result.votePct)}%
       </td>

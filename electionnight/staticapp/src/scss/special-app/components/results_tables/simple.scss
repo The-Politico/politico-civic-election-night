@@ -1,0 +1,14 @@
+@import '~politico-style/scss/elections/states/theme/_colors';
+
+.results-table {
+  table {
+    margin: 0 auto;
+    max-width: 600px;
+  }
+
+  .candidate.results-table-row {
+    &.winner.dem {
+      background-color: $dem1-light;
+    }
+  }
+}
