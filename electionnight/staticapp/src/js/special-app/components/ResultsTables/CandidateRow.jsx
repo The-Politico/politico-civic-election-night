@@ -9,7 +9,6 @@ const CandidateRow = (props) => {
   const winnerClass = result.winner || result.runoff
     ? 'winner' : '';
   const incumbent = result.candidate.incumbent ? '*' : '';
-  console.log(result);
   return (
     <tr className={`candidate results-table-row ${winnerClass}`}>
       <td className='vote-percent'>
@@ -17,6 +16,9 @@ const CandidateRow = (props) => {
       </td>
       <td className='candidate'>
         {result.candidate.firstName} {result.candidate.lastName}{incumbent}
+      </td>
+      <td className='party'>
+        {result.candidate.party.shortLabel}
       </td>
       <td className='vote-count'>
         {intcomma(result.voteCount)}

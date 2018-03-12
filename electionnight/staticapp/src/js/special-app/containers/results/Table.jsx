@@ -55,7 +55,7 @@ class Table extends React.Component {
     );
 
     return (
-      <article className='results fifty'>
+      <article className='results'>
         {table}
       </article>
     );

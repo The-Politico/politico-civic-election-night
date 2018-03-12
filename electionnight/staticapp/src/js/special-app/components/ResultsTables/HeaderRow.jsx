@@ -8,6 +8,9 @@ const HeaderRow = () => (
     <th className='candidate'>
       Candidate
     </th>
+    <th className='candidate'>
+      Party
+    </th>
     <th className='vote-count'>
       Votes
     </th>

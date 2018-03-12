@@ -26,9 +26,6 @@ const House = (props) => {
   return (
     <section className='results-list'>
       <Element name='house-anchor'>
-        <header>
-          <h3>U.S. House</h3>
-        </header>
         {seats}
       </Element>
     </section>

@@ -9,18 +9,17 @@ const HouseSeat = (props) => {
   if (!props.elections[0]) return (<div />);
   return (
     <section className='results-group'>
-      <header>
-        <h4 className='district'>
-          {props.elections[0].office.label}
-        </h4>
-        <DistrictMap
-          {...props}
-          district={props.elections[0].division.code}
-        />
-      </header>
       <div className='container'>
         <div className='row'>
-          {results}
+          <div className='fifty'>
+            {results}
+          </div>
+          <div className='fifty'>
+            <DistrictMap
+              {...props}
+              district={props.elections[0].division.code}
+            />
+          </div>
           <div className='clear' />
         </div>
       </div>
