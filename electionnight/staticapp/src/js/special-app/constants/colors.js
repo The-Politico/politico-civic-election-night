@@ -23,3 +23,9 @@ export const primaryColorsGOP = {
   9: '#B6ABE2',
   10: '#EEABD0',
 };
+
+export const generalColors = {
+  dem: '#3571C0',
+  gop: '#FD5E42',
+  lib: '#8D7455',
+};

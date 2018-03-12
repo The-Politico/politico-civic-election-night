@@ -14,7 +14,6 @@ const SimpleTable = (props) => {
   ));
 
   const incumbent = props.results.map(d => d.candidate.incumbent).some(d => d);
-
   return (
     <section className='results-table'>
       <table>
