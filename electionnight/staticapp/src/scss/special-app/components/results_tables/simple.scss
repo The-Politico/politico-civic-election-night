@@ -1,14 +1,51 @@
 @import '~politico-style/scss/elections/states/theme/_colors';
 
+#special-app section.introduction {
+  p {
+    font-size: 20px;
+    line-height: 1.5;
+  }
+}
+
 .results-table {
   table {
     margin: 0 auto;
     max-width: 600px;
   }
 
+  th.key {
+    padding-right: 0;
+    width: 0;
+  }
+
   .candidate.results-table-row {
     &.winner.dem {
       background-color: $dem1-light;
     }
+    &.winner.gop {
+      background-color: $gop1-light;
+    }
+    td.key {
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: 0;
+      margin-right: 0;
+      span {
+        width: 4px;
+        border-radius: 0;
+      }
+    }
   }
+}
+
+section.election-results section.results-list {
+  border-top: none;
+  padding-top: 0;
+
+  h4 {
+    text-align: center;
+    font-size: 24px;
+  }
+
+  margin-bottom: 6rem;
 }

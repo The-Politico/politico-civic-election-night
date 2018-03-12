@@ -52,18 +52,15 @@ const Results = (props) => {
 
   return (
     <div>
+      {fetchRefresh}
+      <StickyHeader {...props} />
       <MarkdownText
         content={props.content}
         results={props.stateResults}
       />
       <section className='election-results'>
-        <StickyHeader {...props} />
-        {fetchRefresh}
-      </section>
-      <section className='election-results'>
         <House {...props} />
       </section>
-      <Advertisement adID='pol-07' />
     </div>
   );
 };

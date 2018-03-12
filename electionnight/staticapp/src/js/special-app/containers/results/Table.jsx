@@ -56,6 +56,9 @@ class Table extends React.Component {
 
     return (
       <article className='results'>
+        <header>
+          <h4>{this.props.elections[0].office.label}</h4>
+        </header>
         {table}
       </article>
     );
