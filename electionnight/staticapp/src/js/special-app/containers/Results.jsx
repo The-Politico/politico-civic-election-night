@@ -1,10 +1,10 @@
 import React from 'react';
 import { DivisionLevels } from 'CommonConstants/geography';
-import StickyHeader from 'SpecialApp/components/nav/StickyHeader';
+import StickyHeader from 'Common/components/nav/StickyHeader';
 import House from './offices/House';
-import FetchRefresh from 'SpecialApp/components/FetchRefresh';
-import MarkdownText from 'SpecialApp/components/Markdowntext';
-import Advertisement from 'SpecialApp/components/Advertisement';
+import FetchRefresh from 'Common/components/FetchRefresh';
+import MarkdownText from 'Common/components/Markdowntext';
+import Advertisement from 'Common/components/Advertisement';
 
 const Results = (props) => {
   // We do some queries higher up so we don't need

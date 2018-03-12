@@ -1,7 +1,7 @@
 import React from 'react';
 import CountdownFetch from 'politico-countdown-fetch';
 import debounce from 'lodash/debounce';
-import refreshRates from '../constants/api';
+import refreshRates from 'CommonConstants/api';
 
 // Initialize the chart
 const chart = CountdownFetch();
@@ -34,11 +34,15 @@ class FetchRefresh extends React.Component {
   // Calls our chart's create function.
   // (Must be able to be called multiple times, i.e., idempotent charts!)
   drawChart () {
-    chart.create('#fetch-refresh-top', {
+    chart.create('#fetch-refresh-nav', {
       refreshTime: refreshRates.results / 1000,
-      width: 140,
+      width: 65,
       height: 12,
       originOffset: 4,
+      text: {
+        process: 'Checking',
+        success: 'New results!',
+      },
     });
   }
 
@@ -51,9 +55,9 @@ class FetchRefresh extends React.Component {
     return (
       <div className='fetch-refresh'>
         <div
-          id='fetch-refresh-top'
+          id='fetch-refresh-nav'
           style={{
-            width: 140 + 30,
+            width: 65 + 30,
             height: 50,
           }}
         />

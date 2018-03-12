@@ -5,7 +5,7 @@ import { DivisionLevels } from 'CommonConstants/geography';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faTimes from '@fortawesome/fontawesome-free-solid/faTimes';
 import StateNav from './StateNavTop';
-import FetchRefresh from 'SpecialApp/components/nav/FetchRefresh';
+import FetchRefresh from 'Common/components/nav/FetchRefresh';
 
 class StickyHeader extends React.Component {
   constructor (props) {

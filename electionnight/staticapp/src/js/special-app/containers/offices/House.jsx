@@ -17,11 +17,9 @@ const House = (props) => {
   const elections = houseOffices.map(
     office => session.Election.filter({office: office.id}).toModelArray());
 
-  const seats = elections.map(officeElections => {
-    return (
-      <HouseSeat elections={officeElections} {...props} />
-    );
-  });
+  const seats = elections.map(officeElections => (
+    <HouseSeat elections={officeElections} {...props} />
+  ));
 
   return (
     <section className='results-list'>
