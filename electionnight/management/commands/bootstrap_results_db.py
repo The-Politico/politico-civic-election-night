@@ -95,8 +95,6 @@ class Command(BaseCommand):
 
         ap_meta.save()
 
-        votes = Votes.objects.filter(**filter_kwargs)
-
         Votes.objects.filter(**filter_kwargs).update(**kwargs)
 
     def main(self, options):
