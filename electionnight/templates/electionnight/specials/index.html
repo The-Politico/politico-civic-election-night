@@ -2,26 +2,26 @@
 {% load tz %}
 
 {% block title %}
-<title>{{ state|title }} Election Results {{year}}: Live primary map by county.</title>
+<title>Live {{ state|title }} Special Election Results {{year}}</title>
 {% endblock %}
 
 {% block page-meta %}
 <!-- Site URL -->
-<meta property="og:url" content="https://www.politico.com/election-results/{{year}}/{{state}}/{{subpath}}" />
-<link rel="canonical" href="https://www.politico.com/election-results/{{year}}/{{state}}/{{subpath}}" />
+<meta property="og:url" content="https://www.politico.com/election-results/{{year}}/{{state}}/special-election/{{month}}-{{day}}/{{subpath}}" />
+<link rel="canonical" href="https://www.politico.com/election-results/{{year}}/{{state}}/special-election/{{month}}-{{day}}/{{subpath}}" />
 <!-- Project title -->
-<meta property="twitter:title" content="{{ state|title }} Election Results {{year}}: Live primary map by county." />
-<meta property="og:title" content="{{ state|title }} Election Results {{year}}: Live primary map by county." />
+<meta property="twitter:title" content="Live {{ state|title }} Election Results {{year}}" />
+<meta property="og:title" content="Live {{ state|title }} Election Results {{year}}" />
 <!-- Project description -->
-<meta property="twitter:description" content="Get real-time {{year}} {{ state|title }} primary election results & live maps by county. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors." />
-<meta property="og:description" content="Get real-time {{year}} {{ state|title }} primary election results & live maps by county. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors.." />
-<meta name="description" content="Get real-time {{year}} {{ state|title }} primary election results & live maps by county. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors." />
+<meta property="twitter:description" content="Get real-time {{year}} {{ state|title }} special election results. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors." />
+<meta property="og:description" content="Get real-time {{year}} {{ state|title }} special election results. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors.." />
+<meta name="description" content="Get real-time {{year}} {{ state|title }} special election results. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors." />
 {% endblock %}
 
 <!-- Share image -->
 {% block meta-image %}
 <meta property="twitter:image" content="https://www.politico.com/election-results/cdn/img/2018/share/{{division.code_components.postal|lower}}/share.jpg" />
-<meta property="twitter:image:alt" content="POLITICO {{ state|title }} Election Results." />
+<meta property="twitter:image:alt" content="POLITICO {{ state|title }} Special Election Results." />
 <meta property="og:image" content="https://www.politico.com/election-results/cdn/img/2018/share/{{division.code_components.postal|lower}}/share.jpg" />
 <meta property="og:image:type" content="image/jpeg" />
 <meta property="og:image:width" content="1160" />
@@ -53,7 +53,7 @@
      <a href="" class="icon icon-facebook" target="_blank"></a>
      <a href="" class="icon icon-twitter" target="_blank"></a>
      <a class="icon icon-mail" target="_blank"></a>
-  <h1>{{ year }} {{ state|title }} Election Results</h1>
+  <h1>{{ year }} {{ state|title }} Special Election Results</h1>
     <p class="time"><span class="live">LIVE</span> <span class="results">results</span> last updated <span class="timestamp"><time datetime='{{now|timezone:"America/New_York"|date:"c"}}'>{{ now|timezone:"America/New_York"|date:"N j, Y P" }} EST</time>
 </header>
 
@@ -152,7 +152,7 @@ var utag_data = {
   "page_type":"election results",
   "site_domain":"www.politico.com",
   "internal_site_id":"politico",
-  "page_name":"2018 Election:Results:Primary:Main:State:{{division.label}}",
+  "page_name":"2018 Election:Results:Special Election:Main:State:{{division.label}}",
   "content_author":"Tyler Fisher|Sarah Frostenson|Jeremy C.F. Lin|Jon McClure|Lily Mihalik ",
   "content_byline":"By Tyler Fisher, Sarah Frostenson, Jeremy C.F. Lin, Jon McClure and Lily Mihalik ",
 };
