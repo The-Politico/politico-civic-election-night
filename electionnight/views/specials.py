@@ -169,10 +169,24 @@ class SpecialElectionPage(BaseView):
                 'geo_county': '/{}/county.json'.format(geo),
                 'geo_district': '/{}/district.json'.format(geo),
             }
+
+        election_day = ElectionDay.objects.get(date=self.election_date)
+        district = DivisionLevel.objects.get(name=DivisionLevel.DISTRICT)
+        for district in division.children.filter(
+            level=district
+        ).order_by('code'):
+            try:
+                election = district.elections.get(
+                    election_day=election_day
+                )
+                break
+            except:
+                continue
+
         return {
             'context': reverse(
                 'electionnight_api_special-election-detail',
-                args=[self.election_date, self.object.pk],
+                args=[self.election_date, election.division.pk],
             ),
             'geo_county': (
                 'https://s3.amazonaws.com/'
