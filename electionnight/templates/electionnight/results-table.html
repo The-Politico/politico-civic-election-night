@@ -1,8 +1,10 @@
 {% load humanize %}
-<article class="results fifty">         
+<article class="results fifty">
+  {% if election.primary %}
   <header>
     <h4>{{ election.primary_party }} primary</h4>
   </header>
+  {% endif %}
   <section class="results-table">
     <table>
       <tr class="header results-table-row">

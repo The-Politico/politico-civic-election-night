@@ -20,6 +20,7 @@ class StateMixin(object):
             )
         division_ids = []
         for election in date.elections.all():
+            # This maybe should check if state or district... JM 3/12
             if election.division.level.name == DivisionLevel.STATE and \
                     not election.race.special:
                 division_ids.append(election.division.uid)

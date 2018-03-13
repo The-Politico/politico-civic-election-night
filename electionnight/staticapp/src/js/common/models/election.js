@@ -95,7 +95,7 @@ class Election extends Model {
       office: this.office.serialize,
       divisions: divisionResults,
       primary: this.primary,
-      primary_party: this.primary_party.serialize,
+      primary_party: this.primary_party ? this.primary_party.serialize : null,
       runoff: this.runoff,
     };
     return serializedElection;

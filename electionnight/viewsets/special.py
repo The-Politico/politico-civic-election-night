@@ -20,8 +20,10 @@ class SpecialMixin(object):
             )
         division_ids = []
         for election in date.elections.all():
-            if election.division.level.name == DivisionLevel.STATE and \
-                    election.race.special:
+            if (
+                election.division.level.name == DivisionLevel.STATE or
+                election.division.level.name == DivisionLevel.DISTRICT
+            ) and election.race.special:
                 division_ids.append(election.division.uid)
         return Division.objects.filter(uid__in=division_ids)
 

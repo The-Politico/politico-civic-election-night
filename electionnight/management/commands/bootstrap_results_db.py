@@ -11,6 +11,7 @@ from tqdm import tqdm
 from election.models import Candidate, CandidateElection
 from electionnight.conf import settings as app_settings
 from electionnight.models import APElectionMeta
+from geography.models import Division, DivisionLevel
 from vote.models import Votes
 
 
@@ -61,9 +62,17 @@ class Command(BaseCommand):
             candidate=candidate
         )
 
+        if result['level'] in ['county', 'township']:
+            division = Division.objects.get(code=result['fipscode'])
+        else:
+            division = Division.objects.get(
+                level__name=DivisionLevel.STATE,
+                code_components__postal=result['statepostal']
+            )
+
         filter_kwargs = {
             'candidate_election': candidate_election,
-            'division': ap_meta.election.division
+            'division': division
         }
 
         kwargs = {}
@@ -85,6 +94,7 @@ class Command(BaseCommand):
             ap_meta.tabulated = True
 
         ap_meta.save()
+
         Votes.objects.filter(**filter_kwargs).update(**kwargs)
 
     def main(self, options):

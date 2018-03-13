@@ -40,6 +40,9 @@ class StateSerializer(serializers.ModelSerializer):
 
     def get_division(self, obj):
         """Division."""
+        if obj.level.name == DivisionLevel.DISTRICT:
+            return DivisionSerializer(obj.parent).data
+        
         return DivisionSerializer(obj).data
 
     def get_parties(self, obj):
@@ -67,7 +70,15 @@ class StateSerializer(serializers.ModelSerializer):
         """All content for a state's page on an election day."""
         election_day = ElectionDay.objects.get(
             date=self.context['election_date'])
-        return PageContent.objects.division_content(election_day, obj)
+        division = obj
+        # In case of house special election,
+        # use parent division.
+        if obj.level.name == DivisionLevel.DISTRICT:
+            division = obj.parent
+        return PageContent.objects.division_content(
+            election_day,
+            division
+        )
 
     class Meta:
         model = Division

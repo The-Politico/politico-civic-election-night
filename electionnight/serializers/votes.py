@@ -11,12 +11,16 @@ class VotesTableSerializer(serializers.ModelSerializer):
     runoff = serializers.BooleanField()
     first = serializers.SerializerMethodField()
     last = serializers.SerializerMethodField()
+    party = serializers.SerializerMethodField()
 
     def get_first(self, obj):
         return obj.candidate_election.candidate.person.first_name
 
     def get_last(self, obj):
         return obj.candidate_election.candidate.person.last_name
+
+    def get_party(self, obj):
+        return obj.candidate_election.candidate.party.short_label
 
     def get_pct(self, obj):
         return obj.pct * 100
@@ -29,7 +33,8 @@ class VotesTableSerializer(serializers.ModelSerializer):
             'winner',
             'runoff',
             'first',
-            'last'
+            'last',
+            'party'
         )
 
 
