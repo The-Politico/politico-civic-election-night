@@ -37,7 +37,7 @@ class Command(BaseCommand):
 
         subprocess.run(elex_args, stdout=writefile)
 
-    def process_result(self, result):
+    def process_result(self, result, tabulated):
         if result['is_ballot_measure']:
             return
 
@@ -90,7 +90,8 @@ class Command(BaseCommand):
             ap_meta.precincts_total = result['precinctstotal']
             ap_meta.precincts_reporting_pct = result['precinctsreportingpct']
 
-        if result['precinctsreportingpct'] == 1 or result['uncontested']:
+        if (result['precinctsreportingpct'] == 1 or result['uncontested']
+                or tabulated):
             ap_meta.tabulated = True
 
         ap_meta.save()
@@ -116,7 +117,7 @@ class Command(BaseCommand):
                     data = json.load(open('reup.json'))
 
                 for result in tqdm(data):
-                    self.process_result(result)
+                    self.process_result(result, options['tabulated'])
 
                 call_command(
                     'bake_elections',
@@ -144,6 +145,11 @@ class Command(BaseCommand):
         parser.add_argument(
             '--run_once',
             dest='run_once',
+            action='store_true'
+        )
+        parser.add_argument(
+            '--tabulated',
+            dest='tabulated',
             action='store_true'
         )
 
