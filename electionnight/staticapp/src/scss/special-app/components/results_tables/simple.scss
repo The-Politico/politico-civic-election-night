@@ -26,12 +26,13 @@
       background-color: $gop1-light;
     }
     td.key {
-      padding-left: 0;
-      padding-right: 0;
-      margin-left: 0;
-      margin-right: 0;
+      padding: 0;
+      margin: 0;
+      line-height: 0;
       span {
         width: 4px;
+        height: 37px;
+        margin: 2px 0 0;
         border-radius: 0;
       }
     }
@@ -45,6 +46,12 @@ section.election-results section.results-list {
   h4 {
     text-align: center;
     font-size: 24px;
+  }
+
+  @media screen and (max-width: 400px) {
+    h4 {
+      font-size: 22px;
+    }
   }
 
   margin-bottom: 6rem;

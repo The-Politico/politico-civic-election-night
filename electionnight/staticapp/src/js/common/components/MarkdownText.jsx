@@ -15,7 +15,6 @@ const MarkdownText = (props) => {
   } else if (status < 1) {
     content = props.content.page[textTypes.live] || '';
   } else {
-    console.log('post');
     content = props.content.page[textTypes.post] || '';
   }
   return (

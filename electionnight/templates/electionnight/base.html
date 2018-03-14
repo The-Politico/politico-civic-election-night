@@ -112,7 +112,7 @@
       window.$('.icon-twitter').click(function(e){
       e.preventDefault();
       const uri = window.location.href;
-      const status = encodeURIComponent('2018 Election Results: Live map and real-time voting updates ' + uri);
+      const status = encodeURIComponent('2018 {{state|title}} Election Results: real-time voting updates ' + uri);
       window.open('https://twitter.com/home?status=' + status);
       });
     </script>

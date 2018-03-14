@@ -11,8 +11,8 @@
 <meta property="og:url" content="https://www.politico.com/election-results/{{year}}/{{state}}/special-election/{{month}}-{{day}}/{{subpath}}" />
 <link rel="canonical" href="https://www.politico.com/election-results/{{year}}/{{state}}/special-election/{{month}}-{{day}}/{{subpath}}" />
 <!-- Project title -->
-<meta property="twitter:title" content="Live {{ election.division|title }} Special Election Results {{year}}" />
-<meta property="og:title" content="Live {{ election.division|title }} Special Election Results {{year}}" />
+<meta property="twitter:title" content="{{ state|title }} Special Election Results {{year}}: Live {{ election.division.code|ordinal }} District Updates" />
+<meta property="og:title" content="{{ state|title }} Special Election Results {{year}}: Live {{ election.division.code|ordinal }} District Updates" />
 <!-- Project description -->
 <meta property="twitter:description" content="Get real-time {{year}} {{ election.division|title }} special election results. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors." />
 <meta property="og:description" content="Get real-time {{year}} {{ election.division|title }} special election results. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors.." />
@@ -55,10 +55,13 @@
      <a href="" class="icon icon-twitter" target="_blank"></a>
      <a class="icon icon-mail" target="_blank"></a>
     <h1>{{ year }} {{ state|title }} Special Election Results</h1>
-    <p class="time"><span class="live">LIVE</span> <span class="results">results</span> last updated <span class="timestamp"><time datetime='{{now|timezone:"America/New_York"|date:"c"}}'>{{ now|timezone:"America/New_York"|date:"N j, Y P" }} EST</time>
+    <p class="time"><span class="live">LIVE</span> <span class="results">results</span> last updated <span class="timestamp"><time datetime='{{now|timezone:"America/New_York"|date:"c"}}'>{{ now|timezone:"America/New_York"|date:"N j, Y P" }} EDT</time>
 </header>
 
-<div id="special-app">
+<div id="special-app" class="app">
+  <section class="introduction">
+    <p>{{ baked_content }}</p>
+  </section>
   <section class="election-results">
     {% if governor_elections %}
     <section class="results-list">

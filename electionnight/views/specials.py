@@ -69,6 +69,7 @@ class SpecialElectionPage(BaseView):
             ElectionDay.objects.get(date=self.election_date),
             self.division
         )
+        context['baked_content'] = context['content']['page']['before-results']
         context['election'] = self.election
 
         return {
