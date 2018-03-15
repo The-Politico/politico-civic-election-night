@@ -1,10 +1,10 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='django-politico-civic-election-night',
-    version='0.0.0-alpha',
+    name='politico-civic-election-night',
+    version='0.1.0',
     description='',
-    url='https://github.com/The-Politico/django-politico-civic-election-night',
+    url='https://github.com/The-Politico/politico-civic-election-night',
     author='POLITICO interactive news',
     author_email='interactives@politico.com',
     license='MIT',
@@ -26,8 +26,20 @@ setup(
     packages=find_packages(exclude=['docs', 'tests', 'example']),
 
     install_requires=[
-        'django-uuslug',
+        'celery',
+        'django-cors-headers',
+        'django',
         'djangorestframework',
+        'dj-database-url',
+        'elex',
+        'politico-civic-entity',
+        'politico-civic-geography',
+        'politico-civic-government',
+        'politico-civic-election',
+        'politico-civic-demography',
+        'politico-civic-vote',
+        'politico-civic-almanac',
+        'psycopg2',
     ],
 
     extras_require={
