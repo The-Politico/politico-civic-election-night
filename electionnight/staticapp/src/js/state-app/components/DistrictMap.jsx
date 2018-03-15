@@ -16,7 +16,7 @@ class Map extends React.Component {
 
     const features = topojson.feature(geoData, {
       type: 'GeometryCollection',
-      geometries: geoData.objects['-'].geometries,
+      geometries: geoData.objects['divisions'].geometries,
     });
 
     const path = d3.geoPath()
