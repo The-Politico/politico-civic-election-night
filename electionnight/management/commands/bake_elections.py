@@ -33,8 +33,6 @@ class Command(BaseCommand):
 
             states.append(division)
 
-        print(states)
-
         return list(set(states))
 
     def bake_state_pages(self, elections):
