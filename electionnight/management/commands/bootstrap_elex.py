@@ -131,12 +131,18 @@ class Command(BaseCommand):
         else:
             party = None
 
-        return election.Election.objects.get(
-            election_day=election_day,
-            division=race.office.division,
-            race=race,
-            party=party
-        )
+        try:
+            election.Election.objects.get(
+                election_day=election_day,
+                division=race.office.division,
+                race=race,
+                party=party
+            )
+        except:
+            print('Could not find election for {0} {1} {2}'.format(
+                race, party, row['last']
+            ))
+            return None
 
     def get_or_create_party(self, row):
         """
@@ -260,6 +266,9 @@ class Command(BaseCommand):
         division = self.get_division(row)
         race = self.get_race(row, division)
         election = self.get_election(row, race)
+
+        if not election:
+            return None
 
         party = self.get_or_create_party(row)
         candidate = self.get_or_create_candidate(row, party, race)
