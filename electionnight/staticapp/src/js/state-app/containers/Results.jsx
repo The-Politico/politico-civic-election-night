@@ -62,7 +62,7 @@ const Results = (props) => {
       <section className='election-results'>
         <StickyHeader {...props} />
         {fetchRefresh}
-        <JumpLinks />
+        <JumpLinks {...props} />
         <Governor {...props} />
         <Senator {...props} />
       </section>

@@ -12,11 +12,13 @@ const Governor = (props) => {
   const governor = session.Office.filter(
     d => d.name.includes('Governor')).toModelArray();
 
+  if (governor.length === 0) return (<div />)
+
   const elections = session.Election.filter({
     office: governor[0].id,
   }).toModelArray();
 
-  if (elections.length === 0) return null;
+  if (elections.length === 0) return (<div />);
 
   elections.sort(sortByParty);
 
