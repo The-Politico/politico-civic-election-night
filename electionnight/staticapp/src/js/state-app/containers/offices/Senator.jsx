@@ -12,9 +12,13 @@ const Senator = (props) => {
   const senator = session.Office.filter(
     d => d.name.includes('U.S. Senate')).toModelArray();
 
+  if (senator.length === 0) return (<div />);
+
   const elections = session.Election.filter({
     office: senator[0].id,
   }).toModelArray();
+
+  if (elections.length === 0) return (<div />);
 
   elections.sort(sortByParty);
 

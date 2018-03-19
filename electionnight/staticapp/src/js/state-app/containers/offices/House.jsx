@@ -16,6 +16,8 @@ const House = (props) => {
   const elections = houseOffices.map(
     office => session.Election.filter({office: office.id}).toModelArray());
 
+  if (elections.length === 0) return (<div />);
+
   const seats = elections.map(officeElections => {
     officeElections.sort(sortByParty);
     return (
