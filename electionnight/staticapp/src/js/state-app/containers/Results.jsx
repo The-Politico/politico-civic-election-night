@@ -1,19 +1,21 @@
 import React from 'react';
 import { DivisionLevels } from 'CommonConstants/geography';
-import StickyHeader from 'StateApp/components/nav/StickyHeader';
+import StickyHeader from 'Common/components/nav/StickyHeader';
 import Governor from './offices/Governor';
 import Senator from './offices/Senator';
 import House from './offices/House';
 import JumpLinks from 'StateApp/components/nav/JumpLinks';
-import FetchRefresh from 'StateApp/components/FetchRefresh';
-import MarkdownText from 'StateApp/components/Markdowntext';
-import Advertisement from 'StateApp/components/Advertisement';
+import FetchRefresh from 'Common/components/FetchRefresh';
+import MarkdownText from 'Common/components/Markdowntext';
+import Advertisement from 'Common/components/Advertisement';
+import LiveChatPromo from 'Common/components/nav/LiveChatPromo';
 
 const Results = (props) => {
   // We do some queries higher up so we don't need
   // to repeat them in sibling components...
   // ... Serialize candidates
   const {Candidate, Division, APMeta} = props.session;
+  const {stateResults} = props;
   const candidates = {};
   Candidate.all().toModelArray().forEach(candidate => {
     if (!candidate.id) return;
@@ -36,6 +38,13 @@ const Results = (props) => {
     }
   });
 
+  props.resultsIn = false;
+  stateResults.forEach((result) => {
+    if (result.voteCount > 0) {
+      props.resultsIn = true;
+    }
+  });
+
   const live = document.querySelector('.time .live');
   const results = document.querySelector('.time .results');
   if (props.tabulated) {
@@ -53,6 +62,10 @@ const Results = (props) => {
     />
   );
 
+  const liveChatPromo = props.resultsIn ? (
+    <LiveChatPromo />
+  ) : null;
+
   return (
     <div>
       <MarkdownText
@@ -61,6 +74,7 @@ const Results = (props) => {
       />
       <section className='election-results'>
         <StickyHeader {...props} />
+        {liveChatPromo}
         {fetchRefresh}
         <JumpLinks {...props} />
         <Governor {...props} />
