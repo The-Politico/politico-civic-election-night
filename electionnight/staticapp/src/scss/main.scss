@@ -6,6 +6,13 @@
 @import 'fetch-refresh';
 @import 'footer-nav';
 
+#app section.introduction, #special-app section.introduction {
+  p {
+    font-size: 20px;
+    line-height: 1.5;
+  }
+}
+
 .county-map{
     min-height: 350px;
 }
