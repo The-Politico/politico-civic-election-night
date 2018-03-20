@@ -132,7 +132,7 @@ class Command(BaseCommand):
             party = None
 
         try:
-            election.Election.objects.get(
+            return election.Election.objects.get(
                 election_day=election_day,
                 division=race.office.division,
                 race=race,
@@ -266,7 +266,6 @@ class Command(BaseCommand):
         division = self.get_division(row)
         race = self.get_race(row, division)
         election = self.get_election(row, race)
-
         if not election:
             return None
 
