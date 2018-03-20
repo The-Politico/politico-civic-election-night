@@ -205,7 +205,7 @@ const addPageTypeContent = (content, dispatch) =>
 function updateTimestamp (time) {
   const domTime = document.querySelector('time');
   const apDate = Dateline(time);
-  domTime.textContent = `${apDate.getAPDate()}, ${apDate.getFullYear()} ${apDate.getAPTime()} EST`;
+  domTime.textContent = `${apDate.getAPDate()}, ${apDate.getFullYear()} ${apDate.getAPTime()} EDT`;
 }
 
 let compareContext = null;
