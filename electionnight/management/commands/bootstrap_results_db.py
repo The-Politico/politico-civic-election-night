@@ -44,9 +44,15 @@ class Command(BaseCommand):
         if result['level'] != 'state':
             return
 
-        ap_meta = APElectionMeta.objects.get(
-            ap_election_id=result['raceid'],
-        )
+        try:
+            ap_meta = APElectionMeta.objects.get(
+                ap_election_id=result['raceid'],
+            )
+        except:
+            print('No AP Meta found for {0} {1} {2}'.format(
+                result['last'], result['officename'], result['reportingunitname']
+            ))
+            return
 
         id_components = result['id'].split('-')
         candidate_id = '{0}-{1}'.format(
