@@ -7,7 +7,7 @@ from django.db import models
 from election.models import ElectionDay
 from geography.models import Division, DivisionLevel
 
-from electionnight.managers.page_content import PageContentManager
+from electionnight.managers import PageContentManager
 
 from .page_type import PageType
 
