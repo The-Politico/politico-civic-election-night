@@ -25,7 +25,7 @@ class StickyHeader extends React.Component {
     return rect.top + scrollTop;
   }
   setStickyNav () {
-    const waypoint = document.getElementById('fetch-refresh-top');
+    const waypoint = document.querySelector('.jumpto');
     const position = this.getOffset(waypoint);
 
     if (window.scrollY > position && !this.state.sticky) {
