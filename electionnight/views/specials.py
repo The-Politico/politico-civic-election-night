@@ -171,8 +171,12 @@ class SpecialElectionPage(BaseView):
         if production:
             return {
                 'context': 'context.json',
-                'geo_county': '/{}/county.json'.format(geo),
-                'geo_district': '/{}/district.json'.format(geo),
+                'geo_county': (
+                    'https://www.politico.com/'
+                    '{}/county.json').format(geo),
+                'geo_district': (
+                    'https://www.politico.com/'
+                    '/{}/district.json').format(geo),
             }
 
         return {
