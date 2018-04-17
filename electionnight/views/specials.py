@@ -168,7 +168,7 @@ class SpecialElectionPage(BaseView):
         geo = (
             'election-results/cdn/geography/us-census/cb/500k/2016/states/{}'
         ).format(division.code)
-        if production:
+        if production and settings.AWS_S3_BUCKET == 'interactives.politico.com':
             return {
                 'context': 'context.json',
                 'geo_county': (
