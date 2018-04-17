@@ -24,7 +24,7 @@ setup(
     keywords='',
 
     packages=find_packages(exclude=['docs', 'tests', 'example']),
-    include_package_data=True
+    include_package_data=True,
     install_requires=[
         'celery',
         'django-cors-headers',
