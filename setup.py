@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='politico-civic-election-night',
-    version='0.1.3',
+    version='0.1.4',
     description='',
     url='https://github.com/The-Politico/politico-civic-election-night',
     author='POLITICO interactive news',
@@ -24,7 +24,7 @@ setup(
     keywords='',
 
     packages=find_packages(exclude=['docs', 'tests', 'example']),
-
+    include_package_data=True
     install_requires=[
         'celery',
         'django-cors-headers',
