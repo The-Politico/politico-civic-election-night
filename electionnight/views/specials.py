@@ -9,12 +9,11 @@ from time import strptime
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from election.models import ElectionDay
-from geography.models import Division, DivisionLevel
-
 from electionnight.conf import settings
 from electionnight.models import PageContent
 from electionnight.serializers import ElectionViewSerializer, StateSerializer
 from electionnight.utils.auth import secure
+from geography.models import Division, DivisionLevel
 
 from .base import BaseView
 
@@ -63,6 +62,8 @@ class SpecialElectionPage(BaseView):
         ).elections.first()
         context['secret'] = settings.SECRET_KEY
         context['year'] = self.year
+        context['month'] = self.month
+        context['day'] = self.day
         context['state'] = self.state
         context['election_date'] = self.election_date
         context['content'] = PageContent.objects.division_content(
