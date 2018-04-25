@@ -4,6 +4,7 @@ import groupBy from 'lodash/groupBy';
 import values from 'lodash/values';
 import { aliases } from 'CommonConstants/parties';
 import ResultsTable from 'StateApp/components/ResultsTables/Map/Table';
+import Uncontested from 'StateApp/components/ResultsTables/Uncontested';
 import CountyMap from 'StateApp/components/ResultsMaps/CountyMap';
 import { primaryColorsDem, primaryColorsGOP } from 'StateApp/constants/colors';
 
@@ -77,6 +78,10 @@ class TableMap extends React.Component {
     return candidateColors;
   }
 
+  checkIfUncontested(results) {
+    return results[0].candidate.uncontested;
+  }
+
   render () {
     const { election } = this.props;
     const state = this.getStateResults();
@@ -100,7 +105,19 @@ class TableMap extends React.Component {
       <span className='runoff'>Race goes to runoff</span>
     ) : null;
 
-    const map = election.apMeta.overrideApVotes ? null : (
+    const uncontested = this.checkIfUncontested(results);
+
+    const table = uncontested ? (
+      <Uncontested candidate={results[0].candidate} />
+    ) : (
+      <ResultsTable
+        results={results}
+        status={status}
+        candidateColors={candidateColors}
+      />
+    );
+
+    const map = election.apMeta.overrideApVotes || uncontested ? null : (
       <CountyMap
         candidateColors={candidateColors}
         {...this.props}
@@ -114,11 +131,7 @@ class TableMap extends React.Component {
         </header>
         <div className='container'>
           <div className='row'>
-            <ResultsTable
-              results={results}
-              status={status}
-              candidateColors={candidateColors}
-            />
+            {table}
             {map}
             <div className='clear' />
           </div>
