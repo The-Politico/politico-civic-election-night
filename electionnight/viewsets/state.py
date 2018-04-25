@@ -20,10 +20,13 @@ class StateMixin(object):
             )
         division_ids = []
         for election in date.elections.all():
-            # This maybe should check if state or district... JM 3/12
             if election.division.level.name == DivisionLevel.STATE and \
                     not election.race.special:
                 division_ids.append(election.division.uid)
+            elif election.division.level.name == DivisionLevel.DISTRICT and \
+                    not election.race.special:
+                division_ids.append(election.division.parent.uid)
+
         return Division.objects.filter(uid__in=division_ids)
 
     def get_serializer_context(self):
