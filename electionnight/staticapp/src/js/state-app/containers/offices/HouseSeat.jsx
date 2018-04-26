@@ -11,7 +11,7 @@ const HouseSeat = (props) => {
     <section className='results-group'>
       <header>
         <h4 className='district'>
-          {props.elections[0].office.label}
+          {props.elections[0].office.label} {props.elections[0].special ? 'Special' : ''}
         </h4>
         <DistrictMap
           {...props}

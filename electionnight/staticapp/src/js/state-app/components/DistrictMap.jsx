@@ -24,8 +24,8 @@ class Map extends React.Component {
         d3.geoMercator()
           .fitSize([square, square], features)
       );
-
-    const svg = d3.select(`#district-${district}`)
+    
+    const svg = d3.select(`#district-${district}${this.props.elections[0].special ? '-special' : ''}`)
       .attr('width', square)
       .attr('height', square);
     const paths = svg.selectAll('path')
@@ -45,7 +45,7 @@ class Map extends React.Component {
     return (
       <div className='mapContainer'>
         <div className='map'>
-          <svg id={`district-${this.props.district}`} />
+          <svg id={`district-${this.props.district}${this.props.elections[0].special ? '-special' : '' }`} />
         </div>
       </div>
     );

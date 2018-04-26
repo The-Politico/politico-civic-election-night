@@ -19,9 +19,23 @@ const House = (props) => {
   if (elections.length === 0) return (<div />);
 
   const seats = elections.map(officeElections => {
+    let specials = [];
+    officeElections.forEach((election) => {
+      if (election.special) {
+        specials.push(election);
+      }
+    });
+
+    officeElections = officeElections.filter(item => !item.special);
     officeElections.sort(sortByParty);
+    specials.sort(sortByParty);
     return (
-      <HouseSeat elections={officeElections} {...props} />
+      <div>
+        <HouseSeat elections={officeElections} {...props} />
+        {specials.length > 0 ? (
+          <HouseSeat elections={specials} {...props} />
+        ) : null}
+      </div>
     );
   });
 
