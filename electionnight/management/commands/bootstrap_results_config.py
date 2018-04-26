@@ -103,7 +103,8 @@ class Command(BaseCommand):
             Q(division__slug=state) | Q(division__parent__slug=state),
         )
 
-        if state_elections.count() == 0:
+        # first check to see if we have normal elections
+        if state_elections.filter(race__special=False).count() == 0:
             return
 
         levels = ['state', 'county']
