@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.core.management.base import BaseCommand
+from django.db.models import Q
 from election.models import ElectionDay
 from electionnight.views import SpecialElectionPage, StatePage
 from geography.models import DivisionLevel
@@ -50,13 +51,19 @@ class Command(BaseCommand):
             view.publish_template(**kwargs)
 
             sample_election = elections.filter(division=state).first()
+
+            if not sample_election:
+                sample_election = elections.filter(
+                    division__in=state.children.all()
+                ).first()
+
             if sample_election.election_type.is_primary():
                 view.publish_statics(subpath='primary/')
                 view.publish_template(subpath='primary/', **kwargs)
             # TODO: If general or primary runoff...
 
-    def bake_special_pages(self, elections):
-        states = self.fetch_states(elections)
+    def bake_special_page(self, election):
+        states = self.fetch_states([election])
         self.stdout.write(self.style.SUCCESS('Baking special pages.'))
         for state in tqdm(states):
             self.stdout.write('> {}'.format(state.name))
@@ -83,4 +90,22 @@ class Command(BaseCommand):
             self.bake_state_pages(elections)
 
             if len(specials) > 0:
-                self.bake_special_pages(specials)
+                for special in specials:
+                    if special.division.level.name == DivisionLevel.STATE:
+                        state = special.division
+                    elif special.division.level.name == DivisionLevel.DISTRICT:
+                        state = special.division.parent
+
+                    check_elections = elections.filter(
+                        Q(division=state) | Q(division__parent=state)
+                    )
+
+                    if len(check_elections) > 0:
+                        print(
+                            'No special election page for {}'.format(
+                                special.race
+                            )
+                        )
+                        continue
+                    else:
+                        self.bake_special_page(special)

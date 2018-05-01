@@ -19,13 +19,15 @@ class StateMixin(object):
                 'No elections on {}.'.format(self.kwargs['date'])
             )
         division_ids = []
-        for election in date.elections.all():
-            if election.division.level.name == DivisionLevel.STATE and \
-                    not election.race.special:
-                division_ids.append(election.division.uid)
-            elif election.division.level.name == DivisionLevel.DISTRICT and \
-                    not election.race.special:
-                division_ids.append(election.division.parent.uid)
+
+        normal_elections = date.elections.filter(race__special=False)
+
+        if len(normal_elections) > 0:
+            for election in date.elections.all():
+                if election.division.level.name == DivisionLevel.STATE:
+                    division_ids.append(election.division.uid)
+                elif election.division.level.name == DivisionLevel.DISTRICT:
+                    division_ids.append(election.division.parent.uid)
 
         return Division.objects.filter(uid__in=division_ids)
 

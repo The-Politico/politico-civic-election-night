@@ -136,11 +136,11 @@ class Command(BaseCommand):
                 election_day=election_day,
                 division=race.office.division,
                 race=race,
-                party=party
+                party=party,
             )
         except:
             print('Could not find election for {0} {1} {2}'.format(
-                race, party, row['last']
+                race, row['party'], row['last']
             ))
             return None
 

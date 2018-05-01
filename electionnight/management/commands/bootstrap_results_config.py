@@ -101,10 +101,10 @@ class Command(BaseCommand):
         """
         state_elections = elections.filter(
             Q(division__slug=state) | Q(division__parent__slug=state),
-            race__special=False,
         )
 
-        if state_elections.count() == 0:
+        # first check to see if we have normal elections
+        if state_elections.filter(race__special=False).count() == 0:
             return
 
         levels = ['state', 'county']
@@ -121,29 +121,40 @@ class Command(BaseCommand):
                 state_elections, config_key, levels, output_key
             )
 
-    def serialize_special(self, state, elections, cycle):
+    def serialize_special(self, state, elections, specials, cycle):
         """
         /election-results/cycle/state/special-election/MMM-DD
         """
         state_elections = elections.filter(
             Q(division__slug=state) | Q(division__parent__slug=state),
-            race__special=True,
+            race__special=False
         )
 
-        if state_elections.count() == 0:
+        # We won't do separate special pages if there's already a normal page
+        if state_elections.count() > 0:
+            return
+
+        state_special_elections = specials.filter(
+            Q(division__slug=state) | Q(division__parent__slug=state),
+        )
+
+        if state_special_elections.count() == 0:
             return
 
         levels = ['state', 'county']
-        config_key = state
+        config_key = '{0}-special'.format(state)
         output_key = '{0}/{1}/special-election/{2}'.format(
             cycle,
             state,
-            state_elections.first().election_day.special_election_datestring()
+            state_special_elections.first()
+            .election_day.special_election_datestring()
         )
 
-        self._write_to_json(state_elections, config_key, levels, output_key)
+        self._write_to_json(
+            state_special_elections, config_key, levels, output_key
+        )
 
-        if state_elections[0].election_type.is_primary():
+        if state_special_elections[0].election_type.is_primary():
             config_key = '{0}-{1}'.format(config_key, 'primary')
             output_key = os.path.join(output_key, 'primary')
 
@@ -339,6 +350,7 @@ class Command(BaseCommand):
         elections = Election.objects.filter(
             election_day__date=options['election_date'],
         )
+        specials = elections.filter(race__special=True)
 
         federal_bodies = set(elections.filter(
             race__office__body__label__isnull=False,
@@ -382,7 +394,7 @@ class Command(BaseCommand):
 
         for state in states:
             self.serialize_state(state, elections, latest_cycle)
-            self.serialize_special(state, elections, latest_cycle)
+            self.serialize_special(state, elections, specials, latest_cycle)
 
             for body in state_bodies:
                 self.serialize_state_body(state, body, elections, latest_cycle)
