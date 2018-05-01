@@ -115,6 +115,13 @@ section.results-group {
   margin-bottom: 3rem;
 }
 
+div[name="senate-anchor"], div[name="governor-anchor"] {
+  .uncontested {
+    border-top: none;
+    margin-top: 0;
+    margin-bottom: 50px;
+  }
+}
 
 @media(max-width: 860px){
   td{
