@@ -14,7 +14,7 @@ const Results = (props) => {
   // We do some queries higher up so we don't need
   // to repeat them in sibling components...
   // ... Serialize candidates
-  const {Candidate, Division, APMeta} = props.session;
+  const {Candidate, Division, APMeta, Office} = props.session;
   const {stateResults} = props;
   const candidates = {};
   Candidate.all().toModelArray().forEach(candidate => {
@@ -30,6 +30,13 @@ const Results = (props) => {
   props.state = Division
     .filter(d => d.level === DivisionLevels.state)
     .toModelArray();
+
+  props.governor = Office.filter(
+    d => d.name.includes('Governor')).toModelArray();
+  props.senator = Office.filter(
+    d => d.name.includes('U.S. Senate')).toModelArray();
+  props.houseOffices = Office.filter(
+    d => d.name.includes('U.S. House')).toModelArray();
 
   props.tabulated = true;
   APMeta.all().toModelArray().forEach(meta => {
@@ -66,6 +73,10 @@ const Results = (props) => {
     <LiveChatPromo />
   ) : null;
 
+  const bigAd = props.senator.length > 0 || props.governor.length > 0 ? (
+    <Advertisement adID='pol-06' />
+  ) : null;
+
   return (
     <div>
       <MarkdownText
@@ -80,7 +91,7 @@ const Results = (props) => {
         <Governor {...props} />
         <Senator {...props} />
       </section>
-      <Advertisement adID='pol-06' />
+      {bigAd}
       <section className='election-results'>
         <House {...props} />
       </section>
