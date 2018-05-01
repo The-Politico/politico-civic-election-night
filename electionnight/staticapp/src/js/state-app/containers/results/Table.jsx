@@ -36,10 +36,11 @@ class Table extends React.Component {
 
     if (!stateResults) return (<div />);
 
-    const { results, precinctsReporting, precinctsTotal } = stateResults;
+    const { results, precinctsReporting, precinctsReportingPct, precinctsTotal } = stateResults;
 
     const status = {
       reporting: precinctsReporting,
+      pct: precinctsReportingPct,
       total: precinctsTotal,
     };
 

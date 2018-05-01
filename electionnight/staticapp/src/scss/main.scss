@@ -17,6 +17,10 @@
     min-height: 350px;
 }
 
+td.vote-percent {
+  max-width: 20px;
+}
+
 td.vote-count{
   text-align: right;
 }
@@ -47,12 +51,24 @@ section.results-map{
 .results-group table tr td.precincts-reporting{
   padding-bottom: 2px;
 }
+
+.results-group table tr.total {
+  color: #7b7b7b;
+
+  td {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-bottom: none;
+    font-size: 13px;
+  }
+}
+
 .incumbent{
   font-size: 10px;
   color: #7b7b7b;
   border: 0;
-  padding-top:0;
-  padding-bottom:0;
+  text-align: right;
+  padding-bottom: 2px;
 }
 
 .results h4 span.runoff{
@@ -125,8 +141,7 @@ section.results-group header p.subhed {
 
 div[name="senate-anchor"], div[name="governor-anchor"] {
   .uncontested {
-    border-top: none;
-    margin-top: 0;
+    width: 45%;
     margin-bottom: 50px;
   }
 }

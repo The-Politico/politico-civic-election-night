@@ -88,10 +88,11 @@ class TableMap extends React.Component {
 
     if (!state) return (<div />);
 
-    const { results, precinctsReporting, precinctsTotal } = state;
+    const { results, precinctsReporting, precinctsReportingPct, precinctsTotal } = state;
 
     const status = {
       reporting: precinctsReporting,
+      pct: precinctsReportingPct,
       total: precinctsTotal,
     };
 
