@@ -63,7 +63,7 @@ class Command(BaseCommand):
             # TODO: If general or primary runoff...
 
     def bake_special_page(self, election):
-        states = self.fetch_states([elections])
+        states = self.fetch_states([election])
         self.stdout.write(self.style.SUCCESS('Baking special pages.'))
         for state in tqdm(states):
             self.stdout.write('> {}'.format(state.name))
