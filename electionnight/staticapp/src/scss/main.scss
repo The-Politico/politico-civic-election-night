@@ -115,6 +115,14 @@ section.results-group {
   margin-bottom: 3rem;
 }
 
+
+section.results-group header p.subhed {
+  margin-top: 0;
+  text-align: center;
+  font-family: $din;
+  margin: -0.25rem auto .5rem;
+}
+
 div[name="senate-anchor"], div[name="governor-anchor"] {
   .uncontested {
     border-top: none;

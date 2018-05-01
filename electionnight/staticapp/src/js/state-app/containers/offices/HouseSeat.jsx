@@ -13,6 +13,9 @@ const HouseSeat = (props) => {
         <h4 className='district'>
           {props.elections[0].office.label} {props.elections[0].special ? 'Special' : ''}
         </h4>
+        {props.elections[0].special ? (
+          <p className='subhed'>To complete current term</p>
+        ) : null}
         <DistrictMap
           {...props}
           district={props.elections[0].division.code}
