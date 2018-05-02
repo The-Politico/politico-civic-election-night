@@ -143,16 +143,32 @@ class StatePage(BaseView):
         geo = (
             'election-results/cdn/geography/us-census/cb/500k/2016/states/{}'
         ).format(division.code)
-        if production:
+        if (production and
+           settings.AWS_S3_BUCKET == 'interactives.politico.com'):
             return {
                 'context': 'context.json',
-                'geo_county': '/{}/county.json'.format(geo),
-                'geo_district': '/{}/district.json'.format(geo),
+                'geo_county': (
+                    'https://www.politico.com/'
+                    '{}/county.json').format(geo),
+                'geo_district': (
+                    'https://www.politico.com/'
+                    '/{}/district.json').format(geo),
+            }
+        elif (production and
+              settings.AWS_S3_BUCKET != 'interactives.politico.com'):
+            return {
+                'context': 'context.json',
+                'geo_county': (
+                    'https://s3.amazonaws.com/'
+                    'interactives.politico.com/{}/county.json').format(geo),
+                'geo_district': (
+                    'https://s3.amazonaws.com/'
+                    'interactives.politico.com/{}/district.json').format(geo),
             }
         return {
             'context': reverse(
-                'electionnight_api_state-election-detail',
-                args=[self.election_date, self.object.pk],
+                'electionnight_api_special-election-detail',
+                args=[self.election_date, self.election.division.pk],
             ),
             'geo_county': (
                 'https://s3.amazonaws.com/'
@@ -161,3 +177,4 @@ class StatePage(BaseView):
                 'https://s3.amazonaws.com/'
                 'interactives.politico.com/{}/district.json').format(geo),
         }
+
