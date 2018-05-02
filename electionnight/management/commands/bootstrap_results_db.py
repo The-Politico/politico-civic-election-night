@@ -60,6 +60,7 @@ class Command(BaseCommand):
             id_components[2]
         )
         candidate = Candidate.objects.get(
+            race=ap_meta.election.race,
             ap_candidate_id=candidate_id
         )
 
