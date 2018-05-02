@@ -8,6 +8,7 @@ import json
 
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
+from almanac.models import ElectionEvent
 from election.models import ElectionDay
 from electionnight.conf import settings
 from electionnight.models import PageContent
@@ -70,6 +71,9 @@ class StatePage(BaseView):
         return template
 
     def get_nav_links(self, subpath=''):
+        todays_events = ElectionEvent.objects.filter(
+            election_day__date=self.election_date
+        ).values_list('division__label', flat=True)
         state_level = DivisionLevel.objects.get(name=DivisionLevel.STATE)
         # All states except DC
         states = Division.objects.filter(
@@ -89,7 +93,7 @@ class StatePage(BaseView):
                         state.slug
                     ),
                     'name': state.label,
-                    'live': state.has_elections(self.election_date)
+                    'live': state.label in todays_events
                 } for state in states
             ],
         }
