@@ -4,6 +4,8 @@ State result pages.
 URL PATTERNS:
 /election-results/{YEAR}/{STATE}/
 """
+import json
+
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from election.models import ElectionDay
@@ -55,12 +57,17 @@ class StatePage(BaseView):
             self.division
         )
 
-        return {
+        template = {
             **context,
             **self.get_paths_context(production=context['production']),
             **self.get_elections_context(context['division']),
-            **self.get_nav_links(subpath=context['subpath']),
         }
+
+        nav, nav_json = self.get_nav_links(context['subpath'])
+        template['nav'] = nav
+        template['nav_json'] = nav_json
+
+        return template
 
     def get_nav_links(self, subpath=''):
         state_level = DivisionLevel.objects.get(name=DivisionLevel.STATE)
@@ -74,19 +81,20 @@ class StatePage(BaseView):
         depth = subpath.lstrip('/').count('/')
         for i in range(depth):
             relative_prefix += '../'
-        return {
-            'nav': {
-                'states': [
-                    {
-                        'link': '../{0}{1}/'.format(
-                            relative_prefix,
-                            state.slug
-                        ),
-                        'name': state.label,
-                    } for state in states
-                ],
-            }
+        data = {
+            'states': [
+                {
+                    'link': '../{0}{1}/'.format(
+                        relative_prefix,
+                        state.slug
+                    ),
+                    'name': state.label,
+                    'live': state.has_elections(self.election_date)
+                } for state in states
+            ],
         }
+
+        return data, json.dumps(data)
 
     def get_elections_context(self, division):
         elections_context = {}
@@ -167,8 +175,8 @@ class StatePage(BaseView):
             }
         return {
             'context': reverse(
-                'electionnight_api_special-election-detail',
-                args=[self.election_date, self.election.division.pk],
+                'electionnight_api_state-election-detail',
+                args=[self.election_date, self.object.pk],
             ),
             'geo_county': (
                 'https://s3.amazonaws.com/'
@@ -177,4 +185,3 @@ class StatePage(BaseView):
                 'https://s3.amazonaws.com/'
                 'interactives.politico.com/{}/district.json').format(geo),
         }
-

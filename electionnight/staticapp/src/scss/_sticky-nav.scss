@@ -190,6 +190,10 @@
       a{
         text-decoration: none;
         color: #666;
+
+        &.live {
+          font-weight: bold;
+        }
       }
     }
   }
