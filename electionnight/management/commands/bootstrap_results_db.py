@@ -100,6 +100,8 @@ class Command(BaseCommand):
         if (result['precinctsreportingpct'] == 1 or result['uncontested']
                 or tabulated):
             ap_meta.tabulated = True
+        else:
+            ap_meta.tabulated = False
 
         ap_meta.save()
 
