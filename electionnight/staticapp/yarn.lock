@@ -2733,7 +2733,7 @@ circular-json@^0.3.1:
 
 "civic_map-county-primary-results@git+ssh://git@github.com:The-Politico/politico-civic-graphics_map_county-primary-results":
   version "1.0.0"
-  resolved "git+ssh://git@github.com:The-Politico/politico-civic-graphics_map_county-primary-results#413011c979d6faa3c87983baa074eeec58e42073"
+  resolved "git+ssh://git@github.com:The-Politico/politico-civic-graphics_map_county-primary-results#d2a9f06a21fe7d6050883078dc4321fd8f638ac6"
   dependencies:
     "@babel/core" "^7.0.0-beta.40"
     autoprefixer "^8.0.0"

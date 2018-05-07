@@ -17,6 +17,11 @@ const MarkdownText = (props) => {
   } else {
     content = props.content.page[textTypes.post] || '';
   }
+
+  if (!content) {
+    return (<div />)
+  }
+
   return (
     <section className='introduction'>
       <ReactMarkdown

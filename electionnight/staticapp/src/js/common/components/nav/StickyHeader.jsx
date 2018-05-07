@@ -80,8 +80,7 @@ class StickyHeader extends React.Component {
           </div>
           <div className='title'>
             <div className='logo'>
-              <span className='icon icon-politico' />
-              <span className='icon-text'>POLITICO</span>
+              <span className='bt-icon bt-icon--politico' />
               <span className='elex-tag'> Elections</span>
             </div>
             <div className='page-title'>

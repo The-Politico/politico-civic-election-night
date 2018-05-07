@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="{{ paths.css }}" />
     {% endif %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://www.politico.com/interactives/cdn/fonts/base-icons/politico-base-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="https://www.politico.com/interactives/cdn/fonts/battletoads/icons/politico-battletoads-icons.min.css">
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
@@ -103,13 +103,13 @@
       a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a)
       })();
 
-      window.$('.icon-facebook').click(function(e){
+      window.$('.custom-icon--facebook').click(function(e){
         e.preventDefault();
         const uri = encodeURIComponent(window.location.href);
         window.open('https://www.facebook.com/sharer/sharer.php?u=' + uri);
       });
 
-      window.$('.icon-twitter').click(function(e){
+      window.$('.bt-icon--twitter').click(function(e){
       e.preventDefault();
       const uri = window.location.href;
       const status = encodeURIComponent('2018 {{state|title}} Election Results: real-time voting updates ' + uri);

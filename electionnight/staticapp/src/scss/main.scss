@@ -322,3 +322,18 @@ td.incumbent{
     padding: 4rem 0 2rem;
     text-align: center;
 }
+
+.jumpto a {
+  color: black;
+}
+
+#global-header .bt-icon--politico {
+  font-size: 16px;
+  line-height: 46px;
+  margin-left: .7em;
+  color: $politico-red;
+
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
+}
