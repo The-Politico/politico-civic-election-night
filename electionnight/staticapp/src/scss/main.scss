@@ -6,6 +6,7 @@
 @import 'fetch-refresh';
 @import 'footer-nav';
 
+
 #app section.introduction, #special-app section.introduction {
   p {
     font-size: 20px;
@@ -294,4 +295,30 @@ div[name="senate-anchor"], div[name="governor-anchor"] {
     padding: 0;
     margin: 0;
   }
+}
+
+.header th{
+    font-size: .8rem;
+}
+
+td.candidate{
+    letter-spacing: .3px;
+}
+
+.live-analysis{
+    font-family: $din;
+}
+
+.incumbent{
+    font-family: $din;
+}
+
+td.incumbent{
+    line-height:1;
+}
+
+.credits{
+    font-family: $din;
+    padding: 4rem 0 2rem;
+    text-align: center;
 }

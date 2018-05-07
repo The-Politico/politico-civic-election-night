@@ -2,8 +2,6 @@
 @import '~politico-style/scss/base/theme/colors/base';
 
 .detail-results{
-  font-family: $franklin;
-
   @import 'header_row';
   @import 'candidate_row';
 }

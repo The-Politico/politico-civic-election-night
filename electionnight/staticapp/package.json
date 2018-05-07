@@ -23,7 +23,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "civic_map-county-primary-results": "git+ssh://git@github.com/The-Politico/politico-civic-graphics_map_county-primary-results.git",
+    "civic_map-county-primary-results": "git+ssh://git@github.com:The-Politico/politico-civic-graphics_map_county-primary-results",
     "color": "^3.0.0",
     "dateline": "^2.1.0",
     "eslint": "latest",
