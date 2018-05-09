@@ -2,7 +2,7 @@ from datetime import datetime
 from django.core.management.base import BaseCommand
 from django.db.models import Q
 from election.models import ElectionDay
-from electionnight.views import SpecialElectionPage, StatePage
+from electionnight.views import RunoffPage, SpecialElectionPage, StatePage
 from geography.models import DivisionLevel
 from tqdm import tqdm
 
@@ -18,7 +18,7 @@ class Command(BaseCommand):
             help="Election dates to publish."
         )
 
-    def fetch_states(self, elections):
+    def fetch_states(self, elections, runoff=False):
         """
         Returns the unique divisions for all elections on an election day.
         """
@@ -27,6 +27,14 @@ class Command(BaseCommand):
         states = []
 
         for election in elections:
+            # skip runoffs if a state page
+            if election.election_type.is_runoff() and not runoff:
+                continue
+
+            # only get runoffs if a runoff page
+            if not election.election_type.is_runoff() and runoff:
+                continue
+
             if election.division.level == district_level:
                 division = election.division.parent
             else:
@@ -35,6 +43,20 @@ class Command(BaseCommand):
             states.append(division)
 
         return list(set(states))
+
+    def bake_runoff_pages(self, elections):
+        states = self.fetch_states(elections, runoff=True)
+        self.stdout.write(self.style.SUCCESS('Baking runoff pages.'))
+        for state in tqdm(states):
+            self.stdout.write('> {}'.format(state.name))
+            kwargs = {
+                'state': state.slug,
+                'year': self.ELECTION_DAY.cycle.slug,
+                'election_date': str(self.ELECTION_DAY.date)
+            }
+            view = RunoffPage(**kwargs)
+            view.publish_statics()
+            view.publish_template(**kwargs)
 
     def bake_state_pages(self, elections):
         states = self.fetch_states(elections)
@@ -88,6 +110,7 @@ class Command(BaseCommand):
             elections = election_day.elections.filter(race__special=False)
             specials = election_day.elections.filter(race__special=True)
             self.bake_state_pages(elections)
+            self.bake_runoff_pages(elections)
 
             if len(specials) > 0:
                 for special in specials:
