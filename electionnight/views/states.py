@@ -71,9 +71,18 @@ class StatePage(BaseView):
         return template
 
     def get_nav_links(self, subpath=''):
-        todays_events = ElectionEvent.objects.filter(
-            election_day__date=self.election_date
+        todays_elections = ElectionEvent.objects.filter(
+            election_day__date=self.election_date,
+            event_type__in=[ElectionEvent.PRIMARIES, ElectionEvent.GENERAL]
         ).values_list('division__label', flat=True)
+
+        todays_runoffs = ElectionEvent.objects.filter(
+            election_day__date=self.election_date,
+            event_type__in=[
+                ElectionEvent.PRIMARIES_RUNOFF, ElectionEvent.GENERAL_RUNOFF
+            ]
+        ).values_list('division__label', flat=True)
+
         state_level = DivisionLevel.objects.get(name=DivisionLevel.STATE)
         # All states except DC
         states = Division.objects.filter(
@@ -93,7 +102,8 @@ class StatePage(BaseView):
                         state.slug
                     ),
                     'name': state.label,
-                    'live': state.label in todays_events,
+                    'live': state.label in todays_elections,
+                    'runoff': state.label in todays_runoffs
                 } for state in states
             ],
         }

@@ -6,8 +6,8 @@ const StateNav = (props) => {
   const lis = links.map(state => (
     <li>
       <a
-        className={state.live ? 'live' : ''}
-        href={state.link}>{state.name}
+        className={state.live || state.runoff ? 'live' : ''}
+        href={state.runoff ? `${state.link}runoff` : state.link}>{state.name}
       </a>
     </li>
   ));

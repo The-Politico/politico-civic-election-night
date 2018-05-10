@@ -70,10 +70,19 @@ class RunoffPage(BaseView):
 
         return template
 
-    def get_nav_links(self, subpath=''):
-        todays_events = ElectionEvent.objects.filter(
-            election_day__date=self.election_date
+    def get_nav_links(self, subpath='/runoff'):
+        todays_elections = ElectionEvent.objects.filter(
+            election_day__date=self.election_date,
+            event_type__in=[ElectionEvent.PRIMARIES, ElectionEvent.GENERAL]
         ).values_list('division__label', flat=True)
+
+        todays_runoffs = ElectionEvent.objects.filter(
+            election_day__date=self.election_date,
+            event_type__in=[
+                ElectionEvent.PRIMARIES_RUNOFF, ElectionEvent.GENERAL_RUNOFF
+            ]
+        ).values_list('division__label', flat=True)
+
         state_level = DivisionLevel.objects.get(name=DivisionLevel.STATE)
         # All states except DC
         states = Division.objects.filter(
@@ -82,7 +91,7 @@ class RunoffPage(BaseView):
         # Nav links should always refer to main state page. We can use subpath
         # to determine how deep publish path is relative to state pages.
         relative_prefix = ''
-        depth = 1
+        depth = subpath.lstrip('/').count('/')
         for i in range(depth):
             relative_prefix += '../'
         data = {
@@ -93,7 +102,8 @@ class RunoffPage(BaseView):
                         state.slug
                     ),
                     'name': state.label,
-                    'live': state.label in todays_events
+                    'live': state.label in todays_elections,
+                    'runoff': state.label in todays_runoffs
                 } for state in states
             ],
         }

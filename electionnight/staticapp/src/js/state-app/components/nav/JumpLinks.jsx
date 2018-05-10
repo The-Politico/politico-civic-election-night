@@ -8,10 +8,10 @@ const Nav = (props) => {
   }
 
   const liveStates = window.appConfig.nav.states.filter((state) => (
-    state.live && props.state[0].label !== state.name
+    (state.live || state.runoff) && props.state[0].label !== state.name
   ));
   const links = liveStates.map(state => (
-    <a href={state.link} className='space-case'>{state.name}</a>
+    <a href={state.runoff ? `${state.link}runoff` : state.link} className='space-case'>{state.name}</a>
   ));
 
   return (
