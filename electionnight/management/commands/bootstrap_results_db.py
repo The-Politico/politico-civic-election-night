@@ -109,7 +109,7 @@ class Command(BaseCommand):
 
     def main(self, options):
         start = 0
-
+        i = 1
         while True:
             now = time()
             if (now - start) > app_settings.DATABASE_UPLOAD_DAEMON_INTERVAL:
@@ -128,10 +128,13 @@ class Command(BaseCommand):
                 for result in tqdm(data):
                     self.process_result(result, options['tabulated'])
 
-                call_command(
-                    'bake_elections',
-                    options['election_date'],
-                )
+                if i % 5 == 0:
+                    call_command(
+                        'bake_elections',
+                        options['election_date'],
+                    )
+
+                i = i + 1
 
             if options['run_once']:
                 print('run once specified, exiting')
