@@ -15,6 +15,7 @@ module.exports = port => ({
       'CommonConstants': path.resolve(__dirname, 'src/js/common/constants'),
       'CommonComponents': path.resolve(__dirname, 'src/js/common/components'),
       'SCSS': path.resolve(__dirname, 'src/scss'),
+      'RunoffApp': path.resolve(__dirname, 'src/js/runoff-app'),
       'SpecialApp': path.resolve(__dirname, 'src/js/special-app'),
       'StateApp': path.resolve(__dirname, 'src/js/state-app'),
     },

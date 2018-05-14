@@ -10,12 +10,12 @@
 <meta property="og:url" content="https://www.politico.com/election-results/{{year}}/{{state}}/{{subpath}}" />
 <link rel="canonical" href="https://www.politico.com/election-results/{{year}}/{{state}}/{{subpath}}" />
 <!-- Project title -->
-<meta property="twitter:title" content="{{ division.label|title }} Election Results {{year}}: Live primary map by county" />
-<meta property="og:title" content="{{ division.label|title }} Election Results {{year}}: Live primary map by county" />
+<meta property="twitter:title" content="{{ division.label|title }} Election Results {{year}}: Live primary runoff map by county" />
+<meta property="og:title" content="{{ division.label|title }} Election Results {{year}}: Live primary runoff map by county" />
 <!-- Project description -->
-<meta property="twitter:description" content="Get real-time {{year}} {{ district.label|title }} primary election results & live maps by county. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors." />
-<meta property="og:description" content="Get real-time {{year}} {{ division.label|title }} primary election results & live maps by county. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors." />
-<meta name="description" content="Get real-time {{year}} {{ division.label|title }} primary election results & live maps by county. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors." />
+<meta property="twitter:description" content="Get real-time {{year}} {{ district.label|title }} primary runoff election results & live maps by county. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors." />
+<meta property="og:description" content="Get real-time {{year}} {{ division.label|title }} primary runoff election results & live maps by county. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors." />
+<meta name="description" content="Get real-time {{year}} {{ division.label|title }} primary runoff election results & live maps by county. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors." />
 {% endblock %}
 
 <!-- Share image -->
@@ -57,7 +57,7 @@
     </a>
     <a href="" class="bt-icon bt-icon--twitter" target="_blank"></a>
     <a href="mailto:?subject&body=https://www.politico.com/election-results/{{year}}/{{state}}/{{subpath}}" class="bt-icon bt-icon--mail"></a>
-  <h1>{{ year }} {{ division.label|title }} Election Results</h1>
+  <h1>{{ year }} {{ division.label|title }} Runoff Election Results</h1>
     <p class="time"><span class="live">LIVE</span> <span class="results">results</span> last updated <span class="timestamp"><time datetime='{{now|timezone:"America/New_York"|date:"c"}}'>{{ now|timezone:"America/New_York"|date:"N j, Y P" }} EDT</time>
 </header>
 
@@ -156,7 +156,7 @@ var utag_data = {
   "page_type":"election results",
   "site_domain":"www.politico.com",
   "internal_site_id":"politico",
-  "page_name":"2018 Election:Results:Primary:Main:State:{{division.label}}",
+  "page_name":"2018 Election:Results:PrimaryRunoff:Main:State:{{division.label}}",
   "content_author":"Tyler Fisher|Sarah Frostenson|Jeremy C.F. Lin|Jon McClure|Lily Mihalik ",
   "content_byline":"By Tyler Fisher, Sarah Frostenson, Jeremy C.F. Lin, Jon McClure and Lily Mihalik ",
 };

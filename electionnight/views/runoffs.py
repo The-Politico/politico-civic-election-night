@@ -20,19 +20,19 @@ from .base import BaseView
 
 
 @secure
-class StatePage(BaseView):
+class RunoffPage(BaseView):
     """
     **Preview URL**: :code:`/state/{YEAR}/{STATE}/{ELECTION_DATE}/`
     """
     name = 'electionnight_state-page'
-    path = 'state/<int:year>/<slug:state>/<slug:election_date>/'
+    path = 'runoff/<int:year>/<slug:state>/<slug:election_date>/'
 
-    js_dev_path = 'electionnight/js/main-state-app.js'
-    css_dev_path = 'electionnight/css/main-state-app.css'
+    js_dev_path = 'electionnight/js/main-runoff-app.js'
+    css_dev_path = 'electionnight/css/main-runoff-app.css'
 
     model = Division
     context_object_name = 'division'
-    template_name = 'electionnight/states/index.html'
+    template_name = 'electionnight/runoffs/index.html'
 
     def get_queryset(self):
         level = DivisionLevel.objects.get(name=DivisionLevel.STATE)
@@ -70,7 +70,7 @@ class StatePage(BaseView):
 
         return template
 
-    def get_nav_links(self, subpath=''):
+    def get_nav_links(self, subpath='/runoff'):
         todays_elections = ElectionEvent.objects.filter(
             election_day__date=self.election_date,
             event_type__in=[ElectionEvent.PRIMARIES, ElectionEvent.GENERAL]
@@ -151,7 +151,7 @@ class StatePage(BaseView):
         return elections_context
 
     def get_publish_path(self):
-        return 'election-results/{}/{}/'.format(self.year, self.state)
+        return 'election-results/{}/{}/runoff/'.format(self.year, self.state)
 
     def get_serialized_context(self):
         """Get serialized context for baking to S3."""

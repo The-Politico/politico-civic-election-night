@@ -111,7 +111,15 @@ class Command(BaseCommand):
         config_key = state
         output_key = '{0}/{1}'.format(cycle, state)
 
-        self._write_to_json(state_elections, config_key, levels, output_key)
+        if state_elections[0].election_type.is_runoff():
+            config_key = '{0}-{1}'.format(config_key, 'runoff')
+            output_key = os.path.join(output_key, 'runoff')
+
+            self._write_to_json(
+                state_elections, config_key, levels, output_key
+            )
+        else:
+            self._write_to_json(state_elections, config_key, levels, output_key)
 
         if state_elections[0].election_type.is_primary():
             config_key = '{0}-{1}'.format(config_key, 'primary')

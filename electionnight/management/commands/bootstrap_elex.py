@@ -131,6 +131,21 @@ class Command(BaseCommand):
         else:
             party = None
 
+        if row['racetype'] == 'Runoff':
+            election_type = election.ElectionType.objects.get_or_create(
+                slug=election.ElectionType.PRIMARY_RUNOFF,
+                label='Primary Runoff',
+                number_of_winners=1
+            )[0]
+
+            return election.Election.objects.get_or_create(
+                election_type=election_type,
+                election_day=election_day,
+                division=race.office.division,
+                race=race,
+                party=party
+            )[0]
+
         try:
             return election.Election.objects.get(
                 election_day=election_day,
