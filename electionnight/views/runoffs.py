@@ -57,6 +57,7 @@ class RunoffPage(BaseView):
             ElectionDay.objects.get(date=self.election_date),
             self.division
         )
+        context['subpath'] = '/runoff/'
 
         template = {
             **context,
@@ -70,7 +71,7 @@ class RunoffPage(BaseView):
 
         return template
 
-    def get_nav_links(self, subpath='/runoff'):
+    def get_nav_links(self, subpath='/runoff/'):
         todays_elections = ElectionEvent.objects.filter(
             election_day__date=self.election_date,
             event_type__in=[ElectionEvent.PRIMARIES, ElectionEvent.GENERAL]
@@ -91,7 +92,10 @@ class RunoffPage(BaseView):
         # Nav links should always refer to main state page. We can use subpath
         # to determine how deep publish path is relative to state pages.
         relative_prefix = ''
+        print(subpath)
+
         depth = subpath.lstrip('/').count('/')
+        print(depth)
         for i in range(depth):
             relative_prefix += '../'
         data = {
@@ -163,7 +167,7 @@ class RunoffPage(BaseView):
     def get_extra_static_paths(self, production):
         division = Division.objects.get(slug=self.state)
         geo = (
-            'election-results/cdn/geography/us-census/cb/500k/2016/states/{}'
+            'election-results/cdn/geography/us-census/cb/500k/2016/states/{0}/{0}'
         ).format(division.code)
         if (production and
            settings.AWS_S3_BUCKET == 'interactives.politico.com'):
@@ -171,10 +175,10 @@ class RunoffPage(BaseView):
                 'context': 'context.json',
                 'geo_county': (
                     'https://www.politico.com/'
-                    '{}/county.json').format(geo),
+                    '{}-county.json').format(geo),
                 'geo_district': (
                     'https://www.politico.com/'
-                    '/{}/district.json').format(geo),
+                    '/{}-district.json').format(geo),
             }
         elif (production and
               settings.AWS_S3_BUCKET != 'interactives.politico.com'):
@@ -182,10 +186,10 @@ class RunoffPage(BaseView):
                 'context': 'context.json',
                 'geo_county': (
                     'https://s3.amazonaws.com/'
-                    'interactives.politico.com/{}/county.json').format(geo),
+                    'interactives.politico.com/{}-county.json').format(geo),
                 'geo_district': (
                     'https://s3.amazonaws.com/'
-                    'interactives.politico.com/{}/district.json').format(geo),
+                    'interactives.politico.com/{}-district.json').format(geo),
             }
         return {
             'context': reverse(
@@ -194,8 +198,8 @@ class RunoffPage(BaseView):
             ),
             'geo_county': (
                 'https://s3.amazonaws.com/'
-                'interactives.politico.com/{}/county.json').format(geo),
+                'interactives.politico.com/{}-county.json').format(geo),
             'geo_district': (
                 'https://s3.amazonaws.com/'
-                'interactives.politico.com/{}/district.json').format(geo),
+                'interactives.politico.com/{}-district.json').format(geo),
         }

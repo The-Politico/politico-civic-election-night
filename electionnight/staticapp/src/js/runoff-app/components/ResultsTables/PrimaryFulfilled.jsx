@@ -1,4 +1,5 @@
 import React from 'react';
+import 'SCSS/runoff-app/components/results_tables/no-runoff.scss';
 
 const PrimaryFulfilled = (props) => {
   return (

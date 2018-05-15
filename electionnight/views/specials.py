@@ -167,37 +167,39 @@ class SpecialElectionPage(BaseView):
     def get_extra_static_paths(self, production):
         division = Division.objects.get(slug=self.state)
         geo = (
-            'election-results/cdn/geography/us-census/cb/500k/2016/states/{}'
+            'election-results/cdn/geography/us-census/cb/500k/2016/states/{0}/{0}'
         ).format(division.code)
-        if production and settings.AWS_S3_BUCKET == 'interactives.politico.com':
+        if (production and
+           settings.AWS_S3_BUCKET == 'interactives.politico.com'):
             return {
                 'context': 'context.json',
                 'geo_county': (
                     'https://www.politico.com/'
-                    '{}/county.json').format(geo),
+                    '{}-county.json').format(geo),
                 'geo_district': (
                     'https://www.politico.com/'
-                    '/{}/district.json').format(geo),
+                    '/{}-district.json').format(geo),
             }
-        elif production and settings.AWS_S3_BUCKET != 'interactives.politico.com':
+        elif (production and
+              settings.AWS_S3_BUCKET != 'interactives.politico.com'):
             return {
                 'context': 'context.json',
                 'geo_county': (
                     'https://s3.amazonaws.com/'
-                    'interactives.politico.com/{}/county.json').format(geo),
+                    'interactives.politico.com/{}-county.json').format(geo),
                 'geo_district': (
                     'https://s3.amazonaws.com/'
-                    'interactives.politico.com/{}/district.json').format(geo),
+                    'interactives.politico.com/{}-district.json').format(geo),
             }
         return {
             'context': reverse(
                 'electionnight_api_special-election-detail',
-                args=[self.election_date, self.election.division.pk],
+                args=[self.election_date, self.object.pk],
             ),
             'geo_county': (
                 'https://s3.amazonaws.com/'
-                'interactives.politico.com/{}/county.json').format(geo),
+                'interactives.politico.com/{}-county.json').format(geo),
             'geo_district': (
                 'https://s3.amazonaws.com/'
-                'interactives.politico.com/{}/district.json').format(geo),
+                'interactives.politico.com/{}-district.json').format(geo),
         }
