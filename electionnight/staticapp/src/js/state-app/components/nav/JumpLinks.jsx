@@ -18,7 +18,9 @@ const Nav = (props) => {
     <div className='jumpto'>
       <p>
         Other elections today:
-        {links}
+        <div>
+          {links}
+        </div>
       </p>
     </div>
   );

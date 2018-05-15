@@ -193,6 +193,12 @@ div[name="senate-anchor"], div[name="governor-anchor"] {
     padding-top: 5px;
     margin-bottom: 30px;
   }
+
+  div[name="senate-anchor"], div[name="governor-anchor"] {
+    .uncontested {
+      width: 100%;
+    }
+  }
 }
 
 @media(max-width: 600px){
@@ -215,6 +221,10 @@ div[name="senate-anchor"], div[name="governor-anchor"] {
 
   td.winning{
     text-align: center;
+  }
+
+  .jumpto p > div {
+    display: block;
   }
 }
 
@@ -324,6 +334,10 @@ td.incumbent{
 
 .jumpto a {
   color: black;
+}
+
+.jumpto p > div {
+  display: inline-block;
 }
 
 #global-header .bt-icon--politico {
