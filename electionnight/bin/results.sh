@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # parse args
-while getopts b:d:f:o:t option
+while getopts b:d:f:o:t:z option
 do
   case "${option}"
     in
@@ -9,7 +9,8 @@ do
     d) DATE=${OPTARG};;
     f) FILE=${OPTARG};;
     o) OUTPUT=${OPTARG};;
-    t) TEST="--test"
+    t) TEST="--test";;
+    z) ZEROES="--set-zero-counts";;
   esac
 done
 
@@ -21,9 +22,9 @@ fi
 # grab elex results for everything
 if [ $FILE ]
   then
-    elex results ${DATE} ${TEST} --national-only -o json -d ${FILE} > master.json
+    elex results ${DATE} ${TEST} ${ZEROES} --national-only -o json -d ${FILE} > master.json
   else
-    elex results ${DATE} ${TEST} --national-only -o json > master.json
+    elex results ${DATE} ${TEST} ${ZEROES} --national-only -o json > master.json
 fi
 
 cp master.json reup.json

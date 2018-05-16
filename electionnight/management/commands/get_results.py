@@ -68,11 +68,17 @@ class Command(BaseCommand):
             dest='replay',
             action='store_true'
         )
+        parser.add_argument(
+            '--zeroes',
+            dest='zeroes',
+            action='store_true'
+        )
 
     def handle(self, *args, **options):
         self.election_date = options['election_date']
         self.replay = options['replay']
         self.test = options['test']
+        self.zeroes = options['zeroes']
 
         cmd_path = os.path.dirname(os.path.realpath(__file__))
         bash_script = os.path.join(cmd_path, '../../bin/results.sh')
@@ -95,5 +101,8 @@ class Command(BaseCommand):
 
         if options['test']:
             script_args.extend(['-t'])
+
+        if options['zeroes']:
+            script_args.extend(['-z'])
 
         self.main(script_args, options['run_once'])
