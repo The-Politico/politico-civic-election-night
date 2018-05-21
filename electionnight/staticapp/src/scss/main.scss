@@ -14,10 +14,6 @@
   }
 }
 
-.county-map{
-    min-height: 350px;
-}
-
 td.vote-percent {
   max-width: 20px;
 }
@@ -43,6 +39,7 @@ section.results-list{
 
 section.results-map{
   padding-left: 50px;
+  min-height: 350px;
 }
 
 .candidate.results-table-row.winner td{
