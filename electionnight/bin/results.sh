@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # parse args
-while getopts b:d:f:o:t:z option
+while getopts b:d:f:o:zt option
 do
   case "${option}"
     in
