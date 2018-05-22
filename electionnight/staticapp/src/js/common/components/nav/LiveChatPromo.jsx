@@ -2,7 +2,7 @@ import React from 'react';
 
 const LiveChatPromo = (props) => (
   <a
-    href='https://www.politico.com/election-results/2018/live-analysis/may-15/'
+    href='https://www.politico.com/election-results/2018/live-analysis/may-22/'
     target='_blank'
   >
     <div className='live-analysis'>
