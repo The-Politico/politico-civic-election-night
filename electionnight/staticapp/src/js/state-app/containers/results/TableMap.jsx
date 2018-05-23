@@ -58,9 +58,15 @@ class TableMap extends React.Component {
 
     const countyWinners = this.getCountyWinners();
 
+    let colorPalette = '';
+
     // TODO: Add general color palette...
-    const colorPalette = election.primary_party.id === 'Dem'
-      ? primaryColorsDem : primaryColorsGOP;
+    if (election.primary_party) {
+      colorPalette = election.primary_party.id === 'Dem'
+        ? primaryColorsDem : primaryColorsGOP;
+    } else {
+      colorPalette = primaryColorsDem;
+    }
 
     const candidateColors = {};
     results.forEach((d, i) => {
@@ -125,10 +131,12 @@ class TableMap extends React.Component {
       />
     );
 
+    const partyLabel = election.primary_party ? aliases.adj[election.primary_party.label] : null;
+
     return (
       <article className='results'>
         <header>
-          <h4>{aliases.adj[election.primary_party.label]} Primary {runoff}</h4>
+          <h4>{partyLabel} Primary {runoff}</h4>
         </header>
         <div className='container'>
           <div className='row'>

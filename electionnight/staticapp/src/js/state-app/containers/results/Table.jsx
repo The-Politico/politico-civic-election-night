@@ -61,11 +61,13 @@ class Table extends React.Component {
       />
     );
 
+    const partyLabel = election.primary_party ? aliases.adj[election.primary_party.label] : null;
+
     return (
       <article className='results fifty'>
         <header>
           <h4>
-            {aliases.adj[election.primary_party.label]} Primary {runoff}
+            {partyLabel} Primary {runoff}
           </h4>
         </header>
         {table}

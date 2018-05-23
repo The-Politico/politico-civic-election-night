@@ -46,6 +46,7 @@ class Command(BaseCommand):
         Gets the Office object for the given row of election results.
         Depends on knowing the division of the row of election results.
         """
+        AT_LARGE_STATES = ['AK', 'DE', 'MT', 'ND', 'SD', 'VT', 'WY']
 
         if division.level.name not in [
             geography.DivisionLevel.STATE,
@@ -82,9 +83,15 @@ class Command(BaseCommand):
             body = government.Body.objects.get(
                 label='U.S. House of Representatives'
             )
+
+            if row['statepostal'] in AT_LARGE_STATES:
+                code = '00'
+            else:
+                code = row['seatnum'].zfill(2) if int(row['seatnum']) < 10 else row['seatnum']
+
             district = state.children.get(
                 level__name=geography.DivisionLevel.DISTRICT,
-                code=row['seatnum'].zfill(2) if int(row['seatnum']) < 10 else row['seatnum']
+                code=code
             )
             return government.Office.objects.get(
                 body=body,
@@ -327,7 +334,7 @@ class Command(BaseCommand):
             options['election_date'],
             '-o',
             'json',
-            '--national-only'
+            '--national-only',
         ]
         if options['test']:
             elex_args.append('-t')
