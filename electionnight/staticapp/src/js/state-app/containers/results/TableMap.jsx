@@ -134,10 +134,12 @@ class TableMap extends React.Component {
 
     const partyLabel = election.primary_party ? aliases.adj[election.primary_party.label] : 'Open';
 
+    const addendum = election.primary_party ? null : '(top two advance to general)';
+
     return (
       <article className='results'>
         <header>
-          <h4>{partyLabel} Primary {runoff}</h4>
+          <h4>{partyLabel} Primary {runoff} {addendum}</h4>
         </header>
         <div className='container'>
           <div className='row'>

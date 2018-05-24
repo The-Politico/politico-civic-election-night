@@ -64,11 +64,13 @@ class Table extends React.Component {
 
     const partyLabel = election.primary_party ? aliases.adj[election.primary_party.label] : 'Open';
 
+    const addendum = election.primary_party ? null : '(top two advance to general)';
+
     return (
       <article className={`results ${election.primary_party ? 'fifty' : 'jungle'}`}>
         <header>
           <h4>
-            {partyLabel} Primary {runoff}
+            {partyLabel} Primary {runoff} {addendum}
           </h4>
         </header>
         {table}

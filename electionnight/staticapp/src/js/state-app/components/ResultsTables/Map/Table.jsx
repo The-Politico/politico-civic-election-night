@@ -50,8 +50,11 @@ class Table extends React.Component {
     if (this.props.results.length > 10) {
       expandTable = (
         <tr onClick={this.onExpandClick}>
-          <td colSpan='6' className='expand'>
-            Show {this.state.expanded ? 'fewer' : 'more'} candidates
+          <td colSpan='2' />
+          <td colSpan='5' className='expand'>
+            <span className={this.state.expanded ? 'hide' : 'show'}>
+              Show {this.state.expanded ? 'fewer' : 'more'} candidates
+            </span>
           </td>
         </tr>
       );
@@ -61,7 +64,7 @@ class Table extends React.Component {
 
     return (
       <section className='results-table forty-five'>
-        <table>
+        <table className={this.props.jungle ? 'jungle' : ''}>
           <tbody>
             <HeaderRow jungle={this.props.jungle} />
             {candidateResults}

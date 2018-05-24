@@ -22,6 +22,10 @@ td.vote-count{
   text-align: right;
 }
 
+table.jungle td {
+  font-size: .9rem;
+}
+
 svg.map-hatch-definitions{
   position: fixed;
   bottom: 0;
@@ -134,8 +138,8 @@ section.results-group {
 }
 
 section.results-list {
-  .jungle {
-    width: 60%;
+  article.jungle {
+    width: 50%;
     margin: 0 auto;
 
     @media (max-width: 768px) {
@@ -155,6 +159,18 @@ div[name="senate-anchor"], div[name="governor-anchor"] {
   .uncontested {
     width: 45%;
     margin-bottom: 50px;
+  }
+}
+
+.expand {
+  color: #666;
+
+  .show:after {
+    content: \u2192;
+  }
+
+  .hide:after {
+    content: \u2191;
   }
 }
 

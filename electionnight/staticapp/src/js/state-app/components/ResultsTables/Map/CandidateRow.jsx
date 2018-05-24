@@ -6,7 +6,6 @@ import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
 import {decimalToPercent} from 'CommonUtils/numbers';
 
 const CandidateRow = (props) => {
-  console.log(props.expand);
   const {result} = props;
   const candidateColor = props.candidateColors[result.candidate.id];
   const background = result.winner || result.runoff
@@ -14,7 +13,7 @@ const CandidateRow = (props) => {
   const winnerClass = result.winner || result.runoff
     ? 'winner' : '';
   const incumbent = result.candidate.incumbent ? '*' : '';
-  const hiddenClass = props.i >= 10 && !props.expand ? 'hidden' : '';
+  const hiddenClass = props.i >= 8 && !props.expand ? 'hidden' : '';
 
   return (
     <tr
