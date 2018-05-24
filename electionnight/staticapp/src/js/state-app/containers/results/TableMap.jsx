@@ -121,6 +121,7 @@ class TableMap extends React.Component {
         results={results}
         status={status}
         candidateColors={candidateColors}
+        jungle={election.primary_party === undefined}
       />
     );
 
@@ -131,7 +132,7 @@ class TableMap extends React.Component {
       />
     );
 
-    const partyLabel = election.primary_party ? aliases.adj[election.primary_party.label] : null;
+    const partyLabel = election.primary_party ? aliases.adj[election.primary_party.label] : 'Open';
 
     return (
       <article className='results'>

@@ -58,13 +58,14 @@ class Table extends React.Component {
       <ResultsTable
         results={results}
         status={status}
+        jungle={election.primary_party === undefined}
       />
     );
 
-    const partyLabel = election.primary_party ? aliases.adj[election.primary_party.label] : null;
+    const partyLabel = election.primary_party ? aliases.adj[election.primary_party.label] : 'Open';
 
     return (
-      <article className='results fifty'>
+      <article className={`results ${election.primary_party ? 'fifty' : 'jungle'}`}>
         <header>
           <h4>
             {partyLabel} Primary {runoff}

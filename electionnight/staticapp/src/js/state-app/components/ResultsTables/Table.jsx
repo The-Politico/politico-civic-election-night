@@ -8,10 +8,22 @@ import {decimalToPercent} from 'CommonUtils/numbers';
 import 'SCSS/state-app/components/results_tables/simple.scss';
 
 const SimpleTable = (props) => {
+  let total = 0;
+  props.results.forEach((result) => {
+    total += result.voteCount;
+  });
+
+  if (total === 0) {
+    props.results.sort((a, b) => (
+      a.candidate.lastName > b.candidate.lastName
+    ));
+  }
+
   const candidateResults = props.results.map(result => (
     <CandidateRow
       result={result}
       key={result.candidate.id}
+      jungle={props.jungle}
     />
   ));
 
@@ -20,7 +32,7 @@ const SimpleTable = (props) => {
     <section className='results-table'>
       <table>
         <tbody>
-          <HeaderRow />
+          <HeaderRow jungle={props.jungle} />
           {candidateResults}
           <tr>
             <td
@@ -36,7 +48,7 @@ const SimpleTable = (props) => {
               hidden={!incumbent}
             >*Incumbent</td>
           </tr>
-          <TotalRow results={props.results} />
+          <TotalRow total={total} />
         </tbody>
       </table>
     </section>

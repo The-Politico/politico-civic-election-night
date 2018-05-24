@@ -17,6 +17,11 @@ const CandidateRow = (props) => {
       <td className='candidate'>
         {result.candidate.firstName} {result.candidate.lastName}{incumbent}
       </td>
+      {props.jungle ? (
+        <td className='party'>
+          {result.candidate.party ? result.candidate.party.shortLabel : null}
+        </td>
+      ): null}
       <td className='vote-count'>
         {intcomma(result.voteCount)}
       </td>

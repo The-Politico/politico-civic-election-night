@@ -1,6 +1,6 @@
 import React from 'react';
 
-const HeaderRow = () => (
+const HeaderRow = (props) => (
   <tr className='header results-table-row'>
     <th className='key'>
       Map
@@ -11,6 +11,11 @@ const HeaderRow = () => (
     <th className='candidate'>
       Candidate
     </th>
+    {props.jungle ? (
+      <th className='party'>
+        Party
+      </th>
+    ) : null}
     <th className='vote-count'>
       Votes
     </th>

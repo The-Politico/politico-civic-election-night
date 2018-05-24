@@ -20,6 +20,9 @@ class StickyHeader extends React.Component {
     window.onscroll = throttle(this.setStickyNav, 250);
   }
   getOffset (el) {
+    if (!el) {
+      return null;
+    }
     const rect = el.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     return rect.top + scrollTop;
@@ -27,6 +30,10 @@ class StickyHeader extends React.Component {
   setStickyNav () {
     const waypoint = document.querySelector('.jumpto');
     const position = this.getOffset(waypoint);
+
+    if (!position) {
+      return null;
+    }
 
     if (window.scrollY > position && !this.state.sticky) {
       this.setState({

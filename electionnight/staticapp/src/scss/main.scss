@@ -42,6 +42,11 @@ section.results-map{
   min-height: 350px;
 }
 
+
+.candidate.results-table-row.hidden {
+  display: none;
+}
+
 .candidate.results-table-row.winner td{
   font-weight: bold;
 }
@@ -128,6 +133,16 @@ section.results-group {
   margin-bottom: 3rem;
 }
 
+section.results-list {
+  .jungle {
+    width: 60%;
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+}
 
 section.results-group header p.subhed {
   margin-top: 0;
