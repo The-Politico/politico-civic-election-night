@@ -8,12 +8,12 @@ const Uncontested = (props) => {
   }
   let party = '';
   if (props.jungle) {
-    party = ` (${candidate.party.shortLabel})`;
+    party = `(${candidate.party.shortLabel})`;
   }
 
   return (
     <div className='uncontested'>
-      <span className='candidate'>{candidate.firstName} {candidate.lastName}{party}{asterisk}</span> ran unopposed.
+      <span className='candidate'>{candidate.firstName} {candidate.lastName}{asterisk} {party}</span> ran unopposed.
       <br />
       <span
         className='incumbent'
