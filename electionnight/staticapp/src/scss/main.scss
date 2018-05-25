@@ -162,15 +162,19 @@ div[name="senate-anchor"], div[name="governor-anchor"] {
   }
 }
 
-.expand {
-  color: #666;
+.expand-row {
+  cursor: pointer;
 
-  .show:after {
-    content: \u2192;
-  }
+  .expand {
+    color: #666;
 
-  .hide:after {
-    content: \u2191;
+    .show:after {
+      content: \u2192;
+    }
+
+    .hide:after {
+      content: \u2191;
+    }
   }
 }
 
