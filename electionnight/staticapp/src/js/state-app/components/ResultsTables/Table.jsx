@@ -36,7 +36,7 @@ const SimpleTable = (props) => {
           {candidateResults}
           <tr>
             <td
-              colSpan='3'
+              colSpan={props.jungle ? '4' : '3'}
               className='precincts-reporting'
             >
               {decimalToPercent(props.status.pct)}% of precincts reporting

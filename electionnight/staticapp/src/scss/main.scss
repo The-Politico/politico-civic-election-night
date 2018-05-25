@@ -24,6 +24,10 @@ td.vote-count{
 
 table.jungle td {
   font-size: .9rem;
+
+  &.incumbent {
+    font-size: 10px;
+  }
 }
 
 svg.map-hatch-definitions{

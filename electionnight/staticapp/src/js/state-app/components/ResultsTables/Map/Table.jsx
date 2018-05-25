@@ -71,7 +71,7 @@ class Table extends React.Component {
             {expandTable}
             <tr>
               <td
-                colSpan='4'
+                colSpan={this.props.jungle ? '5' : '4'}
                 className='precincts-reporting'
               >
                 {decimalToPercent(this.props.status.pct)}% of precincts reporting
