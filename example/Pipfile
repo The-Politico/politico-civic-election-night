@@ -32,6 +32,9 @@ django-cors-headers = "*"
 sphinxcontrib-django = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
+slacker = "*"
+python-twitter = "*"
+requests = "*"
 
 
 [dev-packages]
