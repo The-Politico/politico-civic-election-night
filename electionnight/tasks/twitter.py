@@ -115,13 +115,6 @@ def construct_status(
 def call_race_on_twitter(payload):
     payload = Namespace(**payload)
 
-    api = twitter.Api(
-        consumer_key=CONSUMER_KEY,
-        consumer_secret=CONSUMER_SECRET,
-        access_token_key=ACCESS_TOKEN_KEY,
-        access_token_secret=ACCESS_TOKEN_SECRET
-    )
-
     screenshot = get_screenshot(
         payload.division_slug,
         payload.race_id
@@ -135,6 +128,13 @@ def call_race_on_twitter(payload):
         payload.division_slug,
         payload.jungle,
         payload.runoff_election
+    )
+
+    api = twitter.Api(
+        consumer_key=CONSUMER_KEY,
+        consumer_secret=CONSUMER_SECRET,
+        access_token_key=ACCESS_TOKEN_KEY,
+        access_token_secret=ACCESS_TOKEN_SECRET
     )
 
     api.PostUpdate(
