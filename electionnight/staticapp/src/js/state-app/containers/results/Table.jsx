@@ -53,19 +53,27 @@ class Table extends React.Component {
     ) : null;
 
     const table = this.checkIfUncontested(results) ? (
-      <Uncontested candidate={results[0].candidate} />
+      <Uncontested
+        candidate={results[0].candidate}
+        jungle={election.primary_party === undefined}
+      />
     ) : (
       <ResultsTable
         results={results}
         status={status}
+        jungle={election.primary_party === undefined}
       />
     );
 
+    const partyLabel = election.primary_party ? aliases.adj[election.primary_party.label] : 'Open';
+
+    const addendum = election.primary_party ? null : '(top two advance to general)';
+
     return (
-      <article className='results fifty'>
+      <article className={`results ${election.primary_party ? 'fifty' : 'jungle'}`}>
         <header>
           <h4>
-            {aliases.adj[election.primary_party.label]} Primary {runoff}
+            {partyLabel} Primary {runoff} {addendum}
           </h4>
         </header>
         {table}

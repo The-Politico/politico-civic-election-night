@@ -8,15 +8,16 @@ import {decimalToPercent} from 'CommonUtils/numbers';
 const CandidateRow = (props) => {
   const {result} = props;
   const candidateColor = props.candidateColors[result.candidate.id];
-
   const background = result.winner || result.runoff
     ? Color(candidateColor).fade(0.85).string() : null;
   const winnerClass = result.winner || result.runoff
     ? 'winner' : '';
   const incumbent = result.candidate.incumbent ? '*' : '';
+  const hiddenClass = props.i >= 8 && !props.expand ? 'hidden' : '';
+
   return (
     <tr
-      className={`candidate results-table-row ${winnerClass}`}
+      className={`candidate results-table-row ${winnerClass} ${hiddenClass}`}
       style={{
         backgroundColor: background,
       }}
@@ -32,6 +33,11 @@ const CandidateRow = (props) => {
       <td className='candidate'>
         {result.candidate.firstName} {result.candidate.lastName}{incumbent}
       </td>
+      {props.jungle ? (
+        <td className='party'>
+          {result.candidate.party ? result.candidate.party.shortLabel : null}
+        </td>
+      ): null}
       <td className='vote-count'>
         {intcomma(result.voteCount)}
       </td>
