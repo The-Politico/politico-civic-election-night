@@ -56,6 +56,7 @@ class Table extends React.Component {
       <Uncontested candidate={results[0].candidate} />
     ) : (
       <ResultsTable
+        electionID={election.apMeta.id}
         results={results}
         status={status}
       />
