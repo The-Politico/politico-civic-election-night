@@ -7,7 +7,7 @@ import requests
 import tweepy
 from celery import shared_task
 from django.conf import settings
-from electionnight.conf import app_settings
+from electionnight.conf import settings as app_settings
 
 CONSUMER_KEY = getattr(settings, 'CIVIC_TWITTER_CONSUMER_KEY', None)
 CONSUMER_SECRET = getattr(settings, 'CIVIC_TWITTER_CONSUMER_SECRET', None)
@@ -111,9 +111,6 @@ def construct_status(
 @shared_task
 def call_race_on_twitter(payload):
     payload = Namespace(**payload)
-    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-    auth.set_access_token(ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
-    api = tweepy.API(auth)
 
     screenshot = get_screenshot(
         payload.division_slug,
@@ -125,12 +122,19 @@ def call_race_on_twitter(payload):
         payload.candidate,
         payload.office,
         payload.runoff,
+        payload.division_slug,
         payload.jungle,
         payload.runoff_election
     )
 
+    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    auth.set_access_token(ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
+    api = tweepy.API(auth)
+
+    print(api)
+
     api.update_with_media(
         filename='result.png',
         status=status,
-        file=screenshot
+        file=screenshot,
     )

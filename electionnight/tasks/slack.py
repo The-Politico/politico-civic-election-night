@@ -26,7 +26,7 @@ def call_race_in_slack(payload):
     attachment_data = [{
         'fallback': '🚨 RACE CALLED IN {}'.format(payload.division.upper()),
         'color': '#6DA9CC',
-        "pretext": '<!here|here> :rotating_light: RACE CALLED IN {}'.format(
+        "pretext": '<!here|here> :rotating_light: Race called in *{}*'.format(
             payload.division.upper()
         ),
         'mrkdwn_in': ['fields'],
@@ -39,14 +39,16 @@ def call_race_in_slack(payload):
             {
                 "title": "Winning vote",
                 "value": "*{}%* | _{} votes_".format(
-                    payload.vote_percent,
+                    int(payload.vote_percent * 100),
                     payload.vote_count
                 ),
                 "short": True
             },
             {
                 "title": "Precincts reporting",
-                "value": "{}%".format(payload.precincts_reporting_percent),
+                "value": "{}%".format(
+                    int(payload.precincts_reporting_percent * 100)
+                ),
                 "short": True
             }
         ],
