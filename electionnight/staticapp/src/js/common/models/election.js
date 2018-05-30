@@ -72,20 +72,20 @@ class Election extends Model {
 
         // Aggregate aggregable candidates' vote totals
         // and percents by division
-        if (candidate.aggregable) {
-          const other = find(obj.results, d => d.candidate === 'other');
-          if (other) {
-            const otherIndex = obj.results.indexOf(other);
-            other.voteCount += resultObj.voteCount;
-            other.votePct += resultObj.votePct;
-            obj.results[otherIndex] = other;
-          } else {
-            resultObj.candidate = 'other';
-            obj.results.push(resultObj);
-          }
-        } else {
+        // if (candidate.aggregable) {
+        //   const other = find(obj.results, d => d.candidate === 'other');
+        //   if (other) {
+        //     const otherIndex = obj.results.indexOf(other);
+        //     other.voteCount += resultObj.voteCount;
+        //     other.votePct += resultObj.votePct;
+        //     obj.results[otherIndex] = other;
+        //   } else {
+        //     resultObj.candidate = 'other';
+        //     obj.results.push(resultObj);
+        //   }
+        // } else {
           obj.results.push(resultObj);
-        }
+        // }
       });
       divisionResults[division.id] = obj;
     });

@@ -22,6 +22,14 @@ td.vote-count{
   text-align: right;
 }
 
+table.jungle td {
+  font-size: .9rem;
+
+  &.incumbent {
+    font-size: 10px;
+  }
+}
+
 svg.map-hatch-definitions{
   position: fixed;
   bottom: 0;
@@ -40,6 +48,11 @@ section.results-list{
 section.results-map{
   padding-left: 50px;
   min-height: 350px;
+}
+
+
+.candidate.results-table-row.hidden {
+  display: none;
 }
 
 .candidate.results-table-row.winner td{
@@ -128,6 +141,16 @@ section.results-group {
   margin-bottom: 3rem;
 }
 
+section.results-list {
+  article.jungle {
+    width: 50%;
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+}
 
 section.results-group header p.subhed {
   margin-top: 0;
@@ -140,6 +163,22 @@ div[name="senate-anchor"], div[name="governor-anchor"] {
   .uncontested {
     width: 45%;
     margin-bottom: 50px;
+  }
+}
+
+.expand-row {
+  cursor: pointer;
+
+  .expand {
+    color: #666;
+
+    .show:after {
+      content: \u2192;
+    }
+
+    .hide:after {
+      content: \u2191;
+    }
   }
 }
 

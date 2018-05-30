@@ -58,15 +58,21 @@ class TableMap extends React.Component {
 
     const countyWinners = this.getCountyWinners();
 
+    let colorPalette = '';
+
     // TODO: Add general color palette...
-    const colorPalette = election.primary_party.id === 'Dem'
-      ? primaryColorsDem : primaryColorsGOP;
+    if (election.primary_party) {
+      colorPalette = election.primary_party.id === 'Dem'
+        ? primaryColorsDem : primaryColorsGOP;
+    } else {
+      colorPalette = primaryColorsDem;
+    }
 
     const candidateColors = {};
     results.forEach((d, i) => {
       const {id, order} = d.candidate;
       if (countyWinners.indexOf(id) > -1) {
-        candidateColors[id] = colorPalette[order];
+        candidateColors[id] = colorPalette[order % 10];
       } else {
         candidateColors[id] = 'transparent';
       }
@@ -116,6 +122,7 @@ class TableMap extends React.Component {
         results={results}
         status={status}
         candidateColors={candidateColors}
+        jungle={election.primary_party === undefined}
       />
     );
 
@@ -126,10 +133,14 @@ class TableMap extends React.Component {
       />
     );
 
+    const partyLabel = election.primary_party ? aliases.adj[election.primary_party.label] : 'Open';
+
+    const addendum = election.primary_party ? null : '(top two advance to general)';
+
     return (
       <article className='results'>
         <header>
-          <h4>{aliases.adj[election.primary_party.label]} Primary {runoff}</h4>
+          <h4>{partyLabel} Primary {runoff} {addendum}</h4>
         </header>
         <div className='container'>
           <div className='row'>
