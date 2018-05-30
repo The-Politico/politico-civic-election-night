@@ -1,14 +1,15 @@
 import json
-import os
 import subprocess
 import sys
+from time import sleep
 
-from django.core.management.base import BaseCommand
-from django.core.management import call_command
-from time import sleep, time
 from tqdm import tqdm
 
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.management import call_command
+from django.core.management.base import BaseCommand
 from election.models import Candidate, CandidateElection
+from electionnight.celery import call_race_in_slack, call_race_on_twitter
 from electionnight.conf import settings as app_settings
 from electionnight.models import APElectionMeta
 from geography.models import Division, DivisionLevel
@@ -37,31 +38,66 @@ class Command(BaseCommand):
 
         subprocess.run(elex_args, stdout=writefile)
 
-    def process_result(self, result, tabulated):
-        if result['is_ballot_measure']:
-            return
+    def load_results(self):
+        data = None
+        while data is None:
+            try:
+                data = json.load(open('reup.json'))
+            except json.decoder.JSONDecodeError:
+                print('Waiting for file to be available.')
+                sleep(5)
+        return data
 
-        if result['level'] != 'state':
+    def deconstruct_result(self, result):
+        keys = [
+            'id', 'raceid',
+            'is_ballot_measure',
+            'level', 'statepostal', 'reportingunitname',
+            'last', 'officename', 'racetype',
+            'winner', 'uncontested', 'runoff',
+            'votecount', 'votepct',
+            'precinctsreporting', 'precinctsreportingpct', 'precinctstotal',
+        ]
+        return [result[key] for key in keys]
+
+    def process_result(self, result, tabulated, no_bots):
+        """
+        Processes top-level (state) results for candidate races, loads data
+        into the database  and sends alerts for winning results.
+        """
+        # Deconstruct result in variables
+        (
+            ID, RACE_ID,
+            IS_BALLOT_MEASURE,
+            LEVEL, STATE_POSTAL, REPORTING_UNIT,
+            LAST_NAME, OFFICE_NAME, RACE_TYPE,
+            WINNER, UNCONTESTED, RUNOFF,
+            VOTE_COUNT, VOTE_PERCENT,
+            PRECINCTS_REPORTING, PRECINCTS_REPORTING_PERCENT, PRECINCTS_TOTAL
+        ) = self.deconstruct_result(result)
+
+        # Skip ballot measures on non-state-level results
+        if IS_BALLOT_MEASURE or LEVEL != DivisionLevel.STATE:
             return
 
         try:
             ap_meta = APElectionMeta.objects.get(
-                ap_election_id=result['raceid'],
+                ap_election_id=RACE_ID,
             )
-        except:
+        except ObjectDoesNotExist:
             print('No AP Meta found for {0} {1} {2}'.format(
-                result['last'], result['officename'], result['reportingunitname']
+                LAST_NAME, OFFICE_NAME, REPORTING_UNIT
             ))
             return
 
-        id_components = result['id'].split('-')
-        candidate_id = '{0}-{1}'.format(
+        id_components = ID.split('-')
+        CANDIDATE_ID = '{0}-{1}'.format(
             id_components[1],
             id_components[2]
         )
         candidate = Candidate.objects.get(
             race=ap_meta.election.race,
-            ap_candidate_id=candidate_id
+            ap_candidate_id=CANDIDATE_ID
         )
 
         candidate_election = CandidateElection.objects.get(
@@ -69,78 +105,99 @@ class Command(BaseCommand):
             candidate=candidate
         )
 
-        if result['level'] in ['county', 'township']:
-            division = Division.objects.get(code=result['fipscode'])
-        else:
-            division = Division.objects.get(
-                level__name=DivisionLevel.STATE,
-                code_components__postal=result['statepostal']
-            )
+        division = Division.objects.get(
+            level__name=DivisionLevel.STATE,
+            code_components__postal=STATE_POSTAL
+        )
 
         filter_kwargs = {
             'candidate_election': candidate_election,
             'division': division
         }
 
-        kwargs = {}
+        vote_update = {}
 
         if not ap_meta.override_ap_votes:
-            kwargs['count'] = result['votecount']
-            kwargs['pct'] = result['votepct']
+            vote_update['count'] = VOTE_COUNT
+            vote_update['pct'] = VOTE_PERCENT
 
         if not ap_meta.override_ap_call:
-            kwargs['winning'] = result['winner']
-            kwargs['runoff'] = result['runoff']
+            vote_update['winning'] = WINNER
+            vote_update['runoff'] = RUNOFF
 
-        if ap_meta.precincts_reporting != result['precinctsreporting']:
-            ap_meta.precincts_reporting = result['precinctsreporting']
-            ap_meta.precincts_total = result['precinctstotal']
-            ap_meta.precincts_reporting_pct = result['precinctsreportingpct']
+        if ap_meta.precincts_reporting != PRECINCTS_REPORTING:
+            ap_meta.precincts_reporting = PRECINCTS_REPORTING
+            ap_meta.precincts_total = PRECINCTS_TOTAL
+            ap_meta.precincts_reporting_pct = PRECINCTS_REPORTING_PERCENT
 
-        if (result['precinctsreportingpct'] == 1 or result['uncontested']
-                or tabulated):
+        if PRECINCTS_REPORTING_PERCENT == 1 or UNCONTESTED or tabulated:
             ap_meta.tabulated = True
         else:
             ap_meta.tabulated = False
 
         ap_meta.save()
 
-        Votes.objects.filter(**filter_kwargs).update(**kwargs)
+        votes = Votes.objects.filter(**filter_kwargs)
+
+        if WINNER and not candidate_election.uncontested:
+            # If new call on contested race, send alerts
+            if not votes.first().winning and not no_bots:
+                if ap_meta.election.party:
+                    PARTY = ap_meta.election.party.label
+                else:
+                    PARTY = None
+                # TODO: Distinguish a runoff result vs regular primary
+                # TODO: Jungle primaries?
+                payload = {
+                    "race_id": RACE_ID,
+                    "division": division.label,
+                    "division_slug": division.slug,
+                    "office": candidate.race.office.label,
+                    "candidate": '{} {}'.format(
+                        candidate.person.first_name,
+                        candidate.person.last_name
+                    ),
+                    "primary_party": PARTY,
+                    "vote_percent": VOTE_PERCENT,
+                    "vote_count": VOTE_COUNT,
+                    "runoff": RUNOFF,
+                    "precincts_reporting_percent": PRECINCTS_REPORTING_PERCENT,
+                    "jungle": RACE_TYPE == 'Open Primary',
+                    "runoff_election": RACE_TYPE == 'Runoff'
+                }
+                call_race_in_slack.delay(payload)
+                call_race_on_twitter.delay(payload)
+
+        votes.update(**vote_update)
 
     def main(self, options):
-        start = 0
+        TABULATED = options['tabulated']
+        ELECTION_DATE = options['election_date']
+        DOWNLOAD = options['download']
+        RUN_ONCE = options['run_once']
+        NO_BOTS = options['no_bots']
+        INTERVAL = app_settings.DATABASE_UPLOAD_DAEMON_INTERVAL
+
         i = 1
         while True:
-            now = time()
-            if (now - start) > app_settings.DATABASE_UPLOAD_DAEMON_INTERVAL:
-                start = now
+            sleep(INTERVAL)
 
-                if options['download']:
-                    self.download_results(options)
+            if DOWNLOAD:
+                self.download_results(options)
 
-                try:
-                    data = json.load(open('reup.json'))
-                except json.decoder.JSONDecodeError:
-                    print('waiting for file to be available')
-                    sleep(5)
-                    data = json.load(open('reup.json'))
+            results = self.load_results()
 
-                for result in tqdm(data):
-                    self.process_result(result, options['tabulated'])
+            for result in tqdm(results):
+                self.process_result(result, TABULATED, NO_BOTS)
 
-                if i % 5 == 0:
-                    call_command(
-                        'bake_elections',
-                        options['election_date'],
-                    )
+            if i % 5 == 0:
+                call_command('bake_elections', ELECTION_DATE)
 
-                i = i + 1
+            i += 1
 
-            if options['run_once']:
-                print('run once specified, exiting')
+            if RUN_ONCE:
+                print('Run once specified, exiting.')
                 sys.exit(0)
-
-            sleep(1)
 
     def add_arguments(self, parser):
         parser.add_argument('election_date', type=str)
@@ -162,6 +219,11 @@ class Command(BaseCommand):
         parser.add_argument(
             '--tabulated',
             dest='tabulated',
+            action='store_true'
+        )
+        parser.add_argument(
+            '--nobots',
+            dest='no_bots',
             action='store_true'
         )
 
