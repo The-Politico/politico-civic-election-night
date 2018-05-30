@@ -35,6 +35,7 @@ sphinx-rtd-theme = "*"
 slacker = "*"
 python-twitter = "*"
 requests = "*"
+tweepy = "*"
 
 
 [dev-packages]

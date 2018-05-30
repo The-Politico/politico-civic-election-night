@@ -1,18 +1,18 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a1749ca2f8bbe30f23069a325982f91e90bd955fbdbea411141915e6ce161c13"
+            "sha256": "598d43e7411a121ef814377dbd72964f20ae1be9cd62c14060a11e469488ac22"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
-            "implementation_version": "3.6.1",
+            "implementation_version": "3.6.4",
             "os_name": "posix",
             "platform_machine": "x86_64",
             "platform_python_implementation": "CPython",
-            "platform_release": "17.4.0",
+            "platform_release": "17.5.0",
             "platform_system": "Darwin",
-            "platform_version": "Darwin Kernel Version 17.4.0: Sun Dec 17 09:19:54 PST 2017; root:xnu-4570.41.2~1/RELEASE_X86_64",
-            "python_full_version": "3.6.1",
+            "platform_version": "Darwin Kernel Version 17.5.0: Mon Mar  5 22:24:32 PST 2018; root:xnu-4570.51.1~1/RELEASE_X86_64",
+            "python_full_version": "3.6.4",
             "python_version": "3.6",
             "sys_platform": "darwin"
         },
@@ -427,11 +427,6 @@
             "git": "ssh://git@github.com/The-Politico/politico-civic-election",
             "ref": "41281a6342e9d4a6b8f298306e0ab8f888efea3c"
         },
-        "politico-civic-election-night": {
-            "editable": true,
-            "git": "https://github.com/The-Politico/politico-civic-election-night.git",
-            "ref": "bf049ae5e81ae233ab61d03855c761e63271ae6c"
-        },
         "politico-civic-entity": {
             "editable": true,
             "git": "ssh://git@github.com/The-Politico/politico-civic-entity",
@@ -556,6 +551,12 @@
                 "sha256:8dcd65e0aa2aa2951527ddb7339ea6e69023543d8a20a73fc51e2829b9ed6179"
             ],
             "version": "==1.2.12"
+        },
+        "pysocks": {
+            "hashes": [
+                "sha256:3fe52c55890a248676fd69dc9e3c4e811718b777834bcaab7a8125cf9deac672"
+            ],
+            "version": "==1.6.8"
         },
         "pytest": {
             "hashes": [
@@ -686,6 +687,13 @@
                 "sha256:9c4bd2d267b7153df9152698efb1050a5d84982d3384a37b2c1f7723ba3e7835"
             ],
             "version": "==4.3.2"
+        },
+        "tweepy": {
+            "hashes": [
+                "sha256:0895e79fe98127787c8debb62c283cb876e8b65fbbcf90cb988dba2c606f6260",
+                "sha256:901500666de5e265d93e611dc05066bb020481c85550d6bcbf8030212938902c"
+            ],
+            "version": "==3.6.0"
         },
         "ujson": {
             "hashes": [

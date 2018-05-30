@@ -40,10 +40,9 @@ setup(
         'politico-civic-vote',
         'politico-civic-almanac',
         'psycopg2',
-        'python-twitter',
         'requests',
         'slacker',
-        'twitter',
+        'tweepy',
     ],
 
     extras_require={
