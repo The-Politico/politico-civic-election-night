@@ -29,7 +29,7 @@ const SimpleTable = (props) => {
 
   const incumbent = props.results.map(d => d.candidate.incumbent).some(d => d);
   return (
-    <section className='results-table'>
+    <section className={`results-table race-table-${props.electionID}`}>
       <table className={props.jungle ? 'jungle' : ''}>
         <tbody>
           <HeaderRow jungle={props.jungle} />

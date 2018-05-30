@@ -84,7 +84,7 @@ class TableMap extends React.Component {
     return candidateColors;
   }
 
-  checkIfUncontested(results) {
+  checkIfUncontested (results) {
     return results[0].candidate.uncontested;
   }
 
@@ -118,6 +118,7 @@ class TableMap extends React.Component {
       <Uncontested candidate={results[0].candidate} />
     ) : (
       <ResultsTable
+        electionID={election.apMeta.id}
         results={results}
         status={status}
         candidateColors={candidateColors}

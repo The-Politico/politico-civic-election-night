@@ -59,6 +59,7 @@ class Table extends React.Component {
       />
     ) : (
       <ResultsTable
+        electionID={election.apMeta.id}
         results={results}
         status={status}
         jungle={election.primary_party === undefined}

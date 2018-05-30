@@ -20,7 +20,7 @@ def get_screenshot(division_slug, race_id):
         'path': '/election-results/2018/{}/'.format(
             division_slug
         ),
-        'selector': '.results-table-{}'.format(
+        'selector': '.race-table-{}'.format(
             race_id
         ),
         'padding': 5
