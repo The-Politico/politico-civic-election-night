@@ -7,6 +7,7 @@ import requests
 import twitter
 from celery import shared_task
 from django.conf import settings
+from electionnight.conf import app_settings
 
 CONSUMER_KEY = getattr(settings, 'CIVIC_TWITTER_CONSUMER_KEY', None)
 CONSUMER_SECRET = getattr(settings, 'CIVIC_TWITTER_CONSUMER_SECRET', None)
@@ -16,8 +17,13 @@ ACCESS_TOKEN_SECRET = getattr(
 
 
 def get_screenshot(division_slug, race_id):
+    if app_settings.AWS_S3_BUCKET == 'interactives.politico.com':
+        start_path = '/election-results'
+    else:
+        start_path = '/staging.interactives.politico.com/election-results'
     query = urlencode({
-        'path': '/election-results/2018/{}/'.format(
+        'path': '{}/2018/{}/'.format(
+            start_path,
             division_slug
         ),
         'selector': '.race-table-{}'.format(
