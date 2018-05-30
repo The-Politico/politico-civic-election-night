@@ -33,17 +33,19 @@ def get_screenshot(division_slug, race_id):
     return io.BytesIO(response.content)
 
 
-def construct_status(party, candidate, office, runoff, division_slug):
+def construct_status(
+    party, candidate, office, runoff, division_slug, jungle, runoff_election
+):
     party_labels = {
         'Democrat': 'Democratic',
         'Republican': 'Republican'
     }
-    # TODO: RUNOFF PAGES
     page_url = (
         'https://www.politico.com/election-results/2018'
         '/{}/'.format(division_slug)
     )
-    # TODO: JUNGLE PRIMARIES
+    if runoff_election:
+        page_url += 'runoff'
     if party:
         if runoff:
             return (
@@ -57,6 +59,26 @@ def construct_status(party, candidate, office, runoff, division_slug):
             )
         else:
             return '🚨 NEW CALL: {} has won the {} primary for {}. {}'.format(
+                candidate,
+                party_labels[party],
+                office,
+                page_url
+            )
+    elif jungle:
+        return (
+                '🚨 NEW CALL: {} has advanced to the general election'
+                ' in the open primary for {}. {}'
+            ).format(
+                candidate,
+                office,
+                page_url
+            )
+    elif runoff_election:
+        if party:
+            return (
+                '🚨 NEW CALL: {} has won the {}'
+                ' primary runoff for {}. {}'
+                ).format(
                 candidate,
                 party_labels[party],
                 office,
@@ -99,7 +121,9 @@ def call_race_on_twitter(payload):
         payload.primary_party,
         payload.candidate,
         payload.office,
-        payload.runoff
+        payload.runoff,
+        payload.jungle,
+        payload.runoff_election
     )
 
     api.PostUpdate(
