@@ -5,14 +5,14 @@
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
-            "implementation_version": "3.6.4",
+            "implementation_version": "3.6.1",
             "os_name": "posix",
             "platform_machine": "x86_64",
             "platform_python_implementation": "CPython",
-            "platform_release": "17.5.0",
+            "platform_release": "17.4.0",
             "platform_system": "Darwin",
-            "platform_version": "Darwin Kernel Version 17.5.0: Mon Mar  5 22:24:32 PST 2018; root:xnu-4570.51.1~1/RELEASE_X86_64",
-            "python_full_version": "3.6.4",
+            "platform_version": "Darwin Kernel Version 17.4.0: Sun Dec 17 09:19:54 PST 2017; root:xnu-4570.41.2~1/RELEASE_X86_64",
+            "python_full_version": "3.6.1",
             "python_version": "3.6",
             "sys_platform": "darwin"
         },
@@ -42,10 +42,10 @@
         },
         "amqp": {
             "hashes": [
-                "sha256:e28da24204bb1cdae9446a66eecbaac69659fea6a44ce58a10a7a7dae5ecd679",
-                "sha256:b17591ceb27192195f00c04e848dd4fcda2dc72a8eb27ea3ffa899299679c185"
+                "sha256:eed41946890cd43e8dee44a316b85cf6fee5a1a34bb4a562b660a358eb529e1b",
+                "sha256:073dd02fdd73041bffc913b767866015147b61f2a9bc104daef172fc1a0066eb"
             ],
-            "version": "==2.3.0"
+            "version": "==2.3.2"
         },
         "appnope": {
             "hashes": [
@@ -71,10 +71,10 @@
         },
         "babel": {
             "hashes": [
-                "sha256:ad209a68d7162c4cff4b29cdebe3dec4cef75492df501b0049a9433c96ce6f80",
-                "sha256:8ce4cb6fdd4393edd323227cba3a077bceb2a6ce5201c902c65e730046f41f14"
+                "sha256:6778d85147d5d85345c14a26aada5e478ab04e39b078b0745ee6870c2b5cf669",
+                "sha256:8cba50f48c529ca3fa18cf81fa9403be176d374ac4d60738b839122dfaaa3d23"
             ],
-            "version": "==2.5.3"
+            "version": "==2.6.0"
         },
         "backcall": {
             "hashes": [
@@ -92,17 +92,17 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:6355384911b7d018d45756281fcf8b1f4d0e5204794fe61787b9e6cd14c74518",
-                "sha256:71833f2d42b2a1c3b2c5456d26ae5d95a458a36efc20eb3a0d7fff1a33e84744"
+                "sha256:35bc5737cd90034439e81e833dac1cf03ba5d1b2cbb78321a974d05d51934f60",
+                "sha256:dd54fd4b6d48fd47b6267efd829775e4c585d087cc5915df0908c212ba07dd8e"
             ],
-            "version": "==1.7.28"
+            "version": "==1.7.29"
         },
         "botocore": {
             "hashes": [
-                "sha256:1227b6512a7e85247cabbc0ab8a7e28cdcf1a1a725a8f77facb729c354a27593",
-                "sha256:4c452c70e87ee727640e24e9c7b2de9bc91aca3d1f02d573514fa25e92dd4c83"
+                "sha256:03434f393c18c08ffe063076dc3b48d79c4ef0172ee15b069f73514ebe107291",
+                "sha256:076877fb12bedcb6f64b57c5ed4a07dd727e51c55f5e8046ab9b73a0b48cbb0a"
             ],
-            "version": "==1.10.28"
+            "version": "==1.10.29"
         },
         "cachecontrol": {
             "hashes": [
@@ -297,10 +297,10 @@
         },
         "kombu": {
             "hashes": [
-                "sha256:416aa6fb7b22125a3b65322eb26f5c4479d4830b3e7bad55191ac46438ef2b2b",
-                "sha256:d601c47312833c0f6f4aaf037f293b2627398d4cf8526e6ba0360287294ee1fb"
+                "sha256:b274db3a4eacc4789aeb24e1de3e460586db7c4fc8610f7adcc7a3a1709a60af",
+                "sha256:86adec6c60f63124e2082ea8481bbe4ebe04fde8ebed32c177c7f0cd2c1c9082"
             ],
-            "version": "==4.2.0"
+            "version": "==4.2.1"
         },
         "lockfile": {
             "hashes": [
@@ -353,11 +353,11 @@
         },
         "pexpect": {
             "hashes": [
-                "sha256:9783f4644a3ef8528a6f20374eeb434431a650c797ca6d8df0d81e30fffdfa24",
-                "sha256:9f8eb3277716a01faafaba553d629d3d60a1a624c7cf45daa600d2148c30020c"
+                "sha256:3fbd41d4caf27fa4a377bfd16fef87271099463e6fa73e92a52f92dfee5d425b",
+                "sha256:2a8e88259839571d1251d278476f3eec5db26deb73a70be5ed5dc5435e418aba"
             ],
             "markers": "sys_platform != 'win32'",
-            "version": "==4.5.0"
+            "version": "==4.6.0"
         },
         "pickleshare": {
             "hashes": [
@@ -426,6 +426,11 @@
             "editable": true,
             "git": "ssh://git@github.com/The-Politico/politico-civic-election",
             "ref": "41281a6342e9d4a6b8f298306e0ab8f888efea3c"
+        },
+        "politico-civic-election-night": {
+            "editable": true,
+            "git": "https://github.com/The-Politico/politico-civic-election-night.git",
+            "ref": "bf049ae5e81ae233ab61d03855c761e63271ae6c"
         },
         "politico-civic-entity": {
             "editable": true,
@@ -563,6 +568,7 @@
             "hashes": [
                 "sha256:eec865307ebe7f329a6a9945c15453265a449cdaaf3710340828a1934d53e468"
             ],
+            "markers": "python_version >= '2.7'",
             "version": "==2.2"
         },
         "python-slugify": {
@@ -641,10 +647,10 @@
         },
         "sphinx": {
             "hashes": [
-                "sha256:2e7ad92e96eff1b2006cf9f0cdb2743dacbae63755458594e9e8238b0c3dc60b",
-                "sha256:e9b1a75a3eae05dded19c80eb17325be675e0698975baae976df603b6ed1eb10"
+                "sha256:85f7e32c8ef07f4ba5aeca728e0f7717bef0789fba8458b8d9c5c294cad134f3",
+                "sha256:d45480a229edf70d84ca9fae3784162b1bc75ee47e480ffe04a4b7f21a95d76d"
             ],
-            "version": "==1.7.4"
+            "version": "==1.7.5"
         },
         "sphinx-rtd-theme": {
             "hashes": [

@@ -7,7 +7,7 @@ import requests
 import twitter
 from celery import shared_task
 from django.conf import settings
-from electionnight.conf import app_settings
+from electionnight.conf import settings as app_settings
 
 CONSUMER_KEY = getattr(settings, 'CIVIC_TWITTER_CONSUMER_KEY', None)
 CONSUMER_SECRET = getattr(settings, 'CIVIC_TWITTER_CONSUMER_SECRET', None)
@@ -19,12 +19,15 @@ ACCESS_TOKEN_SECRET = getattr(
 def get_screenshot(division_slug, race_id):
     if app_settings.AWS_S3_BUCKET == 'interactives.politico.com':
         start_path = '/election-results'
+        end_path = ''
     else:
         start_path = '/staging.interactives.politico.com/election-results'
+        end_path = 'index.html'
     query = urlencode({
-        'path': '{}/2018/{}/'.format(
+        'path': '{}/2018/{}/{}'.format(
             start_path,
-            division_slug
+            division_slug,
+            end_path
         ),
         'selector': '.race-table-{}'.format(
             race_id
@@ -48,8 +51,8 @@ def construct_status(
     }
     page_url = (
         'https://www.politico.com/election-results/2018'
-        '/{}/'.format(division_slug)
-    )
+        '/{}/'
+    ).format(division_slug)
     if runoff_election:
         page_url += 'runoff'
     if party:
@@ -111,6 +114,7 @@ def construct_status(
 @shared_task
 def call_race_on_twitter(payload):
     payload = Namespace(**payload)
+
     api = twitter.Api(
         consumer_key=CONSUMER_KEY,
         consumer_secret=CONSUMER_SECRET,
@@ -128,11 +132,11 @@ def call_race_on_twitter(payload):
         payload.candidate,
         payload.office,
         payload.runoff,
+        payload.division_slug,
         payload.jungle,
         payload.runoff_election
     )
 
     api.PostUpdate(
         status=status,
-        media=screenshot
     )

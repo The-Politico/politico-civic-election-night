@@ -180,8 +180,6 @@ class Command(BaseCommand):
 
         i = 1
         while True:
-            sleep(INTERVAL)
-
             if DOWNLOAD:
                 self.download_results(options)
 
@@ -198,6 +196,8 @@ class Command(BaseCommand):
             if RUN_ONCE:
                 print('Run once specified, exiting.')
                 sys.exit(0)
+
+            sleep(INTERVAL)
 
     def add_arguments(self, parser):
         parser.add_argument('election_date', type=str)
