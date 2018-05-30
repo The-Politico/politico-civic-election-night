@@ -49,7 +49,7 @@ class FetchRefresh extends React.Component {
 
   render () {
     return (
-      <div className='fetch-refresh'>
+      <div className='fetch-refresh screenshot-remove'>
         <div
           id='fetch-refresh-top'
           style={{

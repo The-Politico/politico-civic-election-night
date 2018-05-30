@@ -1,10 +1,11 @@
-import io
+import os
+
 from argparse import Namespace
 from urllib.parse import urlencode
 
 import requests
+import twitter
 
-import tweepy
 from celery import shared_task
 from django.conf import settings
 from electionnight.conf import settings as app_settings
@@ -19,12 +20,15 @@ ACCESS_TOKEN_SECRET = getattr(
 def get_screenshot(division_slug, race_id):
     if app_settings.AWS_S3_BUCKET == 'interactives.politico.com':
         start_path = '/election-results'
+        end_path = ''
     else:
         start_path = '/staging.interactives.politico.com/election-results'
+        end_path = 'index.html'
     query = urlencode({
-        'path': '{}/2018/{}/'.format(
+        'path': '{}/2018/{}/{}'.format(
             start_path,
-            division_slug
+            division_slug,
+            end_path
         ),
         'selector': '.race-table-{}'.format(
             race_id
@@ -33,10 +37,19 @@ def get_screenshot(division_slug, race_id):
     })
     root = 'http://politico-botshot.herokuapp.com/shoot/?'
 
-    response = requests.get(
-        '{}{}'.format(root, query)
+    response = requests.get('{}{}'.format(root, query))
+
+    folder = os.path.join(
+        settings.BASE_DIR,
+        'images'
     )
-    return io.BytesIO(response.content)
+
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    with open('{}/{}.png'.format(folder, race_id), 'wb') as f:
+        f.write(response.content)
+        return f
 
 
 def construct_status(
@@ -127,14 +140,19 @@ def call_race_on_twitter(payload):
         payload.runoff_election
     )
 
-    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-    auth.set_access_token(ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
-    api = tweepy.API(auth)
+    api = twitter.Api(
+        consumer_key=CONSUMER_KEY,
+        consumer_secret=CONSUMER_SECRET,
+        access_token_key=ACCESS_TOKEN_KEY,
+        access_token_secret=ACCESS_TOKEN_SECRET
+    )
 
-    print(api)
+    with open('{}/images/{}.png'.format(
+        settings.BASE_DIR, payload.race_id
+    ), 'rb') as f:
+        media_id = api.UploadMediaSimple(f)
 
-    api.update_with_media(
-        filename='result.png',
+    api.PostUpdate(
         status=status,
-        file=screenshot,
+        media=[media_id]
     )

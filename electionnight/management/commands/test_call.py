@@ -10,7 +10,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         payload = {
-            "race_id": '1391',
+            "race_id": '1394',
             "division": 'Alabama',
             "division_slug": 'alabama',
             "office": 'Alabama U.S. House District 1',
@@ -24,5 +24,5 @@ class Command(BaseCommand):
             "runoff_election": False
         }
 
-        call_race_in_slack(payload)
+        # call_race_in_slack(payload)
         call_race_on_twitter(payload)

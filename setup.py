@@ -42,7 +42,7 @@ setup(
         'psycopg2',
         'requests',
         'slacker',
-        'tweepy',
+        'python-twitter'
     ],
 
     extras_require={

@@ -71,7 +71,9 @@ class Table extends React.Component {
     const addendum = election.primary_party ? null : '(top two advance to general)';
 
     return (
-      <article className={`results ${election.primary_party ? 'fifty' : 'jungle'}`}>
+      <article className={
+        `results ${election.primary_party ? 'fifty' : 'jungle'} race-table-${election.apMeta.id}`
+      }>
         <header>
           <h4>
             {partyLabel} Primary {runoff} {addendum}

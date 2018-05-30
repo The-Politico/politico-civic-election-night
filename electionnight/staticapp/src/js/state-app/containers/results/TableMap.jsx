@@ -138,7 +138,7 @@ class TableMap extends React.Component {
     const addendum = election.primary_party ? null : '(top two advance to general)';
 
     return (
-      <article className='results'>
+      <article className={`results race-table-${election.apMeta.id}`}>
         <header>
           <h4>{partyLabel} Primary {runoff} {addendum}</h4>
         </header>
