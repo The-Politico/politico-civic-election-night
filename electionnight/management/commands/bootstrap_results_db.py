@@ -53,7 +53,7 @@ class Command(BaseCommand):
             'id', 'raceid',
             'is_ballot_measure',
             'level', 'statepostal', 'reportingunitname',
-            'last', 'officename',
+            'last', 'officename', 'racetype',
             'winner', 'uncontested', 'runoff',
             'votecount', 'votepct',
             'precinctsreporting', 'precinctsreportingpct', 'precinctstotal',
@@ -70,7 +70,7 @@ class Command(BaseCommand):
             ID, RACE_ID,
             IS_BALLOT_MEASURE,
             LEVEL, STATE_POSTAL, REPORTING_UNIT,
-            LAST_NAME, OFFICE_NAME,
+            LAST_NAME, OFFICE_NAME, RACE_TYPE,
             WINNER, UNCONTESTED, RUNOFF,
             VOTE_COUNT, VOTE_PERCENT,
             PRECINCTS_REPORTING, PRECINCTS_REPORTING_PERCENT, PRECINCTS_TOTAL
@@ -161,7 +161,9 @@ class Command(BaseCommand):
                     "vote_percent": VOTE_PERCENT,
                     "vote_count": VOTE_COUNT,
                     "runoff": RUNOFF,
-                    "precincts_reporting_percent": PRECINCTS_REPORTING_PERCENT
+                    "precincts_reporting_percent": PRECINCTS_REPORTING_PERCENT,
+                    "jungle": RACE_TYPE == 'Open Primary',
+                    "runoff_election": RACE_TYPE == 'Runoff'
                 }
                 call_race_in_slack.delay(payload)
                 call_race_on_twitter.delay(payload)
