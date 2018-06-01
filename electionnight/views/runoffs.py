@@ -13,13 +13,11 @@ from election.models import ElectionDay
 from electionnight.conf import settings
 from electionnight.models import PageContent
 from electionnight.serializers import ElectionViewSerializer, StateSerializer
-from electionnight.utils.auth import secure
 from geography.models import Division, DivisionLevel
 
 from .base import BaseView
 
 
-@secure
 class RunoffPage(BaseView):
     """
     **Preview URL**: :code:`/state/{YEAR}/{STATE}/{ELECTION_DATE}/`
