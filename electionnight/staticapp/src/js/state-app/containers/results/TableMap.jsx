@@ -6,7 +6,7 @@ import { aliases } from 'CommonConstants/parties';
 import ResultsTable from 'StateApp/components/ResultsTables/Map/Table';
 import Uncontested from 'StateApp/components/ResultsTables/Uncontested';
 import CountyMap from 'StateApp/components/ResultsMaps/CountyMap';
-import { primaryColorsDem, primaryColorsGOP } from 'StateApp/constants/colors';
+import { primaryColorsDem, primaryColorsGOP, primaryColorsJungle } from 'StateApp/constants/colors';
 
 class TableMap extends React.Component {
   constructor (props) {
@@ -65,7 +65,7 @@ class TableMap extends React.Component {
       colorPalette = election.primary_party.id === 'Dem'
         ? primaryColorsDem : primaryColorsGOP;
     } else {
-      colorPalette = primaryColorsDem;
+      colorPalette = primaryColorsJungle;
     }
 
     const candidateColors = {};

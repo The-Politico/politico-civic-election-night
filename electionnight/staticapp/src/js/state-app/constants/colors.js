@@ -23,3 +23,16 @@ export const primaryColorsGOP = {
   9: '#FEE0C2',
   10: '#FD87F7',
 };
+
+export const primaryColorsJungle = {
+  1: '#3571C0',
+  2: '#9AD3FC',
+  3: '#FD5E42',
+  4: '#B41E61',
+  5: '#48B3BC',
+  6: '#4C4E4E',
+  7: '#B7848E',
+  8: '#FFDE21',
+  9: '#FBA723',
+  10: '#D9C3A5',
+};
