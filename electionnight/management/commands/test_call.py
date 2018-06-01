@@ -16,10 +16,10 @@ class Command(BaseCommand):
             "office": 'Alabama U.S. House District 1',
             "candidate": 'Robert Kennedy',
             "primary_party": 'Democrat',
-            "vote_percent": 0.5,
-            "vote_count": 1000,
+            "vote_percent": 0.515234,
+            "vote_count": 35671,
             "runoff": False,
-            "precincts_reporting_percent": 1.0,
+            "precincts_reporting_percent": 0.88234,
             "jungle": False,
             "runoff_election": False
         }

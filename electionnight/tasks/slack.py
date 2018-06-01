@@ -24,14 +24,14 @@ def call_race_in_slack(payload):
             payload.division_slug
         )
     else:
-        page_path = 'https://s3.amazonaws.com/staging.interactives.politico.com/election-results/2018/{}/'.format(
+        page_path = 'https://s3.amazonaws.com/staging.interactives.politico.com/election-results/2018/{}/index.html'.format(
             payload.division_slug
         )
 
     if payload.runoff:
-        WINNING = '{} will advance to a runoff.'.format(payload.candidate)
+        WINNING = '✓ *{}* will advance to a runoff.'.format(payload.candidate)
     else:
-        WINNING = '{} declared winner.'.format(payload.candidate)
+        WINNING = '✓ *{}* declared winner.'.format(payload.candidate)
 
     attachment_data = [{
         'fallback': '🚨 Race called in *{}*'.format(payload.division.upper()),
@@ -49,7 +49,7 @@ def call_race_in_slack(payload):
         "fields": [
             {
                 "title": "Winning vote",
-                "value": "*{}%* | {:,} votes".format(
+                "value": "{}% | {:,} votes".format(
                     int(round(payload.vote_percent * 100)),
                     int(payload.vote_count)
                 ),
