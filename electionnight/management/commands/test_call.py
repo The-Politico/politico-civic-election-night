@@ -24,5 +24,5 @@ class Command(BaseCommand):
             "runoff_election": False
         }
 
-        call_race_in_slack(payload)
-        call_race_on_twitter(payload)
+        call_race_in_slack.delay(payload)
+        call_race_on_twitter.delay(payload)
