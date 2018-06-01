@@ -62,7 +62,7 @@ class StickyHeader extends React.Component {
 
     const open = this.state.sticky ? 'open' : '';
     return (
-      <div>
+      <div className='screenshot-remove'>
         <StateNav open={this.state.navDropped} />
         <div className={`sticky-header ${open}`}>
           <div className='statenav-button'>

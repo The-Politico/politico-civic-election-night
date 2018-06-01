@@ -1,11 +1,9 @@
 import os
-
 from argparse import Namespace
 from urllib.parse import urlencode
 
 import requests
 import twitter
-
 from celery import shared_task
 from django.conf import settings
 from electionnight.conf import settings as app_settings
@@ -33,7 +31,7 @@ def get_screenshot(division_slug, race_id):
         'selector': '.race-table-{}'.format(
             race_id
         ),
-        'padding': 5
+        'padding': '5px 0 0 10px'
     })
     root = 'http://politico-botshot.herokuapp.com/shoot/?'
 
@@ -49,7 +47,6 @@ def get_screenshot(division_slug, race_id):
 
     with open('{}/{}.png'.format(folder, race_id), 'wb') as f:
         f.write(response.content)
-        return f
 
 
 def construct_status(
@@ -125,7 +122,7 @@ def construct_status(
 def call_race_on_twitter(payload):
     payload = Namespace(**payload)
 
-    screenshot = get_screenshot(
+    get_screenshot(
         payload.division_slug,
         payload.race_id
     )

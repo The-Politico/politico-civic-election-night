@@ -3,6 +3,7 @@ from argparse import Namespace
 
 from celery import shared_task
 from django.conf import settings
+from electionnight.conf import settings as app_settings
 from slacker import Slacker
 
 SLACK_TOKEN = getattr(settings, 'CIVIC_SLACK_TOKEN', None)
@@ -18,13 +19,22 @@ def get_client():
 def call_race_in_slack(payload):
     payload = Namespace(**payload)
 
+    if app_settings.AWS_S3_BUCKET == 'interactives.politico.com':
+        page_path = 'https://www.politico.com/election-results/2018/{}/'.format(
+            payload.division_slug
+        )
+    else:
+        page_path = 'https://s3.amazonaws.com/staging.interactives.politico.com/election-results/2018/{}/'.format(
+            payload.division_slug
+        )
+
     if payload.runoff:
         WINNING = '{} will advance to a runoff.'.format(payload.candidate)
     else:
         WINNING = '{} declared winner.'.format(payload.candidate)
 
     attachment_data = [{
-        'fallback': '🚨 RACE CALLED IN {}'.format(payload.division.upper()),
+        'fallback': '🚨 Race called in *{}*'.format(payload.division.upper()),
         'color': '#6DA9CC',
         "pretext": '<!here|here> :rotating_light: Race called in *{}*'.format(
             payload.division.upper()
@@ -33,21 +43,22 @@ def call_race_in_slack(payload):
         "author_name": "Election Bot",
         "author_icon": "https://pbs.twimg.com/profile_images/998954486205898753/gbb2psb__400x400.jpg",  # noqa
         "title": payload.office,
+        "title_link": page_path,
         "text": WINNING,
         "footer": "Associated Press",
         "fields": [
             {
                 "title": "Winning vote",
-                "value": "*{}%* | _{} votes_".format(
-                    int(payload.vote_percent * 100),
-                    payload.vote_count
+                "value": "*{}%* | {:,} votes".format(
+                    int(round(payload.vote_percent * 100)),
+                    int(payload.vote_count)
                 ),
                 "short": True
             },
             {
                 "title": "Precincts reporting",
                 "value": "{}%".format(
-                    int(payload.precincts_reporting_percent * 100)
+                    int(round(payload.precincts_reporting_percent * 100))
                 ),
                 "short": True
             }

@@ -43,7 +43,7 @@ class Map extends React.Component {
   render () {
     if (!this.props.district) return (<div />);
     return (
-      <div className='mapContainer'>
+      <div className='mapContainer screenshot-remove'>
         <div className='map'>
           <svg id={`district-${this.props.district}`} />
         </div>

@@ -1,8 +1,6 @@
 import React from 'react';
 
 const Nav = (props) => {
-  const {session} = props;
-
   if (props.state.length === 0) {
     return (<div />);
   }

@@ -14,7 +14,7 @@ const LiveChatPromo = (props) => {
     '10': 'oct',
     '11': 'nov',
     '12': 'dec',
-  }
+  };
 
   const chatDate = window.appConfig.electionSlug.split('-');
   const month = monthCrosswalk[chatDate[1]];
@@ -25,7 +25,7 @@ const LiveChatPromo = (props) => {
       href={`https://www.politico.com/election-results/2018/live-analysis/${month}-${day}/`}
       target='_blank'
     >
-      <div className='live-analysis'>
+      <div className='live-analysis screenshot-remove'>
         <p>Live Analysis</p>
         <div className='dots'>
           <span className='dot' />
@@ -34,7 +34,7 @@ const LiveChatPromo = (props) => {
         </div>
       </div>
     </a>
-  )
+  );
 };
 
 export default LiveChatPromo;

@@ -34,7 +34,7 @@ class CountyMap extends React.Component {
   }
   getCountyResults () {
     const {counties, countyResults, overrideCountyResults, election, candidates} = this.props;
-    const resultsSet = election.apMeta.overrideApVotes ?  overrideCountyResults : countyResults;
+    const resultsSet = election.apMeta.overrideApVotes ? overrideCountyResults : countyResults;
 
     return election.serializeWithResults(
       counties,
