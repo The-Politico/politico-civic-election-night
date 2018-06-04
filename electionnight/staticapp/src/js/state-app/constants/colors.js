@@ -32,7 +32,7 @@ export const primaryColorsJungle = {
   5: '#48B3BC',
   6: '#4C4E4E',
   7: '#B7848E',
-  8: '#FFDE21',
+  8: '#DBCC66',
   9: '#FBA723',
   10: '#D9C3A5',
 };
