@@ -27,12 +27,20 @@ if [ $FILE ]
     elex results ${DATE} ${TEST} ${ZEROES} --national-only -o json > master.json
 fi
 
+echo "Got master.json"
+
 for file in "$OUTPUT"/election-config/* ; do
   if [ -e "$file" ] ; then
     elections=`cat $file | jq '.elections'`
     levels=`cat $file | jq '.levels'`
     path=`cat $file | jq -r '.output_path'`
+    primary=`cat $file | jq -r '.primary'`
+
     mkdir -p "$(dirname "$path/p")"
+
+    if [ "$primary" = true ] ; then
+      mkdir -p "$(dirname "$path/primary/p")"
+    fi
 
     # filter results
     if [ -s master.json ] ; then
@@ -58,9 +66,11 @@ for file in "$OUTPUT"/election-config/* ; do
             winner: .winner
           }
         ) end
-      ]' > "$path/results.json"
+      ]' | $([ "$primary" = true ] && tee "$path/results.json" > "$path/primary/results.json" || tee "$path/results.json")
     fi
   fi
+
+  echo "Processed $file"
 done
 
 # deploy to s3
