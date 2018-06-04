@@ -72,7 +72,11 @@ class TableMap extends React.Component {
     results.forEach((d, i) => {
       const {id, order} = d.candidate;
       if (countyWinners.indexOf(id) > -1) {
-        candidateColors[id] = colorPalette[order % 10];
+        let colorKey = order % 10;
+        if (colorKey === 0) {
+          colorKey = 10;
+        };
+        candidateColors[id] = colorPalette[colorKey];
       } else {
         candidateColors[id] = 'transparent';
       }
@@ -81,6 +85,7 @@ class TableMap extends React.Component {
         candidateColors[id] = 'transparent';
       }
     });
+
     return candidateColors;
   }
 
