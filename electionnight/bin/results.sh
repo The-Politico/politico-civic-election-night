@@ -66,7 +66,7 @@ for file in "$OUTPUT"/election-config/* ; do
             winner: .winner
           }
         ) end
-      ]' | $([ "$primary" = true ] && tee "$path/results.json" > "$path/primary/results.json" || tee "$path/results.json")
+      ]' | tee "$path/results.json" > "$path/primary/results.json"
     fi
   fi
 
