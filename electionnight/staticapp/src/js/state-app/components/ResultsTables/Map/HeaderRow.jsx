@@ -6,7 +6,7 @@ const HeaderRow = (props) => (
       Map
     </th>
     <th className='vote-percent'>
-      Percent
+      {props.jungle && document.body.clientWidth <= 360 ? 'Pct.' : 'Percent'}
     </th>
     <th className='candidate'>
       Candidate

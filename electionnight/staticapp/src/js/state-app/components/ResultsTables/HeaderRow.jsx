@@ -3,7 +3,7 @@ import React from 'react';
 const HeaderRow = (props) => (
   <tr className='header results-table-row'>
     <th className='vote-percent'>
-      Percent
+      {props.jungle && document.body.clientWidth <= 360 ? 'Pct.' : 'Percent'}
     </th>
     <th className='candidate'>
       Candidate
