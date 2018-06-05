@@ -120,7 +120,7 @@ class TableMap extends React.Component {
     const uncontested = this.checkIfUncontested(results);
 
     const table = uncontested ? (
-      <Uncontested candidate={results[0].candidate} />
+      <Uncontested results={results} />
     ) : (
       <ResultsTable
         electionID={election.apMeta.id}

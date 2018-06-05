@@ -29,9 +29,11 @@ class Table extends React.Component {
     });
 
     if (total === 0) {
-      this.props.results.sort((a, b) => (
-        a.candidate.lastName > b.candidate.lastName
-      ));
+      this.props.results.sort((a, b) => {
+        if(a.candidate.lastName < b.candidate.lastName) return -1;
+        if(a.candidate.lastName > b.candidate.lastName) return 1;
+        return 0;
+      });
     }
 
     const candidateResults = this.props.results.map((result, i) => (
