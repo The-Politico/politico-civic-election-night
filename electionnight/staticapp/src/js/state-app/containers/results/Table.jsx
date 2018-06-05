@@ -54,7 +54,7 @@ class Table extends React.Component {
 
     const table = this.checkIfUncontested(results) ? (
       <Uncontested
-        candidate={results[0].candidate}
+        results={results}
         jungle={election.primary_party === undefined}
       />
     ) : (
