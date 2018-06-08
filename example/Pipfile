@@ -36,6 +36,8 @@ slacker = "*"
 python-twitter = "*"
 requests = "*"
 pillow = "*"
+politico-civic-entity = "==0.2.0"
 
 
 [dev-packages]
+

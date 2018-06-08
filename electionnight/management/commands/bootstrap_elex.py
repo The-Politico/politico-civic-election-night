@@ -194,13 +194,8 @@ class Command(BaseCommand):
         """
         Gets or creates the Person object for the given row of AP data.
         """
-        if not row['first']:
-            first_name = 'None'
-        else:
-            first_name = row['first']
-
         person, created = entity.Person.objects.get_or_create(
-            first_name=first_name,
+            first_name=row['first'],
             last_name=row['last']
         )
 
