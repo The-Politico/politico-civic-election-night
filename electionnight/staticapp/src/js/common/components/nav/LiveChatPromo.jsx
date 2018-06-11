@@ -22,7 +22,7 @@ const LiveChatPromo = (props) => {
 
   return (
     <a
-      href={`https://www.politico.com/election-results/2018/live-analysis/june-5/`}
+      href={`https://www.politico.com/election-results/2018/live-analysis/${month}-${day}/`}
       target='_blank'
     >
       <div className='live-analysis screenshot-remove'>
