@@ -225,6 +225,9 @@ class Command(BaseCommand):
             'incumbent': row.get('incumbent')
         }
 
+        if person.last_name == 'None of these candidates':
+            candidate_id = '{0}-{1}'.format(id_components[0], candidate_id)
+
         candidate, created = election.Candidate.objects.update_or_create(
             person=person,
             race=race,

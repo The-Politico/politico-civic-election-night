@@ -167,7 +167,16 @@ function addOverrideResults (elections, dispatch) {
 
 function createResultObj (d) {
   const divisionID = d.fipscode ? d.fipscode : d.statepostal;
-  const candidateID = d.polid ? `polid-${d.polid}` : `polnum-${d.polnum}`;
+
+  let candidateID = '';
+
+  // special case for "None of these candidates"
+  if (d.polid && d.polid === '100013') {
+    candidateID = `${d.raceid}-polid-${d.polid}`;
+  } else {
+    candidateID = d.polid ? `polid-${d.polid}` : `polnum-${d.polnum}`;
+  }
+
   const resultObj = {
     id: `${d.raceid}-${divisionID}-${candidateID}`,
     voteCount: d.votecount,

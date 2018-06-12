@@ -42,7 +42,7 @@ class StateSerializer(serializers.ModelSerializer):
         """Division."""
         if obj.level.name == DivisionLevel.DISTRICT:
             return DivisionSerializer(obj.parent).data
-        
+
         return DivisionSerializer(obj).data
 
     def get_parties(self, obj):

@@ -129,6 +129,8 @@ CACHES = {
 #########################
 # electionnight settings
 
+CENSUS_API_KEY = os.getenv('CENSUS_API_KEY', None)
+
 ELECTIONNIGHT_SECRET_KEY = 'aewgrstdyfugiop'
 ELECTIONNIGHT_AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', None)
 ELECTIONNIGHT_AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', None)
