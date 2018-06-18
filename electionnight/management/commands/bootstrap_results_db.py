@@ -142,9 +142,11 @@ class Command(BaseCommand):
 
         votes = Votes.objects.filter(**filter_kwargs)
 
-        if WINNER and not candidate_election.uncontested:
+        if (WINNER or RUNOFF) and not candidate_election.uncontested:
             # If new call on contested race, send alerts
-            if not votes.first().winning and not no_bots:
+            first = votes.first()
+
+            if not (first.winning or first.runoff) and not no_bots:
                 if ap_meta.election.party:
                     PARTY = ap_meta.election.party.label
                 else:

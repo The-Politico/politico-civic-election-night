@@ -38,10 +38,6 @@ for file in "$OUTPUT"/election-config/* ; do
 
     mkdir -p "$(dirname "$path/p")"
 
-    if [ "$primary" = true ] ; then
-      mkdir -p "$(dirname "$path/primary/p")"
-    fi
-
     # filter results
     if [ -s master.json ] ; then
       cat master.json \
@@ -66,7 +62,12 @@ for file in "$OUTPUT"/election-config/* ; do
             winner: .winner
           }
         ) end
-      ]' | tee "$path/results.json" > "$path/primary/results.json"
+      ]' > "$path/results.json"
+      
+      if [ "$primary" = true ] ; then
+        mkdir -p "$(dirname "$path/primary/p")"
+        cp "$path/results.json" "$path/primary/results.json"
+      fi
     fi
   fi
 
