@@ -1,5 +1,6 @@
 import os
 from argparse import Namespace
+from datetime import datetime
 from urllib.parse import urlencode
 
 import requests
@@ -15,10 +16,22 @@ ACCESS_TOKEN_SECRET = getattr(
     settings, 'CIVIC_TWITTER_ACCESS_TOKEN_SECRET', None)
 
 
-def get_screenshot(division_slug, race_id, runoff_election):
+def get_screenshot(
+    division_slug, race_id, runoff_election, special_election, election_date
+):
     state_path = division_slug
     if runoff_election:
         state_path = '{}/runoff'.format(state_path)
+
+    if special_election:
+        parsed = datetime.strptime(election_date, '%m/%d/%y')
+        month = parsed.strftime('%b')
+        day = parsed.strftime('%d')
+        state_path = '{}/special-election/{}-{}'.format(
+            state_path,
+            month.lower(),
+            day
+        )
 
     if app_settings.AWS_S3_BUCKET == 'interactives.politico.com':
         start_path = '/election-results'
@@ -116,24 +129,45 @@ def construct_status(
             )
     elif special_election:
         if party:
-            return (
-                '🚨 NEW CALL: {} has won the {}'
-                ' special primary for {}. {}'
-                ).format(
-                candidate,
-                party_labels[party],
-                office,
-                page_url
-            )
+            if runoff:
+                return (
+                    '🚨 NEW CALL: {} has advanced to a runoff'
+                    'in the {} special primary for {}. {}'
+                    ).format(
+                    candidate,
+                    party_labels[party],
+                    office,
+                    page_url
+                )
+            else:
+                return (
+                    '🚨 NEW CALL: {} has won the {}'
+                    ' special primary for {}. {}'
+                    ).format(
+                    candidate,
+                    party_labels[party],
+                    office,
+                    page_url
+                )
         else:
-            return (
-                '🚨 NEW CALL: {} has won the'
-                ' special election for {}. {}'
-                ).format(
-                candidate,
-                office,
-                page_url
-            )
+            if runoff:
+                return (
+                    '🚨 NEW CALL: {} has advanced to a runoff'
+                    'in the special election for {}. {}'
+                    ).format(
+                    candidate,
+                    office,
+                    page_url
+                )
+            else:
+                return (
+                    '🚨 NEW CALL: {} has won the'
+                    ' special election for {}. {}'
+                    ).format(
+                    candidate,
+                    office,
+                    page_url
+                )
     else:
         if runoff:
             return (
@@ -159,7 +193,9 @@ def call_race_on_twitter(payload):
     get_screenshot(
         payload.division_slug,
         payload.race_id,
-        payload.runoff_election
+        payload.runoff_election,
+        payload.special_election,
+        payload.election_date
     )
 
     status = construct_status(

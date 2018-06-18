@@ -51,7 +51,7 @@ class Command(BaseCommand):
     def deconstruct_result(self, result):
         keys = [
             'id', 'raceid',
-            'is_ballot_measure',
+            'is_ballot_measure', 'electiondate',
             'level', 'statepostal', 'reportingunitname',
             'last', 'officename', 'racetype',
             'winner', 'uncontested', 'runoff',
@@ -68,7 +68,7 @@ class Command(BaseCommand):
         # Deconstruct result in variables
         (
             ID, RACE_ID,
-            IS_BALLOT_MEASURE,
+            IS_BALLOT_MEASURE, ELECTION_DATE
             LEVEL, STATE_POSTAL, REPORTING_UNIT,
             LAST_NAME, OFFICE_NAME, RACE_TYPE,
             WINNER, UNCONTESTED, RUNOFF,
@@ -161,6 +161,7 @@ class Command(BaseCommand):
                 # TODO: Jungle primaries?
                 payload = {
                     "race_id": RACE_ID,
+                    "election_date": ELECTION_DATE
                     "division": division.label,
                     "division_slug": division.slug,
                     "office": candidate.race.office.label,

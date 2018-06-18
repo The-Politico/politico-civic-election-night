@@ -11,11 +11,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         payload = {
             "race_id": '45897',
+            "election_date": "06/30/18",
             "division": 'Texas',
             "division_slug": 'texas',
             "office": 'U.S. House, Texas, District 27',
             "candidate": 'Michael Cloud',
-            "primary_party": 'Republican',
+            "primary_party": None,
             "vote_percent": 0.557,
             "vote_count": 168162,
             "runoff": False,
