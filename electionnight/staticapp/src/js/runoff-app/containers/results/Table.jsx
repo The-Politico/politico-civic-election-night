@@ -53,7 +53,7 @@ class Table extends React.Component {
     );
 
     return (
-      <article className='results fifty'>
+      <article className={`results fifty race-table-${election.apMeta.id}`}>
         <header>
           <h4>
             {aliases.adj[election.primary_party.label]} Primary Runoff

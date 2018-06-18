@@ -117,7 +117,7 @@ class TableMap extends React.Component {
     );
 
     return (
-      <article className='results'>
+      <article className={`results race-table-${election.apMeta.id}`}>
         <header>
           <h4>{aliases.adj[election.primary_party.label]} Primary Runoff</h4>
         </header>

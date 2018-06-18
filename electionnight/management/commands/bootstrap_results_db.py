@@ -174,7 +174,8 @@ class Command(BaseCommand):
                     "runoff": RUNOFF,
                     "precincts_reporting_percent": PRECINCTS_REPORTING_PERCENT,
                     "jungle": RACE_TYPE == 'Open Primary',
-                    "runoff_election": RACE_TYPE == 'Runoff'
+                    "runoff_election": RACE_TYPE == 'Runoff',
+                    "special_election": 'Special' in RACE_TYPE
                 }
                 call_race_in_slack.delay(payload)
                 call_race_on_twitter.delay(payload)

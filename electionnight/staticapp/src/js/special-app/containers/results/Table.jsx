@@ -30,6 +30,7 @@ class Table extends React.Component {
   }
 
   render () {
+    const {election} = this.props;
     const stateResults = this.getStateResults();
 
     if (!stateResults) return (<div />);
@@ -55,7 +56,7 @@ class Table extends React.Component {
     );
 
     return (
-      <article className='results'>
+      <article className={`results race-table-${election.apMeta.id}`}>
         <header>
           <h4>{this.props.elections[0].office.label}</h4>
         </header>

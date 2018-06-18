@@ -68,7 +68,7 @@ class SpecialElectionPage(BaseView):
             ElectionDay.objects.get(date=self.election_date),
             self.division
         )
-        context['baked_content'] = context['content']['page']['before-results']
+        # context['baked_content'] = context['content']['page']['before-results']
         context['election'] = self.election
 
         return {
@@ -192,7 +192,7 @@ class SpecialElectionPage(BaseView):
         return {
             'context': reverse(
                 'electionnight_api_special-election-detail',
-                args=[self.election_date, self.object.pk],
+                args=[self.election_date, self.election.division.pk],
             ),
             'geo_county': (
                 'https://s3.amazonaws.com/'

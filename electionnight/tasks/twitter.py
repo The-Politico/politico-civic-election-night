@@ -15,7 +15,11 @@ ACCESS_TOKEN_SECRET = getattr(
     settings, 'CIVIC_TWITTER_ACCESS_TOKEN_SECRET', None)
 
 
-def get_screenshot(division_slug, race_id):
+def get_screenshot(division_slug, race_id, runoff_election):
+    state_path = division_slug
+    if runoff_election:
+        state_path = '{}/runoff'.format(state_path)
+
     if app_settings.AWS_S3_BUCKET == 'interactives.politico.com':
         start_path = '/election-results'
         end_path = ''
@@ -25,7 +29,7 @@ def get_screenshot(division_slug, race_id):
     query = urlencode({
         'path': '{}/2018/{}/{}'.format(
             start_path,
-            division_slug,
+            state_path,
             end_path
         ),
         'selector': '.race-table-{}'.format(
@@ -50,7 +54,8 @@ def get_screenshot(division_slug, race_id):
 
 
 def construct_status(
-    party, candidate, office, runoff, division_slug, jungle, runoff_election
+    party, candidate, office, runoff, division_slug, jungle, runoff_election,
+    special_election
 ):
     party_labels = {
         'Democrat': 'Democratic',
@@ -62,7 +67,7 @@ def construct_status(
     )
     if runoff_election:
         page_url += 'runoff'
-    if party:
+    if party and not runoff_election and not special_election:
         if runoff:
             return (
                 '🚨 NEW CALL: {} has advanced to a runoff'
@@ -100,6 +105,35 @@ def construct_status(
                 office,
                 page_url
             )
+        else:
+            return (
+                '🚨 NEW CALL: {} has won the'
+                ' runoff election for {}. {}'
+                ).format(
+                candidate,
+                office,
+                page_url
+            )
+    elif special_election:
+        if party:
+            return (
+                '🚨 NEW CALL: {} has won the {}'
+                ' special primary for {}. {}'
+                ).format(
+                candidate,
+                party_labels[party],
+                office,
+                page_url
+            )
+        else:
+            return (
+                '🚨 NEW CALL: {} has won the'
+                ' special election for {}. {}'
+                ).format(
+                candidate,
+                office,
+                page_url
+            )
     else:
         if runoff:
             return (
@@ -124,7 +158,8 @@ def call_race_on_twitter(payload):
 
     get_screenshot(
         payload.division_slug,
-        payload.race_id
+        payload.race_id,
+        payload.runoff_election
     )
 
     status = construct_status(
@@ -134,7 +169,8 @@ def call_race_on_twitter(payload):
         payload.runoff,
         payload.division_slug,
         payload.jungle,
-        payload.runoff_election
+        payload.runoff_election,
+        payload.special_election
     )
 
     api = twitter.Api(

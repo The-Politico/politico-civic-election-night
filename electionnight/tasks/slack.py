@@ -68,8 +68,15 @@ def call_race_in_slack(payload):
 
     client = get_client()
 
+    if app_settings.AWS_S3_BUCKET == 'interactives.politico.com':
+        channel = '#elections-bot'
+    else:
+        channel = '#elections-bot-stg'
+
+    print(channel)
+
     client.chat.post_message(
-        '#elections-bot',
+        channel,
         '',
         attachments=attachment_data,
         as_user=False,
