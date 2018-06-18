@@ -98,10 +98,16 @@ class Command(BaseCommand):
         if LAST_NAME == 'None of these candidates':
             CANDIDATE_ID = '{0}-{1}'.format(id_components[0], CANDIDATE_ID)
 
-        candidate = Candidate.objects.get(
-            race=ap_meta.election.race,
-            ap_candidate_id=CANDIDATE_ID
-        )
+        try:
+            candidate = Candidate.objects.get(
+                race=ap_meta.election.race,
+                ap_candidate_id=CANDIDATE_ID
+            )
+        except ObjectDoesNotExist:
+            print('No Candidate found for {0} {1} {2}'.format(
+                LAST_NAME, OFFICE_NAME, REPORTING_UNIT
+            ))
+            return
 
         candidate_election = CandidateElection.objects.get(
             election=ap_meta.election,
