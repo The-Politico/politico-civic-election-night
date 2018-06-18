@@ -52,6 +52,8 @@ def get_screenshot(
     })
     root = 'http://politico-botshot.herokuapp.com/shoot/?'
 
+    print('{}{}'.format(root, query))
+
     response = requests.get('{}{}'.format(root, query))
 
     folder = os.path.join(
@@ -68,122 +70,56 @@ def get_screenshot(
 
 def construct_status(
     party, candidate, office, runoff, division_slug, jungle, runoff_election,
-    special_election
+    special_election, election_date
 ):
     party_labels = {
         'Democrat': 'Democratic',
         'Republican': 'Republican'
     }
+
+    # determine winning language
+    if runoff:
+        winning_language = 'has advanced to a runoff in the'
+    else:
+        if jungle:
+            winning_language = 'has advanced to the general election in the'
+        else:
+            winning_language = 'has won the'
+
+    # determine race type
+    if party:
+        party_label = party_labels[party]
+        if runoff_election:
+            race_label = '{} primary runoff'.format(party_label)
+        elif special_election:
+            race_label = '{} special primary'.format(party_label)
+        else:
+            race_label = '{} primary'.format(party_label)
+    elif jungle:
+        race_label = 'open primary'
+    else:
+        if runoff_election:
+            race_label = 'runoff election'
+        elif special_election:
+            race_label = 'special election'
+        else:
+            race_label = 'race'
+
     page_url = (
         'https://www.politico.com/election-results/2018'
         '/{}/'.format(division_slug)
     )
-    if runoff_election:
-        page_url += 'runoff'
-    if party and not runoff_election and not special_election:
-        if runoff:
-            return (
-                '🚨 NEW CALL: {} has advanced to a runoff'
-                ' in the {} primary for {}. {}'
-            ).format(
-                candidate,
-                party_labels[party],
-                office,
-                page_url
-            )
-        else:
-            return '🚨 NEW CALL: {} has won the {} primary for {}. {}'.format(
-                candidate,
-                party_labels[party],
-                office,
-                page_url
-            )
-    elif jungle:
-        return (
-                '🚨 NEW CALL: {} has advanced to the general election'
-                ' in the open primary for {}. {}'
-            ).format(
-                candidate,
-                office,
-                page_url
-            )
+    if special_election:
+        parsed = datetime.strptime(election_date, '%m/%d/%y')
+        month = parsed.strftime('%b').lower()
+        day = parsed.strftime('%d')
+        page_url += 'special-election/{}-{}'.format(month, day)
     elif runoff_election:
-        if party:
-            return (
-                '🚨 NEW CALL: {} has won the {}'
-                ' primary runoff for {}. {}'
-                ).format(
-                candidate,
-                party_labels[party],
-                office,
-                page_url
-            )
-        else:
-            return (
-                '🚨 NEW CALL: {} has won the'
-                ' runoff election for {}. {}'
-                ).format(
-                candidate,
-                office,
-                page_url
-            )
-    elif special_election:
-        if party:
-            if runoff:
-                return (
-                    '🚨 NEW CALL: {} has advanced to a runoff'
-                    'in the {} special primary for {}. {}'
-                    ).format(
-                    candidate,
-                    party_labels[party],
-                    office,
-                    page_url
-                )
-            else:
-                return (
-                    '🚨 NEW CALL: {} has won the {}'
-                    ' special primary for {}. {}'
-                    ).format(
-                    candidate,
-                    party_labels[party],
-                    office,
-                    page_url
-                )
-        else:
-            if runoff:
-                return (
-                    '🚨 NEW CALL: {} has advanced to a runoff'
-                    'in the special election for {}. {}'
-                    ).format(
-                    candidate,
-                    office,
-                    page_url
-                )
-            else:
-                return (
-                    '🚨 NEW CALL: {} has won the'
-                    ' special election for {}. {}'
-                    ).format(
-                    candidate,
-                    office,
-                    page_url
-                )
-    else:
-        if runoff:
-            return (
-                '🚨 NEW CALL: {} has advanced to a runoff'
-                ' in the race for {}. {}'
-            ).format(
-                candidate,
-                office,
-                page_url
-            )
-        else:
-            return '🚨 NEW CALL: {} has won the race for {}. {}'.format(
-                candidate,
-                office,
-                page_url
-            )
+        page_url += 'runoff'
+
+    return ('🚨 NEW CALL: {} {} {} for {}. {}'.format(
+        candidate, winning_language, race_label, office, page_url
+    ))
 
 
 @shared_task
@@ -206,8 +142,10 @@ def call_race_on_twitter(payload):
         payload.division_slug,
         payload.jungle,
         payload.runoff_election,
-        payload.special_election
+        payload.special_election,
+        payload.election_date
     )
+    print(status)
 
     api = twitter.Api(
         consumer_key=CONSUMER_KEY,
