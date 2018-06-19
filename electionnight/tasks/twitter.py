@@ -1,13 +1,11 @@
 import os
 from argparse import Namespace
-from datetime import datetime
 from urllib.parse import urlencode
 
 import requests
 import twitter
 from celery import shared_task
 from django.conf import settings
-from electionnight.conf import settings as app_settings
 
 CONSUMER_KEY = getattr(settings, 'CIVIC_TWITTER_CONSUMER_KEY', None)
 CONSUMER_SECRET = getattr(settings, 'CIVIC_TWITTER_CONSUMER_SECRET', None)
@@ -16,43 +14,13 @@ ACCESS_TOKEN_SECRET = getattr(
     settings, 'CIVIC_TWITTER_ACCESS_TOKEN_SECRET', None)
 
 
-def get_screenshot(
-    division_slug, race_id, runoff_election, special_election, election_date
-):
-    state_path = division_slug
-    if runoff_election:
-        state_path = '{}/runoff'.format(state_path)
-
-    if special_election:
-        parsed = datetime.strptime(election_date, '%m/%d/%y')
-        month = parsed.strftime('%b')
-        day = parsed.strftime('%d')
-        state_path = '{}/special-election/{}-{}'.format(
-            state_path,
-            month.lower(),
-            day
-        )
-
-    if app_settings.AWS_S3_BUCKET == 'interactives.politico.com':
-        start_path = '/election-results'
-        end_path = ''
-    else:
-        start_path = '/staging.interactives.politico.com/election-results'
-        end_path = 'index.html'
+def get_screenshot(race_id, page_url):
     query = urlencode({
-        'path': '{}/2018/{}/{}'.format(
-            start_path,
-            state_path,
-            end_path
-        ),
-        'selector': '.race-table-{}'.format(
-            race_id
-        ),
+        'path': page_url,
+        'selector': '.race-table-{}'.format(race_id),
         'padding': '5px 0 0 10px'
     })
     root = 'http://politico-botshot.herokuapp.com/shoot/?'
-
-    print('{}{}'.format(root, query))
 
     response = requests.get('{}{}'.format(root, query))
 
@@ -70,7 +38,7 @@ def get_screenshot(
 
 def construct_status(
     party, candidate, office, runoff, division_slug, jungle, runoff_election,
-    special_election, election_date
+    special_election, page_url
 ):
     party_labels = {
         'Democrat': 'Democratic',
@@ -105,18 +73,6 @@ def construct_status(
         else:
             race_label = 'race'
 
-    page_url = (
-        'https://www.politico.com/election-results/2018'
-        '/{}/'.format(division_slug)
-    )
-    if special_election:
-        parsed = datetime.strptime(election_date, '%m/%d/%y')
-        month = parsed.strftime('%b').lower()
-        day = parsed.strftime('%d')
-        page_url += 'special-election/{}-{}'.format(month, day)
-    elif runoff_election:
-        page_url += 'runoff'
-
     return ('🚨 NEW CALL: {} {} {} for {}. {}'.format(
         candidate, winning_language, race_label, office, page_url
     ))
@@ -126,13 +82,7 @@ def construct_status(
 def call_race_on_twitter(payload):
     payload = Namespace(**payload)
 
-    get_screenshot(
-        payload.division_slug,
-        payload.race_id,
-        payload.runoff_election,
-        payload.special_election,
-        payload.election_date
-    )
+    get_screenshot(payload.race_id, payload.page_url)
 
     status = construct_status(
         payload.primary_party,
@@ -143,9 +93,8 @@ def call_race_on_twitter(payload):
         payload.jungle,
         payload.runoff_election,
         payload.special_election,
-        payload.election_date
+        payload.page_url
     )
-    print(status)
 
     api = twitter.Api(
         consumer_key=CONSUMER_KEY,

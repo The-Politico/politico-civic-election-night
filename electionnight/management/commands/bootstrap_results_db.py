@@ -1,6 +1,7 @@
 import json
 import subprocess
 import sys
+from datetime import datetime
 from time import sleep
 
 from tqdm import tqdm
@@ -157,11 +158,32 @@ class Command(BaseCommand):
                     PARTY = ap_meta.election.party.label
                 else:
                     PARTY = None
-                # TODO: Distinguish a runoff result vs regular primary
-                # TODO: Jungle primaries?
+
+                # construct page URL for payload
+                if app_settings.AWS_S3_BUCKET == 'interactives.politico.com':
+                    base_url = 'https://www.politico.com/election-results/2018'
+                    end_path = ''
+                else:
+                    base_url = 'https://s3.amazonaws.com/staging.interactives.politico.com/election-results/2018' # noqa
+                    end_path = 'index.html'
+
+                if RACE_TYPE == 'Runoff':
+                    state_path = '{}/runoff'.format(division.slug)
+                elif 'Special' in RACE_TYPE:
+                    parsed = datetime.strptime(ELECTION_DATE, '%m/%d/%y')
+                    month = parsed.strftime('%b')
+                    day = parsed.strftime('%d')
+
+                    state_path = '{}/special-election/{}-{}'.format(
+                        division.slug, month, day
+                    )
+                else:
+                    state_path = division.slug
+
+                url = '{}/{}/{}'.format(base_url, state_path, end_path)
+
                 payload = {
                     "race_id": RACE_ID,
-                    "election_date": ELECTION_DATE,
                     "division": division.label,
                     "division_slug": division.slug,
                     "office": candidate.race.office.label,
@@ -176,7 +198,8 @@ class Command(BaseCommand):
                     "precincts_reporting_percent": PRECINCTS_REPORTING_PERCENT,
                     "jungle": RACE_TYPE == 'Open Primary',
                     "runoff_election": RACE_TYPE == 'Runoff',
-                    "special_election": 'Special' in RACE_TYPE
+                    "special_election": 'Special' in RACE_TYPE,
+                    "page_url": url
                 }
                 call_race_in_slack.delay(payload)
                 call_race_on_twitter.delay(payload)

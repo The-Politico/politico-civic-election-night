@@ -10,20 +10,20 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         payload = {
-            "race_id": '6239',
-            "election_date": "06/26/18",
-            "division": 'Colorado',
-            "division_slug": 'colorado',
-            "office": 'U.S. House, Colorado, District 2',
-            "candidate": 'Mark Williams',
-            "primary_party": 'Democrat',
-            "vote_percent": 0.55,
-            "vote_count": 25671,
-            "runoff": False,
+            "race_id": '45897',
+            "division": 'Texas',
+            "division_slug": 'texas',
+            "office": 'U.S. House, Texas, District 27',
+            "candidate": 'Roy Barrera',
+            "primary_party": None,
+            "vote_percent": 0.18,
+            "vote_count": 36987,
+            "runoff": True,
             "precincts_reporting_percent": 1,
             "jungle": False,
             "runoff_election": False,
-            "special_election": False
+            "special_election": True,
+            "page_url": 'https://s3.amazonaws.com/staging.interactives.politico.com/election-results/2018/texas/special-election/jun-30/index.html' # noqa
         }
 
         call_race_in_slack.delay(payload)

@@ -1,6 +1,5 @@
 import time
 from argparse import Namespace
-from datetime import datetime
 
 from celery import shared_task
 from django.conf import settings
@@ -20,29 +19,6 @@ def get_client():
 def call_race_in_slack(payload):
     payload = Namespace(**payload)
 
-    state_path = payload.division_slug
-    if payload.runoff_election:
-        state_path = '{}/runoff'.format(state_path)
-
-    if payload.special_election:
-        parsed = datetime.strptime(payload.election_date, '%m/%d/%y')
-        month = parsed.strftime('%b')
-        day = parsed.strftime('%d')
-        state_path = '{}/special-election/{}-{}'.format(
-            state_path,
-            month.lower(),
-            day
-        )
-
-    if app_settings.AWS_S3_BUCKET == 'interactives.politico.com':
-        start_path = 'https://www.politico.com/election-results/2018'
-        end_path = ''
-    else:
-        start_path = 'https://s3.amazonaws.com/staging.interactives.politico.com/election-results/2018' # noqa
-        end_path = 'index.html'
-
-    page_path = '{}/{}/{}'.format(start_path, state_path, end_path)
-
     if payload.runoff:
         WINNING = '✓ *{}* will advance to a runoff.'.format(payload.candidate)
     else:
@@ -58,7 +34,7 @@ def call_race_in_slack(payload):
         "author_name": "Election Bot",
         "author_icon": "https://pbs.twimg.com/profile_images/998954486205898753/gbb2psb__400x400.jpg",  # noqa
         "title": payload.office,
-        "title_link": page_path,
+        "title_link": payload.page_url,
         "text": WINNING,
         "footer": "Associated Press",
         "fields": [
