@@ -4,8 +4,7 @@ import sys
 from datetime import datetime
 from time import sleep
 
-from tqdm import tqdm
-
+from django.contrib.humanize.templatetags.humanize import ordinal
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
@@ -14,7 +13,26 @@ from electionnight.celery import call_race_in_slack, call_race_on_twitter
 from electionnight.conf import settings as app_settings
 from electionnight.models import APElectionMeta
 from geography.models import Division, DivisionLevel
+from tqdm import tqdm
 from vote.models import Votes
+
+
+def format_office_label(office, division_label):
+    """
+    Format the label for office into something we like for twitter.
+    """
+    if office.body:
+        if office.body.slug == 'senate':
+            return 'the Senate in {}'.format(division_label)
+        else:
+            return 'the House seat in {}\'s {} District'.format(
+                division_label,
+                ordinal(office.division.code)
+            )
+    else:
+        # TODO: President
+        return 'the governor in {}'.format(division_label)
+    return office.label
 
 
 class Command(BaseCommand):
@@ -186,7 +204,10 @@ class Command(BaseCommand):
                     "race_id": RACE_ID,
                     "division": division.label,
                     "division_slug": division.slug,
-                    "office": candidate.race.office.label,
+                    "office": format_office_label(
+                        candidate.race.office,
+                        division.label
+                    ),
                     "candidate": '{} {}'.format(
                         candidate.person.first_name,
                         candidate.person.last_name
