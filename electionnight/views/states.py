@@ -163,6 +163,9 @@ class StatePage(BaseView):
         geo = (
             'election-results/cdn/geography/us-census/cb/500k/2016/states/{0}/{0}'
         ).format(division.code)
+
+        townships = division.code in ['09', '25', '23', '33', '44', '50']
+
         if (production and
            settings.AWS_S3_BUCKET == 'interactives.politico.com'):
             return {
@@ -180,7 +183,9 @@ class StatePage(BaseView):
                 'context': 'context.json',
                 'geo_county': (
                     'https://s3.amazonaws.com/'
-                    'interactives.politico.com/{}-county.json').format(geo),
+                    'interactives.politico.com/{}-{}.json').format(
+                        geo, 'township' if townships else 'county'
+                    ),
                 'geo_district': (
                     'https://s3.amazonaws.com/'
                     'interactives.politico.com/{}-district.json').format(geo),
@@ -192,7 +197,9 @@ class StatePage(BaseView):
             ),
             'geo_county': (
                 'https://s3.amazonaws.com/'
-                'interactives.politico.com/{}-county.json').format(geo),
+                'interactives.politico.com/{}-{}.json').format(
+                    geo, 'township' if townships else 'county'
+                ),
             'geo_district': (
                 'https://s3.amazonaws.com/'
                 'interactives.politico.com/{}-district.json').format(geo),

@@ -199,7 +199,7 @@ function addResults (results, dispatch) {
     .filter(d => d.level === DivisionLevels.state)
     .map(d => createResultObj(d));
   const countyResults = results
-    .filter(d => d.level === DivisionLevels.county)
+    .filter(d => d.level === DivisionLevels.county || DivisionLevels.township)
     .map(d => createResultObj(d));
 
   dispatch(resultsActions.setCountyResults(countyResults));
