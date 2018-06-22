@@ -20,12 +20,6 @@ dj-database-url = "*"
 "psycopg2" = "*"
 elex = "==2.4.3"
 celery = "*"
-entity = {git = "ssh://git@github.com/The-Politico/politico-civic-entity", editable = true}
-geography = {git = "ssh://git@github.com/The-Politico/politico-civic-geography", editable = true}
-government = {git = "ssh://git@github.com/The-Politico/politico-civic-government", editable = true}
-election = {git = "ssh://git@github.com/The-Politico/politico-civic-election", editable = true}
-almanac = {git = "ssh://git@github.com/The-Politico/politico-civic-almanac", editable = true}
-vote = {git = "ssh://git@github.com/The-Politico/politico-civic-vote", editable = true}
 electionnight = {path = "./..", editable = true}
 ipython = "*"
 django-cors-headers = "*"
@@ -36,7 +30,12 @@ slacker = "*"
 python-twitter = "*"
 requests = "*"
 pillow = "*"
-politico-civic-entity = "==0.2.0"
+politico-civic-entity = "==0.2.1"
+politico-civic-geography = "==0.4.1"
+politico-civic-government = "==0.1.1"
+politico-civic-election = "==0.1.3"
+politico-civic-almanac = "*"
+politico-civic-vote = "==0.1.4"
 
 
 [dev-packages]
