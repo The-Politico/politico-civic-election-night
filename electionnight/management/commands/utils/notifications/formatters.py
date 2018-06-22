@@ -21,5 +21,5 @@ def format_office_label(office, division_label):
             )
     else:
         # TODO: President
-        return 'the governor in {}'.format(division_label)
+        return 'governor in {}'.format(division_label)
     return office.label
