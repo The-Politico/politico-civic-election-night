@@ -13,7 +13,7 @@ class Command(BaseCommand):
             "race_id": '45897',
             "division": 'Texas',
             "division_slug": 'texas',
-            "office": 'U.S. House, Texas, District 27',
+            "office": 'the House seat in Texas’ 27th District',
             "candidate": 'Roy Barrera',
             "primary_party": None,
             "vote_percent": 0.18,
