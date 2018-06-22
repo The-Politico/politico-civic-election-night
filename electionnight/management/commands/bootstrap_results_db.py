@@ -62,7 +62,7 @@ class Command(BaseCommand):
         ]
         return [result[key] for key in keys]
 
-    def process_result(self, result, tabulated, no_bots):
+    def process_result(self, result, tabulated, no_bots, election_slug):
         """
         Processes top-level (state) results for candidate races, loads data
         into the database  and sends alerts for winning results.
@@ -85,6 +85,7 @@ class Command(BaseCommand):
         try:
             ap_meta = APElectionMeta.objects.get(
                 ap_election_id=RACE_ID,
+                election__election_day__slug=election_slug
             )
         except ObjectDoesNotExist:
             print('No AP Meta found for {0} {1} {2}'.format(
@@ -226,7 +227,7 @@ class Command(BaseCommand):
             results = self.load_results()
 
             for result in tqdm(results):
-                self.process_result(result, TABULATED, NO_BOTS)
+                self.process_result(result, TABULATED, NO_BOTS, ELECTION_DATE)
 
             if i % 5 == 0:
                 call_command('bake_elections', ELECTION_DATE)
