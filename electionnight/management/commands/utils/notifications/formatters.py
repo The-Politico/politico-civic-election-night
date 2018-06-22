@@ -3,8 +3,8 @@ from django.contrib.humanize.templatetags.humanize import ordinal
 
 def possessive_state(state_label):
     if state_label[-1] == 's':
-        return '{}\''.format(state_label)
-    return '{}\'s'.format(state_label)
+        return '{}’'.format(state_label)
+    return '{}’s'.format(state_label)
 
 
 def format_office_label(office, division_label):
