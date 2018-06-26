@@ -49,7 +49,7 @@ class Table extends React.Component {
     ));
 
     let expandTable = null;
-    if (this.props.results.length > 10) {
+    if (this.props.results.length >= 8) {
       expandTable = (
         <tr onClick={this.onExpandClick} className='expand-row'>
           <td colSpan='2' />
