@@ -56,10 +56,14 @@ class Table extends React.Component {
       />
     );
 
+    const runoff = this.checkIfRunoff(results) ? (
+      <span className='runoff'>Race goes to runoff</span>
+    ) : null;
+
     return (
       <article className={`results race-table-${election.apMeta.id}`}>
         <header>
-          <h4>{this.props.elections[0].office.label}</h4>
+          <h4>{this.props.elections[0].office.label} {runoff}</h4>
         </header>
         {table}
       </article>
