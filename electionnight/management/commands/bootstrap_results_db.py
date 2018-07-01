@@ -70,7 +70,7 @@ class Command(BaseCommand):
         # Deconstruct result in variables
         (
             ID, RACE_ID,
-            IS_BALLOT_MEASURE, ELECTION_DATE,
+            IS_BALLOT_MEASURE, ELEX_ELECTION_DATE,
             LEVEL, STATE_POSTAL, REPORTING_UNIT,
             LAST_NAME, OFFICE_NAME, RACE_TYPE,
             WINNER, UNCONTESTED, RUNOFF,
@@ -172,7 +172,7 @@ class Command(BaseCommand):
                 if RACE_TYPE == 'Runoff':
                     state_path = '{}/runoff'.format(division.slug)
                 elif 'Special' in RACE_TYPE:
-                    parsed = datetime.strptime(ELECTION_DATE, '%m/%d/%y')
+                    parsed = datetime.strptime(ELEX_ELECTION_DATE, '%m/%d/%y')
                     month = parsed.strftime('%b')
                     day = parsed.strftime('%d')
 
