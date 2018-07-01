@@ -213,7 +213,7 @@ class Command(BaseCommand):
 
     def main(self, options):
         TABULATED = options['tabulated']
-        ELECTION_DATE = options['election_date']
+        PASSED_ELECTION_DATE = options['election_date']
         DOWNLOAD = options['download']
         RUN_ONCE = options['run_once']
         NO_BOTS = options['no_bots']
@@ -227,10 +227,12 @@ class Command(BaseCommand):
             results = self.load_results()
 
             for result in tqdm(results):
-                self.process_result(result, TABULATED, NO_BOTS, ELECTION_DATE)
+                self.process_result(
+                    result, TABULATED, NO_BOTS, PASSED_ELECTION_DATE
+                )
 
             if i % 5 == 0:
-                call_command('bake_elections', ELECTION_DATE)
+                call_command('bake_elections', PASSED_ELECTION_DATE)
 
             i += 1
 
