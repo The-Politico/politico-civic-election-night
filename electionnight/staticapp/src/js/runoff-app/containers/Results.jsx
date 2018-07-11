@@ -10,6 +10,8 @@ import MarkdownText from 'Common/components/Markdowntext';
 import Advertisement from 'Common/components/Advertisement';
 import LiveChatPromo from 'Common/components/nav/LiveChatPromo';
 
+import 'SCSS/runoff-app/components/results_tables/alabama-overrides.scss';
+
 const Results = (props) => {
   // We do some queries higher up so we don't need
   // to repeat them in sibling components...
