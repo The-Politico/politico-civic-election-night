@@ -28,7 +28,7 @@ class StickyHeader extends React.Component {
     return rect.top + scrollTop;
   }
   setStickyNav () {
-    const waypoint = document.querySelector('.jumpto');
+    const waypoint = document.querySelector('.election-results');
     const position = this.getOffset(waypoint);
 
     if (!position) {
