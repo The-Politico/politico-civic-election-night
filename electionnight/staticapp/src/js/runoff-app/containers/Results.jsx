@@ -4,13 +4,11 @@ import StickyHeader from 'Common/components/nav/StickyHeader';
 import Governor from './offices/Governor';
 import Senator from './offices/Senator';
 import House from './offices/House';
-import JumpLinks from 'StateApp/components/nav/JumpLinks';
+import JumpLinks from 'RunoffApp/components/nav/JumpLinks';
 import FetchRefresh from 'Common/components/FetchRefresh';
 import MarkdownText from 'Common/components/Markdowntext';
 import Advertisement from 'Common/components/Advertisement';
 import LiveChatPromo from 'Common/components/nav/LiveChatPromo';
-
-import 'SCSS/runoff-app/components/results_tables/alabama-overrides.scss';
 
 const Results = (props) => {
   // We do some queries higher up so we don't need

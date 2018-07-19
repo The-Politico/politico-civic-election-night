@@ -16,10 +16,12 @@ const Nav = (props) => {
 
   return (
     <div className='jumpto'>
-      <p>
-        Other elections today:
-        {links}
-      </p>
+      {links.length > 0 && (
+        <p>
+          Other elections today:
+          {links}
+        </p>
+      )}
     </div>
   );
 };
