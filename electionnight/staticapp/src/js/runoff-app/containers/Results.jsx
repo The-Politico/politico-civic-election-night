@@ -69,9 +69,9 @@ const Results = (props) => {
     />
   );
 
-  // const liveChatPromo = props.resultsIn ? (
-  //   <LiveChatPromo />
-  // ) : null;
+  const liveChatPromo = props.resultsIn ? (
+    <LiveChatPromo />
+  ) : null;
 
   const bigAd = props.senator.length > 0 || props.governor.length > 0 ? (
     <Advertisement adID='pol-06' />
@@ -85,7 +85,6 @@ const Results = (props) => {
       />
       <section className='election-results'>
         <StickyHeader {...props} />
-        {liveChatPromo}
         {fetchRefresh}
         <JumpLinks {...props} />
         <Governor {...props} />
