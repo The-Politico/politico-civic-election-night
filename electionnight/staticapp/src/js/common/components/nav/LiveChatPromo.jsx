@@ -1,23 +1,9 @@
 import React from 'react';
+import MonthCrosswalk from 'Common/constants/months';
 
 const LiveChatPromo = (props) => {
-  const monthCrosswalk = {
-    '01': 'jan',
-    '02': 'feb',
-    '03': 'mar',
-    '04': 'apr',
-    '05': 'may',
-    '06': 'jun',
-    '07': 'jul',
-    '08': 'aug',
-    '09': 'sep',
-    '10': 'oct',
-    '11': 'nov',
-    '12': 'dec',
-  };
-
   const chatDate = window.appConfig.electionSlug.split('-');
-  const month = monthCrosswalk[chatDate[1]];
+  const month = MonthCrosswalk[chatDate[1]];
   const day = chatDate[2];
 
   return (

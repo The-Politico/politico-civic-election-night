@@ -9,7 +9,7 @@ import json
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from almanac.models import ElectionEvent
-from election.models import ElectionDay
+from election.models import ElectionDay, Election
 from electionnight.conf import settings
 from electionnight.models import PageContent
 from electionnight.serializers import ElectionViewSerializer, StateSerializer
@@ -82,6 +82,13 @@ class RunoffPage(BaseView):
             ]
         ).values_list('division__label', flat=True)
 
+        specials = Election.objects.filter(
+            election_day__date=self.election_date,
+            race__special=True
+        ).values_list('division__parent__label', flat=True)
+
+        todays_specials = [state for state in specials if state not in todays_elections or todays_runoffs] # noqa
+
         state_level = DivisionLevel.objects.get(name=DivisionLevel.STATE)
         # All states except DC
         states = Division.objects.filter(
@@ -90,10 +97,7 @@ class RunoffPage(BaseView):
         # Nav links should always refer to main state page. We can use subpath
         # to determine how deep publish path is relative to state pages.
         relative_prefix = ''
-        print(subpath)
-
         depth = subpath.lstrip('/').count('/')
-        print(depth)
         for i in range(depth):
             relative_prefix += '../'
         data = {
@@ -105,7 +109,8 @@ class RunoffPage(BaseView):
                     ),
                     'name': state.label,
                     'live': state.label in todays_elections,
-                    'runoff': state.label in todays_runoffs
+                    'runoff': state.label in todays_runoffs,
+                    'special': state.label in todays_specials
                 } for state in states
             ],
         }

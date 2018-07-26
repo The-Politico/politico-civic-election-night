@@ -4,11 +4,14 @@ Special election result pages.
 URL PATTERNS:
 /election-results/{YEAR}/{STATE}/special-election/{MMM}-{DD}/
 """
+import json
+
 from time import strptime
 
+from almanac.models import ElectionEvent
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from election.models import ElectionDay
+from election.models import ElectionDay, Election
 from electionnight.conf import settings
 from electionnight.models import PageContent
 from electionnight.serializers import ElectionViewSerializer, StateSerializer
@@ -56,8 +59,11 @@ class SpecialElectionPage(BaseView):
             self.day,
         )
         self.election = ElectionDay.objects.get(
-            date=self.election_date
-        ).elections.first()
+            date=self.election_date,
+        ).elections.get(
+            race__special=True,
+            division__parent__label=self.division
+        )
         context['secret'] = settings.SECRET_KEY
         context['year'] = self.year
         context['month'] = self.month
@@ -70,15 +76,42 @@ class SpecialElectionPage(BaseView):
         )
         # context['baked_content'] = context['content']['page']['before-results']
         context['election'] = self.election
+        context['subpath'] = '/special-election/{}-{}'.format(
+            self.month, self.day
+        )
 
-        return {
+        template = {
             **context,
             **self.get_paths_context(production=context['production']),
             **self.get_elections_context(context['division']),
-            **self.get_nav_links(subpath=context['subpath']),
         }
 
+        nav, nav_json = self.get_nav_links(context['subpath'])
+        template['nav'] = nav
+        template['nav_json'] = nav_json
+
+        return template
+
     def get_nav_links(self, subpath=''):
+        todays_elections = ElectionEvent.objects.filter(
+            election_day__date=self.election_date,
+            event_type__in=[ElectionEvent.PRIMARIES, ElectionEvent.GENERAL]
+        ).values_list('division__label', flat=True)
+
+        todays_runoffs = ElectionEvent.objects.filter(
+            election_day__date=self.election_date,
+            event_type__in=[
+                ElectionEvent.PRIMARIES_RUNOFF, ElectionEvent.GENERAL_RUNOFF
+            ]
+        ).values_list('division__label', flat=True)
+
+        specials = Election.objects.filter(
+            election_day__date=self.election_date,
+            race__special=True
+        ).values_list('division__parent__label', flat=True)
+
+        todays_specials = [state for state in specials if state not in todays_elections or todays_runoffs] # noqa
+
         state_level = DivisionLevel.objects.get(name=DivisionLevel.STATE)
         # All states except DC
         states = Division.objects.filter(
@@ -87,22 +120,27 @@ class SpecialElectionPage(BaseView):
         # Nav links should always refer to main state page. We can use subpath
         # to determine how deep publish path is relative to state pages.
         relative_prefix = ''
+        print(subpath)
         depth = subpath.lstrip('/').count('/')
+        print(depth)
         for i in range(depth):
             relative_prefix += '../'
-        return {
-            'nav': {
-                'states': [
-                    {
-                        'link': '../../../{0}{1}/'.format(
-                            relative_prefix,
-                            state.slug
-                        ),
-                        'name': state.label,
-                    } for state in states
-                ],
-            }
+        data = {
+            'states': [
+                {
+                    'link': '../{0}{1}/'.format(
+                        relative_prefix,
+                        state.slug
+                    ),
+                    'name': state.label,
+                    'live': state.label in todays_elections,
+                    'runoff': state.label in todays_runoffs,
+                    'special': state.label in todays_specials
+                } for state in states
+            ],
         }
+
+        return data, json.dumps(data)
 
     def get_elections_context(self, division):
         elections_context = {}
@@ -189,6 +227,7 @@ class SpecialElectionPage(BaseView):
                     'https://s3.amazonaws.com/'
                     'interactives.politico.com/{}-district.json').format(geo),
             }
+        print(self.election)
         return {
             'context': reverse(
                 'electionnight_api_special-election-detail',

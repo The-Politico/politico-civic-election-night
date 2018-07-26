@@ -4,7 +4,7 @@ import StickyHeader from 'Common/components/nav/StickyHeader';
 import Governor from './offices/Governor';
 import Senator from './offices/Senator';
 import House from './offices/House';
-import JumpLinks from 'StateApp/components/nav/JumpLinks';
+import JumpLinks from 'Common/components/nav/JumpLinks';
 import FetchRefresh from 'Common/components/FetchRefresh';
 import MarkdownText from 'Common/components/Markdowntext';
 import Advertisement from 'Common/components/Advertisement';

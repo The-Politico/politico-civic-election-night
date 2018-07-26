@@ -4,7 +4,7 @@ import StickyHeader from 'Common/components/nav/StickyHeader';
 import House from './offices/House';
 import FetchRefresh from 'Common/components/FetchRefresh';
 import MarkdownText from 'Common/components/Markdowntext';
-import Advertisement from 'Common/components/Advertisement';
+import JumpLinks from 'Common/components/nav/JumpLinks';
 
 const Results = (props) => {
   // We do some queries higher up so we don't need
@@ -58,6 +58,7 @@ const Results = (props) => {
         content={props.content}
         results={props.stateResults}
       />
+      <JumpLinks {...props} />
       <section className='election-results'>
         <House {...props} />
       </section>
