@@ -74,10 +74,14 @@ class Command(BaseCommand):
             body = government.Body.objects.get(
                 label='U.S. Senate'
             )
+            if row['seatname'] == '2020':
+                senate_class = 2
+            else:
+                senate_class = self.senate_class
             return government.Office.objects.get(
                 body=body,
                 division=state,
-                senate_class=self.senate_class
+                senate_class=senate_class
             )
         elif row['officename'] == 'U.S. House':
             body = government.Body.objects.get(
@@ -111,11 +115,18 @@ class Command(BaseCommand):
 
         office = self.get_office(row, division)
 
-        return election.Race.objects.get(
-            office=office,
-            cycle__name=row['electiondate'].split('-')[0],
-            special=row['racetype'].startswith('Special')
-        )
+        try:
+            return election.Race.objects.get(
+                office=office,
+                cycle__name=row['electiondate'].split('-')[0],
+                special=row['racetype'].startswith('Special')
+            )
+        except:
+            print('Could not find race for {} {} {}'.format(
+                row['electiondate'].split('-')[0],
+                office.label,
+                row['racetype'].startswith('Special')
+            ))
 
     def get_election(self, row, race):
         """
