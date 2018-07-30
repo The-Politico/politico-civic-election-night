@@ -21,7 +21,7 @@ class LegislativeOffice(object):
             content_type=ContentType.objects.get_for_model(body),
             object_id=body.pk,
             election_day=election.election_day,
-            division=body_division
+            division=body_division,
         )
         # Senate seats
         if office_division.level.name == DivisionLevel.STATE:
@@ -31,6 +31,7 @@ class LegislativeOffice(object):
                 ),
                 object_id=office_division.pk,
                 election_day=election.election_day,
+                special_election=False
             )
         # House seats
         elif office_division.level.name == DivisionLevel.DISTRICT:
@@ -40,6 +41,7 @@ class LegislativeOffice(object):
                 ),
                 object_id=office_division.parent.pk,
                 election_day=election.election_day,
+                special_election=False
             )
         # Generic state pages, type and content
         page_type, created = PageType.objects.get_or_create(

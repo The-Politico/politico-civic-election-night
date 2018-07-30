@@ -2,7 +2,6 @@ import React from 'react';
 
 const Uncontested = (props) => {
   const {results} = props;
-  console.log(props);
 
   const candidate = results[0].candidate;
 

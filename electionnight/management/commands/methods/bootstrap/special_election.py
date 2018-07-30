@@ -23,6 +23,7 @@ class SpecialElection(object):
                 ),
                 object_id=office_division.pk,
                 election_day=election.election_day,
+                special_election=True
             )
         # House seats
         elif office_division.level.name == DivisionLevel.DISTRICT:
@@ -32,6 +33,7 @@ class SpecialElection(object):
                 ),
                 object_id=office_division.parent.pk,
                 election_day=election.election_day,
+                special_election=True
             )
         # Generic state pages, type and content
         page_type, created = PageType.objects.get_or_create(

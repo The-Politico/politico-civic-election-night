@@ -62,7 +62,7 @@ class PageContentManager(models.Manager):
             'page_type': None  # TODO
         }
 
-    def division_content(self, election_day, division):
+    def division_content(self, election_day, division, special=False):
         """
         Return serialized content for a division page.
         """
@@ -77,7 +77,8 @@ class PageContentManager(models.Manager):
         page_content = self.get(
             content_type__pk=division_type.pk,
             object_id=division.pk,
-            election_day=election_day
+            election_day=election_day,
+            special_election=special
         )
         page_type_content = self.get(
             content_type=ContentType.objects.get_for_model(page_type),
