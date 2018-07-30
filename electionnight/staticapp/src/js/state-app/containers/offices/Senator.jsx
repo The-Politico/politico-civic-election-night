@@ -39,9 +39,6 @@ const Senator = (props) => {
     <TableMap election={election} {...props} />
   ));
 
-  console.log(results);
-  console.log(specials);
-
   return (
     <section className='results-group'>
       <Element name='senate-anchor'>
