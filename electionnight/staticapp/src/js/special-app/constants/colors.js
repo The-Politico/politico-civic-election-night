@@ -29,4 +29,5 @@ export const generalColors = {
   gop: '#FD5E42',
   lib: '#8D7455',
   ind: '#DBCC66',
+  grn: '#DBCC66',
 };
