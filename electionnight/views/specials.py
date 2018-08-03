@@ -134,7 +134,7 @@ class SpecialElectionPage(BaseView):
         data = {
             'states': [
                 {
-                    'link': '../{0}{1}/'.format(
+                    'link': '../../{0}{1}/'.format(
                         relative_prefix,
                         state.slug
                     ),
