@@ -1,5 +1,6 @@
 {% extends 'electionnight/base.html' %}
 {% load tz %}
+{% load dictKeyLookup %}
 
 {% block title %}
 <title>{{ division.label|title }} Election Results {{year}}: Live primary map by county</title>
@@ -32,23 +33,41 @@
 <script type="application/ld+json">
   {
     "@context": "http://schema.org",
-    "@type": "NewsArticle",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://www.politico.com/election-results/{{year}}/{{state}}/{{subpath}}"
-    },
+    "@type": "LiveBlogPosting",
+    "url": "https://www.politico.com/election-results/{{year}}/{{state}}/{{subpath}}",
     "headline": "{{ division.label|title }} Election Results {{year}}: Live primary map by county",
     "description": "Get real-time {{year}} {{ division.label|title }} primary election results & live maps by county. POLITICO's coverage of the {{year}} midterm races for Senate, House & state governors.",
+    "coverageStartTime": "{{ election_date }}T00:00:00+04:00",
+    "coverageEndTime": "{{ coverage_end }}+04:00",
+    "liveBlogUpdate": [
+      {
+        "@type": "BlogPosting",
+        "author": {
+          "@type": "Organization",
+          "@id": "https://www.politico.com",
+          "name": "POLITICO Staff"
+        },
+        "url": "https://www.politico.com/election-results/{{year}}/{{state}}/special-election/{{month}}-{{day}}",
+        "datePublished": "{{ election_date }}T00:00:00+04:00",
+        "dateModified": "{{ now }}",
+        "headline": "{{ division.label|title }} Election Results {{year}}: Live primary map by county",
+        "articleBody": "{% dictKeyLookup content.page 'before-results' %}",
+        "publisher": {
+          "@type": "Organization",
+          "name": "POLITICO",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://static.politico.com/6d/9f/1e153a1748fa9ea656c575dc6dff/politico-logo-60px-tall-1.png"
+          }
+        },
+        "image": [
+          "https://www.politico.com/election-results/cdn/img/2018/share/{{division.code_components.postal|lower}}/share.jpg"
+         ]
+      }
+    ],
     "image": [
       "https://www.politico.com/election-results/cdn/img/2018/share/{{division.code_components.postal|lower}}/share.jpg"
      ],
-    "datePublished": "{{ election_date }}T02:00:00+04:00",
-    "dateModified": "{{ now }}",
-    "isAccessibleForFree":"True",
-    "author": {
-      "@type": "Person",
-      "name": "POLITICO Staff"
-    },
    "publisher": {
       "@type": "Organization",
       "name": "POLITICO",

@@ -6,6 +6,7 @@ URL PATTERNS:
 """
 import json
 
+from datetime import datetime, timedelta
 from time import strptime
 
 from almanac.models import ElectionEvent
@@ -69,7 +70,12 @@ class SpecialElectionPage(BaseView):
         context['month'] = self.month
         context['day'] = self.day
         context['state'] = self.state
+
         context['election_date'] = self.election_date
+        context['coverage_end'] = (datetime.strptime(
+            self.election_date, '%Y-%m-%d'
+        ) + timedelta(days=2)).isoformat()
+
         context['content'] = PageContent.objects.division_content(
             ElectionDay.objects.get(date=self.election_date),
             self.division
