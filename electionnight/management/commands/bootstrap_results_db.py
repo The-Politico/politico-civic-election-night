@@ -173,7 +173,7 @@ class Command(BaseCommand):
                     state_path = '{}/runoff'.format(division.slug)
                 elif 'Special' in RACE_TYPE:
                     parsed = datetime.strptime(ELEX_ELECTION_DATE, '%Y-%m-%d')
-                    month = parsed.strftime('%b')
+                    month = parsed.strftime('%b').lower()
                     day = parsed.strftime('%d')
 
                     state_path = '{}/special-election/{}-{}'.format(
