@@ -10,20 +10,20 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         payload = {
-            "race_id": '45897',
-            "division": 'Texas',
-            "division_slug": 'texas',
-            "office": 'the House seat in Texas’ 27th District',
-            "candidate": 'Roy Barrera',
+            "race_id": '36037',
+            "division": 'Ohio',
+            "division_slug": 'ohio',
+            "office": 'the House seat in Ohio’s 12th District',
+            "candidate": 'Danny O\'Connor',
             "primary_party": None,
-            "vote_percent": 0.18,
-            "vote_count": 36987,
-            "runoff": True,
+            "vote_percent": 0.50,
+            "vote_count": 95647,
+            "runoff": False,
             "precincts_reporting_percent": 1,
             "jungle": False,
             "runoff_election": False,
             "special_election": True,
-            "page_url": 'https://s3.amazonaws.com/staging.interactives.politico.com/election-results/2018/texas/special-election/jun-30/index.html' # noqa
+            "page_url": 'https://s3.amazonaws.com/staging.interactives.politico.com/election-results/2018/ohio/special-election/aug-07/index.html' # noqa
         }
 
         call_race_in_slack.delay(payload)

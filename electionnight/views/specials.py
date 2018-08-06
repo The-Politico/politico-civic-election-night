@@ -78,7 +78,8 @@ class SpecialElectionPage(BaseView):
 
         context['content'] = PageContent.objects.division_content(
             ElectionDay.objects.get(date=self.election_date),
-            self.division
+            self.division,
+            special=True
         )
         # context['baked_content'] = context['content']['page']['before-results']
         context['election'] = self.election
@@ -203,7 +204,8 @@ class SpecialElectionPage(BaseView):
         """Get serialized context for baking to S3."""
         division = Division.objects.get(slug=self.state)
         return StateSerializer(division, context={
-            'election_date': self.election_date
+            'election_date': self.election_date,
+            'special': True
         }).data
 
     def get_extra_static_paths(self, production):

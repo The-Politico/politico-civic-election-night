@@ -75,9 +75,13 @@ class StateSerializer(serializers.ModelSerializer):
         # use parent division.
         if obj.level.name == DivisionLevel.DISTRICT:
             division = obj.parent
+
+        special = True if self.context.get('special') else False
+
         return PageContent.objects.division_content(
             election_day,
-            division
+            division,
+            special
         )
 
     class Meta:
