@@ -191,7 +191,7 @@
   <ul>
     {% for state in nav.states %}
       <li>
-        <a {% if state.live or state.runoff %}class="live"{% endif %} href="{{state.link}}{% if state.runoff %}/runoff{% endif %}">{{state.name}}</a>
+        <a {% if state.live or state.runoff or state.special %}class="live"{% endif %} href="{{state.link}}{% if state.runoff %}/runoff{% elif state.special %}special-election/{{ election_datetime|date:'b-d' }}{% endif %}">{{state.name}}</a>
       </li>
     {% endfor %}
   </ul>
