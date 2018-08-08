@@ -23,6 +23,13 @@ class Command(BaseCommand):
         Gets the Division object for the given row of election results.
         """
 
+        # back out of Alaska county
+
+        if row['level'] == geography.DivisionLevel.COUNTY and \
+                row['statename'] == 'Alaska':
+            print('Do not take the Alaska county level result')
+            return None
+
         kwargs = {
             'level__name': row['level']
         }
@@ -39,6 +46,7 @@ class Command(BaseCommand):
             kwargs['code'] = row['fipscode']
         else:
             kwargs['name'] = name
+
         return geography.Division.objects.get(**kwargs)
 
     def get_office(self, row, division):
@@ -300,6 +308,9 @@ class Command(BaseCommand):
         need to be created.
         """
         division = self.get_division(row)
+        if not division:
+            return None
+
         race = self.get_race(row, division)
         election = self.get_election(row, race)
         if not election:

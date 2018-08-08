@@ -131,7 +131,7 @@ class TableMap extends React.Component {
       />
     );
 
-    const map = election.apMeta.overrideApVotes || uncontested ? null : (
+    const map = election.apMeta.overrideApVotes || uncontested || this.props.state[0].label === 'Alaska' ? null : (
       <CountyMap
         candidateColors={candidateColors}
         {...this.props}

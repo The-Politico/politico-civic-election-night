@@ -7,6 +7,14 @@ const HouseSeat = (props) => {
     <Table election={election} {...props} />
   ));
   if (!props.elections[0]) return (<div />);
+
+  const districtMap = props.state[0].label === 'Alaska' ? null : (
+    <DistrictMap
+      {...props}
+      district={props.elections[0].division.code}
+    />
+  )
+
   return (
     <section className='results-group'>
       <header>
@@ -16,10 +24,7 @@ const HouseSeat = (props) => {
         {props.elections[0].special ? (
           <p className='subhed'>To complete current term</p>
         ) : null}
-        <DistrictMap
-          {...props}
-          district={props.elections[0].division.code}
-        />
+        {districtMap}
       </header>
       <div className='container'>
         <div className='row'>
