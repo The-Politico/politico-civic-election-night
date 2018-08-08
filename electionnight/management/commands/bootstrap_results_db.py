@@ -4,6 +4,7 @@ import sys
 from datetime import datetime
 from time import sleep
 
+from almanac.models import ElectionEvent
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
@@ -172,13 +173,25 @@ class Command(BaseCommand):
                 if RACE_TYPE == 'Runoff':
                     state_path = '{}/runoff'.format(division.slug)
                 elif 'Special' in RACE_TYPE:
-                    parsed = datetime.strptime(ELEX_ELECTION_DATE, '%Y-%m-%d')
-                    month = parsed.strftime('%b').lower()
-                    day = parsed.strftime('%d')
-
-                    state_path = '{}/special-election/{}-{}'.format(
-                        division.slug, month, day
+                    # first check to see if this special is on a state page
+                    events = ElectionEvent.objects.filter(
+                        division=division,
+                        election_day__slug=ELEX_ELECTION_DATE
                     )
+                    print(events, division, ELEX_ELECTION_DATE)
+
+                    if len(events) > 0:
+                        state_path = division.slug
+                    else:
+                        parsed = datetime.strptime(
+                            ELEX_ELECTION_DATE, '%Y-%m-%d'
+                        )
+                        month = parsed.strftime('%b').lower()
+                        day = parsed.strftime('%d')
+
+                        state_path = '{}/special-election/{}-{}'.format(
+                            division.slug, month, day
+                        )
                 else:
                     state_path = division.slug
 
