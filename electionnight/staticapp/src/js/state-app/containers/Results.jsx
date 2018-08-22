@@ -86,7 +86,6 @@ const Results = (props) => {
       <section className='election-results'>
         <StickyHeader {...props} />
         {fetchRefresh}
-        {liveChatPromo}
         <JumpLinks {...props} />
         <Governor {...props} />
         <Senator {...props} />
