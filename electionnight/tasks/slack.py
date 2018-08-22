@@ -36,7 +36,7 @@ def call_race_in_slack(payload):
             "mrkdwn_in": ["fields"],
             "author_name": "Election Bot",
             "author_icon": "https://pbs.twimg.com/profile_images/998954486205898753/gbb2psb__400x400.jpg",  # noqa
-            "title": "Winner for ".format(payload.office),
+            "title": "Winner for {}".format(payload.office),
             "title_link": payload.page_url,
             "text": WINNING,
             "footer": "Associated Press",
