@@ -14,9 +14,7 @@ from electionnight.models import APElectionMeta, CandidateColorOrder
 
 
 class Command(BaseCommand):
-    help = (
-        'Bootstraps election meta for all elections in AP data.'
-    )
+    help = "Bootstraps election meta for all elections in AP data."
 
     def get_division(self, row):
         """
@@ -25,27 +23,27 @@ class Command(BaseCommand):
 
         # back out of Alaska county
 
-        if row['level'] == geography.DivisionLevel.COUNTY and \
-                row['statename'] == 'Alaska':
-            print('Do not take the Alaska county level result')
+        if (
+            row["level"] == geography.DivisionLevel.COUNTY
+            and row["statename"] == "Alaska"
+        ):
+            print("Do not take the Alaska county level result")
             return None
 
-        kwargs = {
-            'level__name': row['level']
-        }
+        kwargs = {"level__name": row["level"]}
 
-        if row['reportingunitname']:
-            name = row['reportingunitname']
+        if row["reportingunitname"]:
+            name = row["reportingunitname"]
         else:
-            name = row['statename']
+            name = row["statename"]
 
-        if row['level'] in [
+        if row["level"] in [
             geography.DivisionLevel.COUNTY,
-            geography.DivisionLevel.TOWNSHIP
+            geography.DivisionLevel.TOWNSHIP,
         ]:
-            kwargs['code'] = row['fipscode']
+            kwargs["code"] = row["fipscode"]
         else:
-            kwargs['name'] = name
+            kwargs["name"] = name
 
         return geography.Division.objects.get(**kwargs)
 
@@ -54,61 +52,53 @@ class Command(BaseCommand):
         Gets the Office object for the given row of election results.
         Depends on knowing the division of the row of election results.
         """
-        AT_LARGE_STATES = ['AK', 'DE', 'MT', 'ND', 'SD', 'VT', 'WY']
+        AT_LARGE_STATES = ["AK", "DE", "MT", "ND", "SD", "VT", "WY"]
 
         if division.level.name not in [
             geography.DivisionLevel.STATE,
-            geography.DivisionLevel.COUNTRY
+            geography.DivisionLevel.COUNTRY,
         ]:
             state = division.parent
         else:
             state = division
 
-        if row['officename'] == 'President':
+        if row["officename"] == "President":
             return government.Office.objects.get(
-                label='President',
-                name='President of the United States'
+                label="President", name="President of the United States"
             )
-        elif row['officename'] == 'Governor':
-            jurisdiction = government.Jurisdiction.objects.get(
-                division=state
-            )
+        elif row["officename"] == "Governor":
+            jurisdiction = government.Jurisdiction.objects.get(division=state)
 
             return government.Office.objects.get(
-                slug__endswith='governor',
-                jurisdiction=jurisdiction
+                slug__endswith="governor", jurisdiction=jurisdiction
             )
-        elif row['officename'] == 'U.S. Senate':
-            body = government.Body.objects.get(
-                label='U.S. Senate'
-            )
-            if row['seatname'] == '2020':
+        elif row["officename"] == "U.S. Senate":
+            body = government.Body.objects.get(label="U.S. Senate")
+            if row["seatname"] == "2020":
                 senate_class = 2
             else:
                 senate_class = self.senate_class
             return government.Office.objects.get(
-                body=body,
-                division=state,
-                senate_class=senate_class
+                body=body, division=state, senate_class=senate_class
             )
-        elif row['officename'] == 'U.S. House':
+        elif row["officename"] == "U.S. House":
             body = government.Body.objects.get(
-                label='U.S. House of Representatives'
+                label="U.S. House of Representatives"
             )
 
-            if row['statepostal'] in AT_LARGE_STATES:
-                code = '00'
+            if row["statepostal"] in AT_LARGE_STATES:
+                code = "00"
             else:
-                code = row['seatnum'].zfill(2) if int(row['seatnum']) < 10 else row['seatnum']
+                code = (
+                    row["seatnum"].zfill(2)
+                    if int(row["seatnum"]) < 10
+                    else row["seatnum"]
+                )
 
             district = state.children.get(
-                level__name=geography.DivisionLevel.DISTRICT,
-                code=code
+                level__name=geography.DivisionLevel.DISTRICT, code=code
             )
-            return government.Office.objects.get(
-                body=body,
-                division=district
-            )
+            return government.Office.objects.get(body=body, division=district)
 
     def get_race(self, row, division):
         """
@@ -126,15 +116,17 @@ class Command(BaseCommand):
         try:
             return election.Race.objects.get(
                 office=office,
-                cycle__name=row['electiondate'].split('-')[0],
-                special=row['racetype'].startswith('Special')
+                cycle__name=row["electiondate"].split("-")[0],
+                special=row["racetype"].startswith("Special"),
             )
         except:
-            print('Could not find race for {} {} {}'.format(
-                row['electiondate'].split('-')[0],
-                office.label,
-                row['racetype'].startswith('Special')
-            ))
+            print(
+                "Could not find race for {} {} {}".format(
+                    row["electiondate"].split("-")[0],
+                    office.label,
+                    row["racetype"].startswith("Special"),
+                )
+            )
 
     def get_election(self, row, race):
         """
@@ -147,21 +139,21 @@ class Command(BaseCommand):
         This function depends on knowing the Race object from `get_race`.
         """
         election_day = election.ElectionDay.objects.get(
-            date=row['electiondate'],
+            date=row["electiondate"]
         )
 
-        if row['racetypeid'] in ['D', 'E']:
-            party = government.Party.objects.get(ap_code='Dem')
-        elif row['racetypeid'] in ['R', 'S']:
-            party = government.Party.objects.get(ap_code='GOP')
+        if row["racetypeid"] in ["D", "E"]:
+            party = government.Party.objects.get(ap_code="Dem")
+        elif row["racetypeid"] in ["R", "S"]:
+            party = government.Party.objects.get(ap_code="GOP")
         else:
             party = None
 
-        if row['racetype'] == 'Runoff':
+        if row["racetype"] == "Runoff" and party:
             election_type = election.ElectionType.objects.get_or_create(
                 slug=election.ElectionType.PRIMARY_RUNOFF,
-                label='Primary Runoff',
-                number_of_winners=1
+                label="Primary Runoff",
+                number_of_winners=1,
             )[0]
 
             return election.Election.objects.get_or_create(
@@ -169,7 +161,7 @@ class Command(BaseCommand):
                 election_day=election_day,
                 division=race.office.division,
                 race=race,
-                party=party
+                party=party,
             )[0]
 
         try:
@@ -180,9 +172,11 @@ class Command(BaseCommand):
                 party=party,
             )
         except:
-            print('Could not find election for {0} {1} {2}'.format(
-                race, row['party'], row['last']
-            ))
+            print(
+                "Could not find election for {0} {1} {2}".format(
+                    race, row["party"], row["last"]
+                )
+            )
             return None
 
     def get_or_create_party(self, row):
@@ -192,19 +186,15 @@ class Command(BaseCommand):
 
         All parties that aren't Democratic or Republican are aggregable.
         """
-        if row['party'] in ['Dem', 'GOP']:
+        if row["party"] in ["Dem", "GOP"]:
             aggregable = False
         else:
             aggregable = True
 
-        defaults = {
-            'label': row['party'],
-            'aggregate_candidates': aggregable
-        }
+        defaults = {"label": row["party"], "aggregate_candidates": aggregable}
 
         party, created = government.Party.objects.get_or_create(
-            ap_code=row['party'],
-            defaults=defaults
+            ap_code=row["party"], defaults=defaults
         )
 
         return party
@@ -214,8 +204,7 @@ class Command(BaseCommand):
         Gets or creates the Person object for the given row of AP data.
         """
         person, created = entity.Person.objects.get_or_create(
-            first_name=row['first'],
-            last_name=row['last']
+            first_name=row["first"], last_name=row["last"]
         )
 
         return person
@@ -233,25 +222,19 @@ class Command(BaseCommand):
 
         person = self.get_or_create_person(row)
 
-        id_components = row['id'].split('-')
-        candidate_id = '{0}-{1}'.format(
-            id_components[1],
-            id_components[2]
-        )
+        id_components = row["id"].split("-")
+        candidate_id = "{0}-{1}".format(id_components[1], id_components[2])
 
-        defaults = {
-            'party': party,
-            'incumbent': row.get('incumbent')
-        }
+        defaults = {"party": party, "incumbent": row.get("incumbent")}
 
-        if person.last_name == 'None of these candidates':
-            candidate_id = '{0}-{1}'.format(id_components[0], candidate_id)
+        if person.last_name == "None of these candidates":
+            candidate_id = "{0}-{1}".format(id_components[0], candidate_id)
 
         candidate, created = election.Candidate.objects.update_or_create(
             person=person,
             race=race,
             ap_candidate_id=candidate_id,
-            defaults=defaults
+            defaults=defaults,
         )
 
         return candidate
@@ -264,7 +247,7 @@ class Command(BaseCommand):
         CandidateElection object using the model method on the election.
         """
         return election.update_or_create_candidate(
-            candidate, party.aggregate_candidates, row['uncontested']
+            candidate, party.aggregate_candidates, row["uncontested"]
         )
 
     def get_or_create_ap_election_meta(self, row, election):
@@ -273,8 +256,7 @@ class Command(BaseCommand):
         AP data.
         """
         APElectionMeta.objects.get_or_create(
-            ap_election_id=row['raceid'],
-            election=election
+            ap_election_id=row["raceid"], election=election
         )
 
     def get_or_create_votes(self, row, division, candidate_election):
@@ -283,11 +265,11 @@ class Command(BaseCommand):
         """
         vote.Votes.objects.get_or_create(
             division=division,
-            count=row['votecount'],
-            pct=row['votepct'],
-            winning=row['winner'],
-            runoff=row['runoff'],
-            candidate_election=candidate_election
+            count=row["votecount"],
+            pct=row["votepct"],
+            winning=row["winner"],
+            runoff=row["runoff"],
+            candidate_election=candidate_election,
         )
 
     def get_or_create_candidate_color_order(self, row, candidate):
@@ -296,10 +278,7 @@ class Command(BaseCommand):
         of AP data.
         """
         CandidateColorOrder.objects.get_or_create(
-            candidate=candidate,
-            defaults={
-                'order': row['ballotorder']
-            }
+            candidate=candidate, defaults={"order": row["ballotorder"]}
         )
 
     def process_row(self, row):
@@ -327,18 +306,11 @@ class Command(BaseCommand):
         self.get_or_create_candidate_color_order(row, candidate)
 
     def add_arguments(self, parser):
-        parser.add_argument('election_date', type=str)
+        parser.add_argument("election_date", type=str)
         parser.add_argument(
-            '--senate_class',
-            dest='senate_class',
-            action='store',
-            default='1'
+            "--senate_class", dest="senate_class", action="store", default="1"
         )
-        parser.add_argument(
-            '--test',
-            dest='test',
-            action='store_true',
-        )
+        parser.add_argument("--test", dest="test", action="store_true")
 
     def handle(self, *args, **options):
         """
@@ -350,50 +322,46 @@ class Command(BaseCommand):
         of the dependent apps: entity, geography, government, election, vote,
         and almanac.
         """
-        self.senate_class = options['senate_class']
+        self.senate_class = options["senate_class"]
 
-        writefile = open('bootstrap.json', 'w')
+        writefile = open("bootstrap.json", "w")
         elex_args = [
-            'elex',
-            'results',
-            options['election_date'],
-            '-o',
-            'json',
-            '--national-only',
+            "elex",
+            "results",
+            options["election_date"],
+            "-o",
+            "json",
+            "--national-only",
         ]
-        if options['test']:
-            elex_args.append('-t')
+        if options["test"]:
+            elex_args.append("-t")
         subprocess.run(elex_args, stdout=writefile)
 
-        with open('bootstrap.json', 'r') as readfile:
+        with open("bootstrap.json", "r") as readfile:
             data = json.load(readfile)
             candidates = collections.defaultdict(list)
             for d in data:
-                key = '{0} {1}: {2}, {3}'.format(
-                    d['officename'],
-                    d['statename'],
-                    d['last'],
-                    d['first']
+                key = "{0} {1}: {2}, {3}".format(
+                    d["officename"], d["statename"], d["last"], d["first"]
                 )
                 candidates[key].append(d)
             for candidate_races in tqdm(
-                candidates.values(),
-                desc='Candidates'
+                candidates.values(), desc="Candidates"
             ):
-                tqdm.write('{0} {1}: {2}, {3}'.format(
-                    candidate_races[0]['statename'],
-                    candidate_races[0]['officename'],
-                    candidate_races[0]['last'],
-                    candidate_races[0]['first'],
-                ))
+                tqdm.write(
+                    "{0} {1}: {2}, {3}".format(
+                        candidate_races[0]["statename"],
+                        candidate_races[0]["officename"],
+                        candidate_races[0]["last"],
+                        candidate_races[0]["first"],
+                    )
+                )
                 for race in tqdm(
-                    candidate_races,
-                    desc='Contests',
-                    leave=False
+                    candidate_races, desc="Contests", leave=False
                 ):
-                    if race['level'] == geography.DivisionLevel.TOWNSHIP:
+                    if race["level"] == geography.DivisionLevel.TOWNSHIP:
                         continue
                     # TODO: Check this with Tyler
-                    if not race.get('level', None):
+                    if not race.get("level", None):
                         continue
                     self.process_row(race)
