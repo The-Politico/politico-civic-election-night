@@ -30,7 +30,7 @@ class Command(BaseCommand):
                 "First",
                 "Last",
                 "Party",
-                "Winner",
+                "Incumbent",
             ]
             writer.writerow(header_row)
 
@@ -49,7 +49,7 @@ class Command(BaseCommand):
                     candidate.person.first_name,
                     candidate.person.last_name,
                     candidate.party.label,
-                    votes.winning,
+                    candidate.incumbent,
                 ]
 
                 writer.writerow(row)
