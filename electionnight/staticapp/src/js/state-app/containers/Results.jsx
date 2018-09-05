@@ -8,7 +8,6 @@ import JumpLinks from 'Common/components/nav/JumpLinks';
 import FetchRefresh from 'Common/components/FetchRefresh';
 import MarkdownText from 'Common/components/Markdowntext';
 import Advertisement from 'Common/components/Advertisement';
-import LiveChatPromo from 'Common/components/nav/LiveChatPromo';
 
 const Results = (props) => {
   // We do some queries higher up so we don't need
@@ -69,10 +68,6 @@ const Results = (props) => {
     />
   );
 
-  const liveChatPromo = props.resultsIn ? (
-    <LiveChatPromo />
-  ) : null;
-
   const bigAd = props.senator.length > 0 || props.governor.length > 0 ? (
     <Advertisement adID='pol-06' />
   ) : null;
@@ -86,7 +81,6 @@ const Results = (props) => {
       <section className='election-results'>
         <StickyHeader {...props} />
         {fetchRefresh}
-        {liveChatPromo}
         <JumpLinks {...props} />
         <Governor {...props} />
         <Senator {...props} />
