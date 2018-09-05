@@ -133,15 +133,15 @@ ELECTIONNIGHT_SECRET_KEY = "aewgrstdyfugiop"
 ELECTIONNIGHT_AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", None)
 ELECTIONNIGHT_AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", None)
 ELECTIONNIGHT_AWS_REGION = "us-east-2"
-ELECTIONNIGHT_AWS_S3_BUCKET = "interactives.politico.com"
-# ELECTIONNIGHT_AWS_S3_BUCKET = "staging.interactives.politico.com"
+# ELECTIONNIGHT_AWS_S3_BUCKET = "interactives.politico.com"
+ELECTIONNIGHT_AWS_S3_BUCKET = "staging.interactives.politico.com"
 ELECTIONNIGHT_CLOUDFRONT_ALTERNATE_DOMAIN = ""
 ELECTIONNIGHT_S3_UPLOAD_ROOT = ""
 ELECTIONNIGHT_RESULTS_STATIC_DIR = "static_results"
-# ELECTIONNIGHT_AWS_S3_STATIC_ROOT = (
-# "https://s3.amazonaws.com/staging.interactives.politico.com"
-# )  # noqa
-ELECTIONNIGHT_AWS_S3_STATIC_ROOT = "https://www.politico.com"
+ELECTIONNIGHT_AWS_S3_STATIC_ROOT = (
+    "https://s3.amazonaws.com/staging.interactives.politico.com"
+)  # noqa
+# ELECTIONNIGHT_AWS_S3_STATIC_ROOT = "https://www.politico.com"
 CIVIC_TWITTER_CONSUMER_KEY = os.getenv("CIVIC_TWITTER_CONSUMER_KEY")
 CIVIC_TWITTER_CONSUMER_SECRET = os.getenv("CIVIC_TWITTER_CONSUMER_SECRET")
 CIVIC_TWITTER_ACCESS_TOKEN_KEY = os.getenv("CIVIC_TWITTER_ACCESS_TOKEN_KEY")
