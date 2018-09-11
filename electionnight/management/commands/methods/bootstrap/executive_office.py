@@ -1,6 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 
 from electionnight.models import PageContent, PageType
+from geography.models import DivisionLevel
 
 from .executive_office_states import ExecutiveOfficeStates
 
@@ -18,7 +19,7 @@ class ExecutiveOffice(ExecutiveOfficeStates):
             content_type=content_type,
             object_id=election.race.office.pk,
             election_day=election.election_day,
-            division=division
+            division=division,
         )
         if division.level == self.NATIONAL_LEVEL:
             self.bootstrap_executive_office_states(election)
@@ -26,8 +27,7 @@ class ExecutiveOffice(ExecutiveOfficeStates):
             # Create state governor page type
             page_type, created = PageType.objects.get_or_create(
                 model_type=ContentType.objects.get(
-                    app_label='government',
-                    model='office'
+                    app_label="government", model="office"
                 ),
                 election_day=election.election_day,
                 division_level=self.STATE_LEVEL,
@@ -36,4 +36,28 @@ class ExecutiveOffice(ExecutiveOfficeStates):
                 content_type=ContentType.objects.get_for_model(page_type),
                 object_id=page_type.pk,
                 election_day=election.election_day,
+            )
+
+            generic_state_page_type, created = PageType.objects.get_or_create(
+                model_type=ContentType.objects.get(
+                    app_label="geography", model="division"
+                ),
+                election_day=election.election_day,
+                division_level=DivisionLevel.objects.get(
+                    name=DivisionLevel.STATE
+                ),
+            )
+            PageContent.objects.get_or_create(
+                content_type=ContentType.objects.get_for_model(
+                    generic_state_page_type
+                ),
+                object_id=generic_state_page_type.pk,
+                election_day=election.election_day,
+            )
+
+            PageContent.objects.get_or_create(
+                content_type=ContentType.objects.get_for_model(division),
+                object_id=division.pk,
+                election_day=election.election_day,
+                special_election=False,
             )

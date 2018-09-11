@@ -7,11 +7,12 @@ class PageContentManager(models.Manager):
     """
     Custom manager adds methods to serialize related content blocks.
     """
+
     @staticmethod
     def serialize_content_blocks(page_content):
         return {
-            block.content_type.slug: block.content for block in
-            page_content.blocks.all()
+            block.content_type.slug: block.content
+            for block in page_content.blocks.all()
         }
 
     def office_content(self, election_day, office):
@@ -19,6 +20,7 @@ class PageContentManager(models.Manager):
         Return serialized content for an office page.
         """
         from electionnight.models import PageType
+
         office_type = ContentType.objects.get_for_model(office)
         page_type = PageType.objects.get(
             model_type=office_type,
@@ -29,12 +31,12 @@ class PageContentManager(models.Manager):
         page_content = self.get(
             content_type__pk=office_type.pk,
             object_id=office.pk,
-            election_day=election_day
+            election_day=election_day,
         )
         page_type_content = self.get(
             content_type=ContentType.objects.get_for_model(page_type),
             object_id=page_type.pk,
-            election_day=election_day
+            election_day=election_day,
         )
         return {
             "page": self.serialize_content_blocks(page_content),
@@ -48,18 +50,18 @@ class PageContentManager(models.Manager):
         body_type = ContentType.objects.get_for_model(body)
 
         kwargs = {
-            'content_type__pk': body_type.pk,
-            'object_id': body.pk,
-            'election_day': election_day,
+            "content_type__pk": body_type.pk,
+            "object_id": body.pk,
+            "election_day": election_day,
         }
 
         if division:
-            kwargs['division'] = division
+            kwargs["division"] = division
 
         content = self.get(**kwargs)
         return {
-            'page': self.serialize_content_blocks(content),
-            'page_type': None  # TODO
+            "page": self.serialize_content_blocks(content),
+            "page_type": None,  # TODO
         }
 
     def division_content(self, election_day, division, special=False):
@@ -67,18 +69,18 @@ class PageContentManager(models.Manager):
         Return serialized content for a division page.
         """
         from electionnight.models import PageType
+
         division_type = ContentType.objects.get_for_model(division)
         page_type = PageType.objects.get(
             model_type=division_type,
             election_day=election_day,
             division_level=division.level,
         )
-
         page_content = self.get(
             content_type__pk=division_type.pk,
             object_id=division.pk,
             election_day=election_day,
-            special_election=special
+            special_election=special,
         )
         page_type_content = self.get(
             content_type=ContentType.objects.get_for_model(page_type),
@@ -86,6 +88,6 @@ class PageContentManager(models.Manager):
             election_day=election_day,
         )
         return {
-            'page': self.serialize_content_blocks(page_content),
-            'page_type': self.serialize_content_blocks(page_type_content),
+            "page": self.serialize_content_blocks(page_content),
+            "page_type": self.serialize_content_blocks(page_type_content),
         }

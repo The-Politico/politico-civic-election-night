@@ -9,10 +9,7 @@ class BlockAdminForm(forms.ModelForm):
 
     class Meta:
         model = PageContentBlock
-        fields = (
-            'content_type',
-            'content',
-        )
+        fields = ("content_type", "content")
 
 
 class PageContentBlockInline(admin.StackedInline):
@@ -22,28 +19,21 @@ class PageContentBlockInline(admin.StackedInline):
 
 
 class PageContentAdmin(admin.ModelAdmin):
-    inlines = [
-        PageContentBlockInline
-    ]
-    list_filter = ('election_day', 'content_type',)
-    list_display = ('page_location', 'election_day',)
-    search_fields = ('page_location',)
+    inlines = [PageContentBlockInline]
+    list_filter = ("election_day", "content_type")
+    list_display = ("election_day",)
+    search_fields = ("page_location",)
     # actions = None
     readonly_fields = (
-        'election_day',
-        'page_location',
-        'content_object',
-        'division',
+        "election_day",
+        "page_location",
+        "content_object",
+        "division",
     )
     fieldsets = (
-        (None, {
-            'fields': ('page_location',),
-        }),
-        ('Page Meta', {
-            'fields': (
-                'election_day',
-                'content_object',
-                'division',
-            ),
-        }),
+        (None, {"fields": ("page_location",)}),
+        (
+            "Page Meta",
+            {"fields": ("election_day", "content_object", "division")},
+        ),
     )

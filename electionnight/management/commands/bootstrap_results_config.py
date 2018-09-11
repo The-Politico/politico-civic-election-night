@@ -12,8 +12,8 @@ from geography.models import DivisionLevel
 
 class Command(BaseCommand):
     help = (
-        'Creates config files used by our bash process to bake out '
-        'election results from Elex and the AP.'
+        "Creates config files used by our bash process to bake out "
+        "election results from Elex and the AP."
     )
 
     def serialize_cycle(self, cycle):
@@ -21,16 +21,15 @@ class Command(BaseCommand):
         /election-results/cycle/
         """
         elections = Election.objects.filter(
-            race__cycle__name=cycle,
-            race__special=False,
+            race__cycle__name=cycle, race__special=False
         )
 
         if elections.count() == 0:
             return
 
-        levels = ['national', 'state']
+        levels = ["national", "state"]
         config_key = cycle
-        output_key = '{0}'.format(cycle)
+        output_key = "{0}".format(cycle)
 
         self._write_to_json(elections, config_key, levels, output_key)
 
@@ -40,16 +39,15 @@ class Command(BaseCommand):
         /election-results/cycle/house/
         """
         body_elections = elections.filter(
-            race__office__body__slug=body,
-            race__special=False,
+            race__office__body__slug=body, race__special=False
         )
 
         if body_elections.count() == 0:
             return
 
-        levels = ['state']
+        levels = ["state"]
         config_key = body
-        output_key = '{0}/{1}'.format(cycle, body)
+        output_key = "{0}/{1}".format(cycle, body)
 
         self._write_to_json(body_elections, config_key, levels, output_key)
 
@@ -58,16 +56,15 @@ class Command(BaseCommand):
         /election-results/cycle/president/
         """
         office_elections = elections.filter(
-            race__office__slug=office,
-            race__special=False,
+            race__office__slug=office, race__special=False
         )
 
         if office_elections.count() == 0:
             return
 
-        levels = ['national', 'state']
+        levels = ["national", "state"]
         config_key = office
-        output_key = '{0}/{1}'.format(cycle, office)
+        output_key = "{0}/{1}".format(cycle, office)
 
         self._write_to_json(office_elections, config_key, levels, output_key)
 
@@ -76,20 +73,20 @@ class Command(BaseCommand):
         /election-results/cycle/state/
         """
         state_elections = elections.filter(
-            Q(division__slug=state) | Q(division__parent__slug=state),
+            Q(division__slug=state) | Q(division__parent__slug=state)
         )
 
         # first check to see if we have normal elections
         if state_elections.filter(race__special=False).count() == 0:
             return
 
-        levels = ['state', 'county']
+        levels = ["state", "county"]
         config_key = state
-        output_key = '{0}/{1}'.format(cycle, state)
+        output_key = "{0}/{1}/governor".format(cycle, state)
 
         if state_elections[0].election_type.is_runoff():
-            config_key = '{0}-{1}'.format(config_key, 'runoff')
-            output_key = os.path.join(output_key, 'runoff')
+            config_key = "{0}-{1}".format(config_key, "runoff")
+            output_key = os.path.join(output_key, "runoff")
 
             self._write_to_json(
                 state_elections, config_key, levels, output_key
@@ -105,7 +102,7 @@ class Command(BaseCommand):
         """
         state_elections = elections.filter(
             Q(division__slug=state) | Q(division__parent__slug=state),
-            race__special=False
+            race__special=False,
         )
 
         # We won't do separate special pages if there's already a normal page
@@ -113,19 +110,18 @@ class Command(BaseCommand):
             return
 
         state_special_elections = specials.filter(
-            Q(division__slug=state) | Q(division__parent__slug=state),
+            Q(division__slug=state) | Q(division__parent__slug=state)
         )
 
         if state_special_elections.count() == 0:
             return
 
-        levels = ['state', 'county']
-        config_key = '{0}-special'.format(state)
-        output_key = '{0}/{1}/special-election/{2}'.format(
+        levels = ["state", "county"]
+        config_key = "{0}-special".format(state)
+        output_key = "{0}/{1}/special-election/{2}".format(
             cycle,
             state,
-            state_special_elections.first()
-            .election_day.special_election_datestring()
+            state_special_elections.first().election_day.special_election_datestring(),
         )
 
         self._write_to_json(
@@ -146,16 +142,12 @@ class Command(BaseCommand):
         if state_federal_body_elections.count() == 0:
             return
 
-        if body == 'house':
+        if body == "house":
             return
 
-        levels = ['state', 'county']
-        config_key = '{0}-{1}'.format(body, state)
-        output_key = '{0}/{1}/{2}'.format(
-            cycle,
-            body,
-            state
-        )
+        levels = ["state", "county"]
+        config_key = "{0}-{1}".format(body, state)
+        output_key = "{0}/{1}/{2}".format(cycle, body, state)
 
         self._write_to_json(
             state_federal_body_elections, config_key, levels, output_key
@@ -175,13 +167,9 @@ class Command(BaseCommand):
         if state_body_elections.count() == 0:
             return
 
-        levels = ['state', 'county']
-        config_key = '{0}-state-{1}'.format(state, body)
-        output_key = '{0}/{1}/{2}'.format(
-            cycle,
-            state,
-            body
-        )
+        levels = ["state", "county"]
+        config_key = "{0}-state-{1}".format(state, body)
+        output_key = "{0}/{1}/{2}".format(cycle, state, body)
 
         self._write_to_json(
             state_body_elections, config_key, levels, output_key
@@ -200,13 +188,9 @@ class Command(BaseCommand):
         if state_office_elections.count() == 0:
             return
 
-        levels = ['state', 'county']
-        config_key = '{0}-{1}'.format(office, state)
-        output_key = '{0}/{1}/{2}'.format(
-            cycle,
-            office,
-            state
-        )
+        levels = ["state", "county"]
+        config_key = "{0}-{1}".format(office, state)
+        output_key = "{0}/{1}/{2}".format(cycle, office, state)
 
         self._write_to_json(
             state_office_elections, config_key, levels, output_key
@@ -225,13 +209,9 @@ class Command(BaseCommand):
         if state_exec_elections.count() == 0:
             return
 
-        levels = ['state', 'county']
-        config_key = '{0}-{1}'.format(state, office)
-        output_key = '{0}/{1}/{2}'.format(
-            cycle,
-            state,
-            office
-        )
+        levels = ["state", "county"]
+        config_key = "{0}-{1}".format(state, office)
+        output_key = "{0}/{1}/{2}".format(cycle, state, office)
 
         self._write_to_json(
             state_exec_elections, config_key, levels, output_key
@@ -241,8 +221,8 @@ class Command(BaseCommand):
         full_output_path = os.path.join(
             project_settings.BASE_DIR,
             app_settings.RESULTS_STATIC_DIR,
-            'election-results',
-            output_key
+            "election-results",
+            output_key,
         )
 
         primary = False
@@ -257,23 +237,23 @@ class Command(BaseCommand):
                 continue
 
         output = {
-            'elections': ids,
-            'levels': levels,
-            'output_path': full_output_path,
-            'primary': primary
+            "elections": ids,
+            "levels": levels,
+            "output_path": full_output_path,
+            "primary": primary,
         }
 
-        with open('{0}/{1}.json'.format(self.folder, config_key), 'w') as f:
+        with open("{0}/{1}.json".format(self.folder, config_key), "w") as f:
             json.dump(output, f)
 
     def add_arguments(self, parser):
-        parser.add_argument('election_date', type=str)
+        parser.add_argument("election_date", type=str)
 
     def handle(self, *args, **options):
         self.folder = os.path.join(
             project_settings.BASE_DIR,
             app_settings.RESULTS_STATIC_DIR,
-            'election-config'
+            "election-config",
         )
 
         if not os.path.exists(self.folder):
@@ -288,47 +268,55 @@ class Command(BaseCommand):
             except Exception as e:
                 print(e)
 
-        cycle_year = options['election_date'].split('-')[0]
+        cycle_year = options["election_date"].split("-")[0]
 
         latest_cycle = ElectionCycle.objects.get(name=cycle_year).name
         # self.serialize_cycle(latest_cycle)
 
         elections = Election.objects.filter(
-            election_day__date=options['election_date'],
+            election_day__date=options["election_date"]
         )
         specials = elections.filter(race__special=True)
 
-        federal_bodies = set(elections.filter(
-            race__office__body__label__isnull=False,
-            race__office__jurisdiction__name='U.S. Federal Government'
-        ).values_list('race__office__body__slug', flat=True))
+        federal_bodies = set(
+            elections.filter(
+                race__office__body__label__isnull=False,
+                race__office__jurisdiction__name="U.S. Federal Government",
+            ).values_list("race__office__body__slug", flat=True)
+        )
 
-        state_bodies = set(elections.filter(
-            race__office__body__label__isnull=False,
-        ).exclude(
-            race__office__jurisdiction__name='U.S. Federal Government'
-        ).values_list('race__office__body__slug', flat=True))
+        state_bodies = set(
+            elections.filter(race__office__body__label__isnull=False)
+            .exclude(
+                race__office__jurisdiction__name="U.S. Federal Government"
+            )
+            .values_list("race__office__body__slug", flat=True)
+        )
 
         states = elections.filter(
-            race__office__division__level__name=DivisionLevel.STATE,
-        ).values_list('division__slug', flat=True)
+            race__office__division__level__name=DivisionLevel.STATE
+        ).values_list("division__slug", flat=True)
 
         district_parents = elections.filter(
-            race__office__division__level__name=DivisionLevel.DISTRICT,
-        ).values_list('division__parent__slug', flat=True)
+            race__office__division__level__name=DivisionLevel.DISTRICT
+        ).values_list("division__parent__slug", flat=True)
 
         states = set(list(states) + list(district_parents))
 
-        federal_exec_offices = set(elections.filter(
-            race__office__body__isnull=True,
-            race__office__jurisdiction__name='U.S. Federal Government'
-        ).values_list('race__office__slug', flat=True))
+        federal_exec_offices = set(
+            elections.filter(
+                race__office__body__isnull=True,
+                race__office__jurisdiction__name="U.S. Federal Government",
+            ).values_list("race__office__slug", flat=True)
+        )
 
-        state_exec_offices = set(elections.filter(
-            race__office__body__isnull=True,
-        ).exclude(
-            race__office__jurisdiction__name='U.S. Federal Government'
-        ).values_list('race__office__slug', flat=True))
+        state_exec_offices = set(
+            elections.filter(race__office__body__isnull=True)
+            .exclude(
+                race__office__jurisdiction__name="U.S. Federal Government"
+            )
+            .values_list("race__office__slug", flat=True)
+        )
 
         for body in federal_bodies:
             # self.serialize_federal_body(body, elections, latest_cycle)
