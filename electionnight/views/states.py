@@ -179,6 +179,8 @@ class StatePage(BaseView):
             return "election-results/{}/{}/governor".format(
                 self.year, self.state
             )
+        else:
+            return "election_results/{}/{}".format(self.year, self.state)
 
     def get_serialized_context(self):
         """Get serialized context for baking to S3."""
