@@ -175,7 +175,10 @@ class StatePage(BaseView):
         return elections_context
 
     def get_publish_path(self):
-        return "election-results/{}/{}/governor".format(self.year, self.state)
+        if self.state == "new-york" and self.election_date == "2018-09-13":
+            return "election-results/{}/{}/governor".format(
+                self.year, self.state
+            )
 
     def get_serialized_context(self):
         """Get serialized context for baking to S3."""

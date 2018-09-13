@@ -82,7 +82,14 @@ class Command(BaseCommand):
 
         levels = ["state", "county"]
         config_key = state
-        output_key = "{0}/{1}/governor".format(cycle, state)
+        output_key = "{0}/{1}".format(cycle, state)
+
+        if (
+            state == "new-york"
+            and state_elections.filter(race__office__body__isnull=True).count()
+            > 0
+        ):
+            output_key = "{0}/governor".format(output_key)
 
         if state_elections[0].election_type.is_runoff():
             config_key = "{0}-{1}".format(config_key, "runoff")
