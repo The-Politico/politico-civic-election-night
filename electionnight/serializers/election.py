@@ -1,11 +1,11 @@
 import us
+from aploader.models import APElectionMeta
 from election.models import Candidate, CandidateElection, Election
 from entity.models import Person
 from geography.models import Division, DivisionLevel
 from government.models import Office
 from rest_framework import serializers
 
-from electionnight.models import APElectionMeta
 
 from .votes import VotesSerializer, VotesTableSerializer
 
@@ -17,11 +17,12 @@ class FlattenMixin:
     Borrowing this clever method from:
     https://stackoverflow.com/a/41418576/1961614
     """
+
     def to_representation(self, obj):
-        assert hasattr(self.Meta, 'flatten'), (
-            'Class {serializer_class} missing "Meta.flatten" attribute'.format(
-                serializer_class=self.__class__.__name__
-            )
+        assert hasattr(
+            self.Meta, "flatten"
+        ), 'Class {serializer_class} missing "Meta.flatten" attribute'.format(
+            serializer_class=self.__class__.__name__
         )
         # Get the current object representation
         rep = super(FlattenMixin, self).to_representation(obj)
@@ -47,16 +48,13 @@ class DivisionSerializer(serializers.ModelSerializer):
         return obj.level.slug
 
     def get_code(self, obj):
-        if obj.level.name == 'state':
+        if obj.level.name == "state":
             return us.states.lookup(obj.code).abbr
         return obj.code
 
     class Meta:
         model = Division
-        fields = (
-            'code',
-            'level'
-        )
+        fields = ("code", "level")
 
 
 class PersonSerializer(serializers.ModelSerializer):
@@ -68,13 +66,7 @@ class PersonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Person
-        fields = (
-            'first_name',
-            'middle_name',
-            'last_name',
-            'suffix',
-            'images',
-        )
+        fields = ("first_name", "middle_name", "last_name", "suffix", "images")
 
 
 class CandidateSerializer(FlattenMixin, serializers.ModelSerializer):
@@ -90,16 +82,8 @@ class CandidateSerializer(FlattenMixin, serializers.ModelSerializer):
 
     class Meta:
         model = Candidate
-        fields = (
-            'party',
-            'ap_candidate_id',
-            'incumbent',
-            'uid',
-            'order',
-        )
-        flatten = (
-            ('person', PersonSerializer),
-        )
+        fields = ("party", "ap_candidate_id", "incumbent", "uid", "order")
+        flatten = (("person", PersonSerializer),)
 
 
 class CandidateElectionSerializer(FlattenMixin, serializers.ModelSerializer):
@@ -128,37 +112,29 @@ class CandidateElectionSerializer(FlattenMixin, serializers.ModelSerializer):
     class Meta:
         model = CandidateElection
         fields = (
-            'aggregable',
-            'uncontested',
-            'override_winner',
-            'override_runoff',
+            "aggregable",
+            "uncontested",
+            "override_winner",
+            "override_runoff",
         )
-        flatten = (
-            ('candidate', CandidateSerializer),
-        )
+        flatten = (("candidate", CandidateSerializer),)
 
 
 class OfficeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Office
-        fields = (
-            'uid',
-            'slug',
-            'name',
-            'label',
-            'short_label',
-        )
+        fields = ("uid", "slug", "name", "label", "short_label")
 
 
 class APElectionMetaSerializer(serializers.ModelSerializer):
     class Meta:
         model = APElectionMeta
         fields = (
-            'ap_election_id',
-            'called',
-            'tabulated',
-            'override_ap_call',
-            'override_ap_votes',
+            "ap_election_id",
+            "called",
+            "tabulated",
+            "override_ap_call",
+            "override_ap_votes",
         )
 
 
@@ -179,7 +155,7 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
         Votes entered into backend.
         Only used if ``override_ap_votes = True``.
         """
-        if hasattr(obj, 'meta'):  # TODO: REVISIT THIS
+        if hasattr(obj, "meta"):  # TODO: REVISIT THIS
             if obj.meta.override_ap_votes:
                 all_votes = None
                 for ce in obj.candidate_elections.all():
@@ -195,8 +171,7 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
         CandidateElections.
         """
         return CandidateElectionSerializer(
-            obj.candidate_elections.all(),
-            many=True
+            obj.candidate_elections.all(), many=True
         ).data
 
     def get_primary(self, obj):
@@ -236,20 +211,18 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
     class Meta:
         model = Election
         fields = (
-            'uid',
-            'date',
-            'office',
-            'primary',
-            'primary_party',
-            'runoff',
-            'special',
-            'division',
-            'candidates',
-            'override_votes'
+            "uid",
+            "date",
+            "office",
+            "primary",
+            "primary_party",
+            "runoff",
+            "special",
+            "division",
+            "candidates",
+            "override_votes",
         )
-        flatten = (
-            ('meta', APElectionMetaSerializer),
-        )
+        flatten = (("meta", APElectionMetaSerializer),)
 
 
 class ElectionViewSerializer(ElectionSerializer):
@@ -270,7 +243,7 @@ class ElectionViewSerializer(ElectionSerializer):
         return None
 
     def get_votes_table(self, obj):
-        if hasattr(obj, 'meta'):
+        if hasattr(obj, "meta"):
             all_votes = None
             for ce in obj.candidate_elections.all():
                 if all_votes:
@@ -287,18 +260,16 @@ class ElectionViewSerializer(ElectionSerializer):
     class Meta:
         model = Election
         fields = (
-            'uid',
-            'date',
-            'office',
-            'primary',
-            'primary_party',
-            'runoff',
-            'special',
-            'division',
-            'candidates',
-            'override_votes',
-            'votes_table'
+            "uid",
+            "date",
+            "office",
+            "primary",
+            "primary_party",
+            "runoff",
+            "special",
+            "division",
+            "candidates",
+            "override_votes",
+            "votes_table",
         )
-        flatten = (
-            ('meta', APElectionMetaSerializer),
-        )
+        flatten = (("meta", APElectionMetaSerializer),)

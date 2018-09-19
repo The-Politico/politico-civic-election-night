@@ -1,5 +1,2 @@
 include LICENSE
 include README.md
-recursive-include electionnight/bin *
-recursive-include electionnight/static *
-recursive-include electionnight/templates *
