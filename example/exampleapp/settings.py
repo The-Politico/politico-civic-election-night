@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "election",
     "almanac",
     "vote",
+    "aploader",
     "electionnight",
 ]
 
