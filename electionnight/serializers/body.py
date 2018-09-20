@@ -1,5 +1,5 @@
 from election.models import Election, ElectionDay
-from geography.models import Division
+from geography.models import Division, DivisionLevel
 from government.models import Body, Party
 from rest_framework import serializers
 from rest_framework.reverse import reverse
@@ -16,20 +16,14 @@ class BodyListSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         return reverse(
-            'electionnight_api_body-election-detail',
-            request=self.context['request'],
-            kwargs={
-                'pk': obj.pk,
-                'date': self.context['election_date']
-            })
+            "electionnight_api_body-election-detail",
+            request=self.context["request"],
+            kwargs={"pk": obj.pk, "date": self.context["election_date"]},
+        )
 
     class Meta:
         model = Division
-        fields = (
-            'url',
-            'uid',
-            'slug',
-        )
+        fields = ("url", "uid", "slug")
 
 
 class BodySerializer(serializers.ModelSerializer):
@@ -40,7 +34,10 @@ class BodySerializer(serializers.ModelSerializer):
 
     def get_division(self, obj):
         """Division."""
-        return DivisionSerializer(obj.jurisdiction.division).data
+        if self.context.get("division"):
+            return DivisionSerializer(self.context.get("division")).data
+        else:
+            return DivisionSerializer(obj.jurisdiction.division).data
 
     def get_parties(self, obj):
         """All parties."""
@@ -49,26 +46,29 @@ class BodySerializer(serializers.ModelSerializer):
     def get_elections(self, obj):
         """All elections held on an election day."""
         election_day = ElectionDay.objects.get(
-            date=self.context['election_date'])
-        elections = Election.objects.filter(
-            race__office__body=obj,
-            race__special=False,
-            election_day=election_day
+            date=self.context["election_date"]
         )
+
+        kwargs = {
+            "race__office__body": obj,
+            "race__special": False,
+            "election_day": election_day,
+        }
+        if self.context.get("division") and obj.slug == "senate":
+            kwargs["division"] = self.context["division"]
+        elif self.context.get("division") and obj.slug == "house":
+            kwargs["division__parent"] = self.context["division"]
+
+        elections = Election.objects.filter(**kwargs)
         return ElectionSerializer(elections, many=True).data
 
     def get_content(self, obj):
         """All content for body's page on an election day."""
         election_day = ElectionDay.objects.get(
-            date=self.context['election_date'])
+            date=self.context["election_date"]
+        )
         return PageContent.objects.body_content(election_day, obj)
 
     class Meta:
         model = Body
-        fields = (
-            'uid',
-            'content',
-            'elections',
-            'parties',
-            'division',
-        )
+        fields = ("uid", "content", "elections", "parties", "division")
