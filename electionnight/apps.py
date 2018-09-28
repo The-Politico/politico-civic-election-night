@@ -2,4 +2,7 @@ from django.apps import AppConfig
 
 
 class ElectionnightConfig(AppConfig):
-    name = 'electionnight'
+    name = "electionnight"
+
+    def ready(self):
+        from electionnight import signals

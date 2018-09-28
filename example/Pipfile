@@ -33,6 +33,6 @@ politico-civic-almanac = "*"
 politico-civic-vote = "==0.1.4"
 awscli = "*"
 "ed0a5ba" = {path = "./..", editable = true}
-politico-civic-ap-loader = "*"
+politico-civic-ap-loader = "==0.2.0"
 
 [dev-packages]
