@@ -71,18 +71,14 @@ class PersonSerializer(serializers.ModelSerializer):
 
 class CandidateSerializer(FlattenMixin, serializers.ModelSerializer):
     party = serializers.SerializerMethodField()
-    order = serializers.SerializerMethodField()
 
     def get_party(self, obj):
         """Party AP code."""
         return obj.party.ap_code
 
-    def get_order(self, obj):
-        return obj.color_order.order
-
     class Meta:
         model = Candidate
-        fields = ("party", "ap_candidate_id", "incumbent", "uid", "order")
+        fields = ("party", "ap_candidate_id", "incumbent", "uid")
         flatten = (("person", PersonSerializer),)
 
 
