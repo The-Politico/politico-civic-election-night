@@ -145,6 +145,8 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
     division = DivisionSerializer()
     candidates = serializers.SerializerMethodField()
     override_votes = serializers.SerializerMethodField()
+    description = serializers.SerializerMethodField()
+    rating = serializers.SerializerMethodField()
 
     def get_override_votes(self, obj):
         """
@@ -204,6 +206,15 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
         """Election date."""
         return obj.election_day.date
 
+    def get_description(self, obj):
+        return obj.race.description
+
+    def get_rating(self, obj):
+        try:
+            return obj.race.ratings.latest("created_date").category.label
+        except:
+            return None
+
     class Meta:
         model = Election
         fields = (
@@ -217,6 +228,8 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
             "division",
             "candidates",
             "override_votes",
+            "description",
+            "rating",
         )
         flatten = (("meta", APElectionMetaSerializer),)
 

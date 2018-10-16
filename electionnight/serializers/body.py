@@ -37,7 +37,20 @@ class BodySerializer(serializers.ModelSerializer):
         if self.context.get("division"):
             return DivisionSerializer(self.context.get("division")).data
         else:
-            return DivisionSerializer(obj.jurisdiction.division).data
+            if obj.slug == "senate":
+                return DivisionSerializer(obj.jurisdiction.division).data
+            else:
+                us = DivisionSerializer(obj.jurisdiction.division).data
+
+                us["children"] = [
+                    DivisionSerializer(
+                        state,
+                        context={"children_level": DivisionLevel.DISTRICT},
+                    ).data
+                    for state in obj.jurisdiction.division.children.all()
+                ]
+
+                return us
 
     def get_parties(self, obj):
         """All parties."""
