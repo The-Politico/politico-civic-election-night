@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "69c523ae740d453ca190149db826ba28b925c5b96b1c1ca6d0043ad1816d15e0"
+            "sha256": "a8cb5b89ac5590b82a2075c24b70bd378135f1e97fb38849bb47b2396c7e3419"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -55,11 +55,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:693b3cc0dbe4f1196558c3255df73ee311a0ec7ba9cd3d97eeb1b1a97f23fcbb",
-                "sha256:70846c5f71c4896e11eae73fa2351e0364b5257f960b9f7e8579fc19c5c77ee9"
+                "sha256:4a07eeb3e64c9634bf85099cd8db5d3341ca257abb092446b829226f32d26910",
+                "sha256:b4e5dbad5f10ca18f4ead7397580b9db2090e00fa70361539e6a7f0f1c92f051"
             ],
             "index": "pypi",
-            "version": "==1.16.31"
+            "version": "==1.16.34"
         },
         "babel": {
             "hashes": [
@@ -83,17 +83,17 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:606c82cb388dbf92a988d01e77157f566356e69d0e696232ccce19677cca0723",
-                "sha256:f6b9dd8ab398bd563ca43de7f758dd5facbca82e0db8a0dca99d636b36878d6e"
+                "sha256:c1d59ac76328892d07eeca5888dffdfa278d0e8a257e1e988c6e0b41be5b58de",
+                "sha256:d1046dcf0958666f775612cb0c4b686a1d7fa35744f77471a1b798259771bc3b"
             ],
-            "version": "==1.9.21"
+            "version": "==1.9.24"
         },
         "botocore": {
             "hashes": [
-                "sha256:a0bbd991212d5dd8355b21c4bc26fd83f02c7ba5817433ce9c2826b808df655c",
-                "sha256:a8b68eda5040dae0e795bb939cbc26cce4cf7ec59ace0a9ad0f7212baefa26a8"
+                "sha256:11514364cf7243822e8035b69f85512b0f9623a182867aedd79521bebc88fef5",
+                "sha256:bc93eb62043b21e48b0515380867408fd0c63227d7dffacbbd443f6daa772a53"
             ],
-            "version": "==1.12.21"
+            "version": "==1.12.24"
         },
         "cachecontrol": {
             "hashes": [
@@ -124,10 +124,10 @@
         },
         "certifi": {
             "hashes": [
-                "sha256:376690d6f16d32f9d1fe8932551d80b23e9d393a8578c5633a2ed39a64861638",
-                "sha256:456048c7e371c089d0a77a5212fb37a2c2dce1e24146e3b7e0261736aaeaa22a"
+                "sha256:339dc09518b07e2fa7eda5450740925974815557727d6bd35d319c1524a04a4c",
+                "sha256:6d58c986d22b038c8c0df30d639f23a3e6d172a05c3583e766f4c0b785c0986a"
             ],
-            "version": "==2018.8.24"
+            "version": "==2018.10.15"
         },
         "chardet": {
             "hashes": [
@@ -459,11 +459,11 @@
         },
         "pluggy": {
             "hashes": [
-                "sha256:6e3836e39f4d36ae72840833db137f7b7d35105079aee6ec4a62d9f80d594dd1",
-                "sha256:95eb8364a4708392bae89035f45341871286a333f749c3141c20573d2b3876e1"
+                "sha256:447ba94990e8014ee25ec853339faf7b0fc8050cdc3289d4d71f7f410fb90095",
+                "sha256:bde19360a8ec4dfd8a20dcb811780a30998101f078fc7ded6162f0076f50508f"
             ],
-            "markers": "python_version != '3.2.*' and python_version != '3.1.*' and python_version != '3.3.*' and python_version != '3.0.*' and python_version >= '2.7'",
-            "version": "==0.7.1"
+            "markers": "python_version != '3.3.*' and python_version != '3.0.*' and python_version != '3.2.*' and python_version >= '2.7' and python_version != '3.1.*'",
+            "version": "==0.8.0"
         },
         "politico-civic-almanac": {
             "hashes": [
@@ -475,11 +475,11 @@
         },
         "politico-civic-ap-loader": {
             "hashes": [
-                "sha256:3886ed875adc89ea4cd551a57951a9d883d20bcfb0601f91c56230c8f06f7940",
-                "sha256:39b68049716b87690a00a1fa9bbf0bf869a45c33c6f916057d9a0759fe9ba4d1"
+                "sha256:812bc5600bf45a33ad32117645652f8159cf44c48328bac8af2bc8d7d0d8c90a",
+                "sha256:d5573aac279fc0ea4beb567d34be356ec6cbd245b16277c165ca8c2b8382cebc"
             ],
             "index": "pypi",
-            "version": "==0.2.0"
+            "version": "==0.2.1"
         },
         "politico-civic-election": {
             "hashes": [
@@ -531,11 +531,11 @@
         },
         "prompt-toolkit": {
             "hashes": [
-                "sha256:5eff0c9fd652384ecfe730bbcdf3658868725c6928fbf608d9338834d7a974b6",
-                "sha256:81da9ecf6ca6806a549697529af8ec3ac5b739c13ac14607218e650db1b53131",
-                "sha256:c67c1c264d8a0d9e1070e9272bacee00f76c81daab7bc4bf09ff991bd1e224a7"
+                "sha256:646b3401b3b0bb7752100bc9b7aeecb36cb09cdfc63652b5856708b5ba8db7da",
+                "sha256:82766ffd7397e6661465e20bd1390db0781ca4fbbab4cf6c2578cacdd8b09754",
+                "sha256:ccad8461b5d912782726af17122113e196085e7e11d57cf0c9b982bf1ab2c7be"
             ],
-            "version": "==2.0.5"
+            "version": "==2.0.6"
         },
         "psycopg2": {
             "hashes": [
@@ -582,11 +582,11 @@
         },
         "py": {
             "hashes": [
-                "sha256:06a30435d058473046be836d3fc4f27167fd84c45b99704f2fb5509ef61f9af1",
-                "sha256:50402e9d1c9005d759426988a492e0edaadb7f4e68bcddfea586bc7432d009c6"
+                "sha256:bf92637198836372b520efcba9e020c330123be8ce527e535d185ed4b6f45694",
+                "sha256:e76826342cefe3c3d5f7e8ee4316b80d1dd8a300781612ddbc765c17ba25a6c6"
             ],
-            "markers": "python_version != '3.2.*' and python_version != '3.1.*' and python_version != '3.3.*' and python_version != '3.0.*' and python_version >= '2.7'",
-            "version": "==1.6.0"
+            "markers": "python_version != '3.3.*' and python_version != '3.0.*' and python_version != '3.2.*' and python_version >= '2.7' and python_version != '3.1.*'",
+            "version": "==1.7.0"
         },
         "pyasn1": {
             "hashes": [
@@ -850,11 +850,11 @@
         },
         "tqdm": {
             "hashes": [
-                "sha256:18f1818ce951aeb9ea162ae1098b43f583f7d057b34d706f66939353d1208889",
-                "sha256:df02c0650160986bac0218bb07952245fc6960d23654648b5d5526ad5a4128c9"
+                "sha256:a0be569511161220ff709a5b60d0890d47921f746f1c737a11d965e1b29e7b2e",
+                "sha256:e293e6d7a7f41a529a27f8d6624ab11544ccbfe82a205af6fad102545099fc21"
             ],
-            "markers": "python_version != '3.0.*' and python_version != '3.1.*' and python_version >= '2.6'",
-            "version": "==4.26.0"
+            "markers": "python_version != '3.1.*' and python_version >= '2.6' and python_version != '3.0.*'",
+            "version": "==4.27.0"
         },
         "traitlets": {
             "hashes": [
