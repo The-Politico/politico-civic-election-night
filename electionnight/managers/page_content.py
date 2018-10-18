@@ -62,6 +62,9 @@ class PageContentManager(models.Manager):
         return {
             "page": self.serialize_content_blocks(content),
             "page_type": None,  # TODO
+            "featured": [
+                e.meta.ap_election_id for e in content.featured.all()
+            ],
         }
 
     def division_content(self, election_day, division, special=False):
