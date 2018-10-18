@@ -27,14 +27,14 @@ requests = "*"
 pillow = "*"
 politico-civic-entity = "==0.2.1"
 politico-civic-geography = "==0.4.2"
-politico-civic-government = "==0.1.1"
+politico-civic-government = "==0.1.2"
 politico-civic-election = "==0.2.1"
 politico-civic-almanac = "*"
 politico-civic-vote = "==0.1.4"
 awscli = "*"
 "ed0a5ba" = {path = "./..", editable = true}
 politico-civic-ap-loader = "==0.2.3"
-politico-civic-race-ratings = "==0.2.4"
+politico-civic-race-ratings = "==0.2.5"
 openpyxl = "==2.5.6"
 
 [dev-packages]
