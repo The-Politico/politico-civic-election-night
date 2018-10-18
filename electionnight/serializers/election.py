@@ -42,19 +42,27 @@ class FlattenMixin:
 class DivisionSerializer(serializers.ModelSerializer):
     level = serializers.SerializerMethodField()
     code = serializers.SerializerMethodField()
+    parent = serializers.SerializerMethodField()
 
     def get_level(self, obj):
         """DivisionLevel slug"""
         return obj.level.slug
 
     def get_code(self, obj):
-        if obj.level.name == "state":
+        if obj.level.name == DivisionLevel.STATE:
             return us.states.lookup(obj.code).abbr
+        return obj.code
+
+    def get_parent(self, obj):
+        if not obj.parent:
+            return None
+        if obj.parent.level.name == DivisionLevel.STATE:
+            return us.states.lookup(obj.parent.code).abbr
         return obj.code
 
     class Meta:
         model = Division
-        fields = ("code", "level")
+        fields = ("code", "level", "parent")
 
 
 class PersonSerializer(serializers.ModelSerializer):
@@ -147,6 +155,7 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
     override_votes = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
     rating = serializers.SerializerMethodField()
+    current_party = serializers.SerializerMethodField()
 
     def get_override_votes(self, obj):
         """
@@ -215,6 +224,48 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
         except:
             return None
 
+    def get_current_party(self, obj):
+        historical_results = obj.race.dataset.all()[0].data[
+            "historicalResults"
+        ]["seat"]
+
+        if not obj.race.office.body:
+            return None
+
+        if obj.race.office.body.slug == "house":
+            last_election_year = "2016"
+        elif obj.race.office.body.slug == "senate" and not obj.race.special:
+            last_election_year = "2012"
+        elif obj.race.office.body.slug == "senate" and obj.race.special:
+            last_election_year = "2014"
+
+        last_result = next(
+            result
+            for result in historical_results
+            if result["year"] == last_election_year
+        )
+
+        # bernie and angus caucus with dems
+        if (
+            obj.race.office.body.slug == "senate"
+            and obj.race.office.division.slug in ["vermont", "maine"]
+        ):
+            return "dem"
+
+        dem = last_result.get("dem")
+        gop = last_result.get("gop")
+
+        if not gop:
+            return "dem"
+        if not dem:
+            return "gop"
+
+        if dem["votes"] > gop["votes"]:
+            return "dem"
+
+        if gop["votes"] > dem["votes"]:
+            return "gop"
+
     class Meta:
         model = Election
         fields = (
@@ -230,6 +281,7 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
             "override_votes",
             "description",
             "rating",
+            "current_party",
         )
         flatten = (("meta", APElectionMetaSerializer),)
 

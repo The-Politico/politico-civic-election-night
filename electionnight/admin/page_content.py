@@ -23,6 +23,7 @@ class PageContentAdmin(admin.ModelAdmin):
     list_filter = ("election_day", "content_type")
     list_display = ("election_day",)
     search_fields = ("page_location",)
+    filter_horizontal = ("featured",)
     # actions = None
     readonly_fields = (
         "election_day",
@@ -36,4 +37,5 @@ class PageContentAdmin(admin.ModelAdmin):
             "Page Meta",
             {"fields": ("election_day", "content_object", "division")},
         ),
+        ("Relationships", {"fields": ("featured",)}),
     )
