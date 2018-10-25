@@ -33,6 +33,7 @@ class Command(BaseCommand):
         for sender in senders:
             signal.disconnect(receiver=rebake_context, sender=sender)
 
+        call_command("bootstrap_specials")
         call_command(
             "initialize_election_date",
             options["election_date"],

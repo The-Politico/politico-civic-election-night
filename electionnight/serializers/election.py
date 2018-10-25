@@ -225,6 +225,11 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
             return None
 
     def get_current_party(self, obj):
+        dataset = obj.race.dataset.all()
+
+        if len(dataset) <= 0:
+            return None
+
         historical_results = obj.race.dataset.all()[0].data[
             "historicalResults"
         ]["seat"]
