@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from aploader.models import APElectionMeta
 from election.models import Candidate, Election, CandidateElection
 from electionnight.celery import (
+    bake_national_page,
     bake_state,
     bake_body,
     bake_state_body,
@@ -44,6 +45,7 @@ def rebake_context(sender, instance, **kwargs):
     else:
         state = office.division
 
+    bake_national_page.delay()
     bake_state.delay(state.code)
     if not office.body:
         bake_office.delay(state.code, office.slug)

@@ -1,18 +1,37 @@
 import logging
 
 from celery import shared_task
+from election.models import ElectionDay
 from geography.models import Division, DivisionLevel
 from government.models import Body, Office
 from rest_framework.renderers import JSONRenderer
 
 from electionnight.serializers import (
     BodySerializer,
+    ElectionDayPageSerializer,
     OfficeSerializer,
     StateSerializer,
 )
 from electionnight.utils.aws import defaults, get_bucket
 
 logger = logging.getLogger("tasks")
+
+
+@shared_task(acks_late=True)
+def bake_national_page():
+    print("Baking national context data")
+    election_day = ElectionDay.objects.get(slug='2018-11-06')
+    data = ElectionDayPageSerializer(election_day).data
+    json_string = JSONRenderer().render(data)
+    key = "election-results/2018/context.json"
+    bucket = get_bucket()
+    bucket.put_object(
+        Key=key,
+        ACL=defaults.ACL,
+        Body=json_string,
+        CacheControl=defaults.CACHE_HEADER,
+        ContentType="application/json",
+    )
 
 
 @shared_task(acks_late=True)
