@@ -6,6 +6,7 @@ from tqdm import tqdm
 
 from electionnight.serializers import (
     BodySerializer,
+    ElectionDayPageSerializer,
     OfficeSerializer,
     StateSerializer,
 )
@@ -54,6 +55,20 @@ class Command(BaseCommand):
                 offices.append(election.race.office)
 
         return list(set(offices))
+
+    def bake_national_page(self):
+        self.stdout.write(self.style.SUCCESS("Baking national page data"))
+        data = ElectionDayPageSerializer(self.ELECTION_DAY).data
+        json_string = JSONRenderer().render(data)
+        key = "election-results/2018/context.json"
+        bucket = get_bucket()
+        bucket.put_object(
+            Key=key,
+            ACL=defaults.ACL,
+            Body=json_string,
+            CacheControl=defaults.CACHE_HEADER,
+            ContentType="application/json",
+        )
 
     def bake_states(self, elections):
         states = self.fetch_states(elections)
@@ -152,6 +167,8 @@ class Command(BaseCommand):
         for date in election_dates:
             election_day = ElectionDay.objects.get(date=date)
             self.ELECTION_DAY = election_day
+            self.bake_national_page()
+
             elections = election_day.elections.all()
             self.bake_states(elections)
             self.bake_bodies(elections)

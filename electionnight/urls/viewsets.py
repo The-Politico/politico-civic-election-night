@@ -1,9 +1,10 @@
 from django.urls import path, re_path
 
 from electionnight.viewsets import (BodyDetail, BodyList, ElectionDayDetail,
-                                    ElectionDayList, OfficeDetail, OfficeList,
-                                    SpecialDetail, SpecialList, StateDetail,
-                                    StateList)
+                                    ElectionDayList, ElectionDayPageList,
+                                    ElectionDayPageDetail, OfficeDetail,
+                                    OfficeList, SpecialDetail, SpecialList,
+                                    StateDetail, StateList)
 
 urlpatterns = [
     path(
@@ -15,6 +16,16 @@ urlpatterns = [
         r'^api/elections/(?P<date>\d{4}-\d{2}-\d{2})/$',
         ElectionDayDetail.as_view(),
         name='electionnight_api_election-detail',
+    ),
+    path(
+        'api/elections/dates/',
+        ElectionDayPageList.as_view(),
+        name='electionnight_api_election-day-list',
+    ),
+    re_path(
+        r'^api/elections/dates/(?P<pk>.+)/$',
+        ElectionDayPageDetail.as_view(),
+        name='electionnight_api_election-day-detail',
     ),
     re_path(
         r'^api/elections/(?P<date>\d{4}-\d{2}-\d{2})/states/$',

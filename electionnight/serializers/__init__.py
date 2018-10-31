@@ -2,6 +2,7 @@
 from .body import BodySerializer, BodyListSerializer
 from .division import ChildDivisionSerializer, DivisionSerializer
 from .election_day import ElectionDaySerializer
+from .election_day_page import ElectionDayPageSerializer, ElectionDayPageListSerializer
 from .election import ElectionSerializer, ElectionViewSerializer
 from .office import OfficeSerializer, OfficeListSerializer
 from .party import PartySerializer
