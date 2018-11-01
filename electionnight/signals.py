@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 
 from aploader.models import APElectionMeta
@@ -10,6 +10,7 @@ from electionnight.celery import (
     bake_state_body,
     bake_office,
 )
+from electionnight.models import PageContent
 from entity.models import Person
 from vote.models import Votes
 
@@ -50,3 +51,9 @@ def rebake_context(sender, instance, **kwargs):
         body = office.body
         bake_body.delay(body.slug)
         bake_state_body.delay(state.code, body.slug)
+
+
+@receiver(m2m_changed, sender=PageContent.featured.through)
+def rebake_page_context(sender, instance, **kwargs):
+    if instance.content_type.name == 'body':
+        bake_body.delay(instance.content_object.slug)
