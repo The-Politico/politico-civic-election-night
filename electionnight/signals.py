@@ -15,8 +15,6 @@ from vote.models import Votes
 
 
 @receiver(post_save, sender=APElectionMeta)
-@receiver(post_save, sender=Candidate)
-@receiver(post_save, sender=Election)
 @receiver(post_save, sender=CandidateElection)
 @receiver(post_save, sender=Person)
 @receiver(post_save, sender=Votes)
@@ -40,7 +38,7 @@ def rebake_context(sender, instance, **kwargs):
     if sender == Votes:
         office = instance.candidate_election.election.race.office
 
-    if office.body == "house":
+    if office.body.slug == "house":
         state = office.division.parent
     else:
         state = office.division
