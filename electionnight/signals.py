@@ -17,7 +17,6 @@ from vote.models import Votes
 @receiver(post_save, sender=APElectionMeta)
 @receiver(post_save, sender=CandidateElection)
 @receiver(post_save, sender=Person)
-@receiver(post_save, sender=Votes)
 def rebake_context(sender, instance, **kwargs):
     if sender == APElectionMeta:
         office = instance.election.race.office

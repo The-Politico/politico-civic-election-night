@@ -20,7 +20,7 @@ logger = logging.getLogger("tasks")
 @shared_task(acks_late=True)
 def bake_national_page():
     print("Baking national context data")
-    election_day = ElectionDay.objects.get(slug='2018-11-06')
+    election_day = ElectionDay.objects.get(slug="2018-11-06")
     data = ElectionDayPageSerializer(election_day).data
     json_string = JSONRenderer().render(data)
     key = "election-results/2018/context.json"
