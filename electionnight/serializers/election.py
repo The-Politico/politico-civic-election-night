@@ -10,6 +10,28 @@ from rest_framework import serializers
 from .votes import VotesSerializer, VotesTableSerializer
 
 
+PENNSYLVANIA_INCUMBENCY_MAP = {
+    "01": "gop",
+    "02": "dem",
+    "03": "dem",
+    "04": "dem",
+    "05": "gop",
+    "06": "gop",
+    "07": "gop",
+    "08": "dem",
+    "09": "gop",
+    "10": "gop",
+    "11": "gop",
+    "12": "gop",
+    "13": "gop",
+    "14": "dem",
+    "15": "gop",
+    "16": "gop",
+    "17": "gop",
+    "18": "dem"
+}
+
+
 class FlattenMixin:
     """
     Flatens the specified related objects in this representation.
@@ -225,6 +247,10 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
             return None
 
     def get_current_party(self, obj):
+        if (obj.race.office.body and
+           obj.race.office.division.parent.slug == 'pennsylvania'):
+            return PENNSYLVANIA_INCUMBENCY_MAP[obj.race.office.division.code]
+
         dataset = obj.race.dataset.all()
 
         if len(dataset) <= 0:
