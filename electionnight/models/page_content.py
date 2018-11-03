@@ -5,9 +5,8 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from election.models import Election, ElectionDay
-from geography.models import Division, DivisionLevel
-
 from electionnight.managers import PageContentManager
+from geography.models import Division, DivisionLevel
 
 from .page_type import PageType
 
@@ -50,7 +49,9 @@ class PageContent(models.Model):
     objects = PageContentManager()
 
     featured = models.ManyToManyField(
-        Election, limit_choices_to={"election_day__slug": "2018-11-06"}
+        Election,
+        blank=True,
+        limit_choices_to={"election_day__slug": "2018-11-06"},
     )
 
     class Meta:
@@ -70,6 +71,7 @@ class PageContent(models.Model):
         """
         cycle = self.election_day.cycle.name
         if self.content_type.model_class() == PageType:
+            print(self.content_object)
             return self.content_object.page_location_template()
         elif self.content_type.model_class() == Division:
             if self.content_object.level.name == DivisionLevel.STATE:
@@ -89,9 +91,12 @@ class PageContent(models.Model):
         # Offices and Bodies
         else:
             if self.division.level.name == DivisionLevel.STATE:
-                path = os.path.join(
-                    self.division.slug, self.content_object.slug
-                )
+                if not self.content_object.body:
+                    path = os.path.join(self.division.slug, "governor")
+                else:
+                    path = os.path.join(
+                        self.division.slug, self.content_object.slug
+                    )
             else:
                 path = self.content_object.slug
         return (
