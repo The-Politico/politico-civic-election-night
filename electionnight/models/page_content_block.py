@@ -16,7 +16,7 @@ class PageContentBlock(models.Model):
     content_type = models.ForeignKey(
         "PageContentType", related_name="+", on_delete=models.PROTECT
     )
-    content = MarkdownField(help_text="Write content in Markdown.")
+    content = MarkdownField()
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
