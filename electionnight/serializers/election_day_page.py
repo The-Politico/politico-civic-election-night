@@ -1,8 +1,10 @@
-from election.models import ElectionDay, Election
+from election.models import Election, ElectionDay
+from electionnight.models import PageContent
 from geography.models import Division, DivisionLevel
-from government.models import Party
 from rest_framework import serializers
 from rest_framework.reverse import reverse
+
+from government.models import Party
 
 from .division import DivisionSerializer
 from .election import ElectionSerializer
@@ -36,8 +38,7 @@ class ElectionDayPageSerializer(serializers.ModelSerializer):
 
         us["children"] = [
             DivisionSerializer(
-                state,
-                context={"children_level": DivisionLevel.DISTRICT},
+                state, context={"children_level": DivisionLevel.DISTRICT}
             ).data
             for state in us_object.children.all()
         ]
@@ -52,7 +53,7 @@ class ElectionDayPageSerializer(serializers.ModelSerializer):
         return ElectionSerializer(elections, many=True).data
 
     def get_content(self, obj):
-        pass
+        return PageContent.objects.site_content(obj)
 
     class Meta:
         model = ElectionDay

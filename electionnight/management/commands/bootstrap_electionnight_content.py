@@ -1,10 +1,10 @@
 from django.core.management.base import BaseCommand
-from election.models import ElectionDay
+from election.models import ElectionDay, ElectionType
+from electionnight.management.commands.methods import BootstrapContentMethods
 from geography.models import DivisionLevel
-from government.models import Jurisdiction
 from tqdm import tqdm
 
-from electionnight.management.commands.methods import BootstrapContentMethods
+from government.models import Jurisdiction
 
 
 class Command(BaseCommand, BootstrapContentMethods):
@@ -24,6 +24,8 @@ class Command(BaseCommand, BootstrapContentMethods):
         """
         Legislative or executive office?
         """
+        if election.election_type.slug == ElectionType.GENERAL:
+            self.bootstrap_general_election(election)
         if election.race.special:
             self.bootstrap_special_election(election)
         elif election.race.office.is_executive:

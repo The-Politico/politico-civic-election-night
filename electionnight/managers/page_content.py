@@ -1,5 +1,4 @@
 from django.contrib.contenttypes.models import ContentType
-from django.core import exceptions
 from django.db import models
 
 
@@ -39,15 +38,30 @@ class PageContentManager(models.Manager):
             election_day=election_day,
         )
         return {
-            "page": self.serialize_content_blocks(page_content),
+            "site": self.site_content(election_day)["site"],
             "page_type": self.serialize_content_blocks(page_type_content),
+            "page": self.serialize_content_blocks(page_content),
         }
 
     def body_content(self, election_day, body, division=None):
         """
         Return serialized content for a body page.
         """
+        from electionnight.models import PageType
+
         body_type = ContentType.objects.get_for_model(body)
+        page_type = PageType.objects.get(
+            model_type=body_type,
+            election_day=election_day,
+            body=body,
+            jurisdiction=body.jurisdiction,
+            division_level=body.jurisdiction.division.level,
+        )
+        page_type_content = self.get(
+            content_type=ContentType.objects.get_for_model(page_type),
+            object_id=page_type.pk,
+            election_day=election_day,
+        )
 
         kwargs = {
             "content_type__pk": body_type.pk,
@@ -60,8 +74,9 @@ class PageContentManager(models.Manager):
 
         content = self.get(**kwargs)
         return {
+            "site": self.site_content(election_day)["site"],
+            "page_type": self.serialize_content_blocks(page_type_content),
             "page": self.serialize_content_blocks(content),
-            "page_type": None,  # TODO
             "featured": [
                 e.meta.ap_election_id for e in content.featured.all()
             ],
@@ -91,6 +106,27 @@ class PageContentManager(models.Manager):
             election_day=election_day,
         )
         return {
-            "page": self.serialize_content_blocks(page_content),
+            "site": self.site_content(election_day)["site"],
             "page_type": self.serialize_content_blocks(page_type_content),
+            "page": self.serialize_content_blocks(page_content),
         }
+
+    def site_content(self, election_day):
+        """
+        Site content represents content for the entire site on a
+        given election day.
+        """
+        from electionnight.models import PageType
+
+        page_type = PageType.objects.get(
+            model_type=ContentType.objects.get(
+                app_label="election", model="electionday"
+            ),
+            election_day=election_day,
+        )
+        site_content = self.get(
+            content_type=ContentType.objects.get_for_model(page_type),
+            object_id=page_type.pk,
+            election_day=election_day,
+        )
+        return {"site": self.serialize_content_blocks(site_content)}
