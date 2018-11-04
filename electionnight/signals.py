@@ -43,7 +43,6 @@ def rebake_context(sender, instance, **kwargs):
     else:
         state = office.division
 
-    bake_national_page.delay()
     bake_state.delay(state.code)
     if not office.body:
         bake_office.delay(state.code, office.slug)
@@ -51,6 +50,8 @@ def rebake_context(sender, instance, **kwargs):
         body = office.body
         bake_body.delay(body.slug)
         bake_state_body.delay(state.code, body.slug)
+
+    bake_national_page.delay()
 
 
 @receiver(m2m_changed, sender=PageContent.featured.through)
