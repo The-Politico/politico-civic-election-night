@@ -38,8 +38,11 @@ def rebake_context(sender, instance, **kwargs):
     if sender == Votes:
         office = instance.candidate_election.election.race.office
 
-    if office.body.slug == "house":
-        state = office.division.parent
+    if office.body:
+        if office.body.slug == 'house':
+            state = office.division.parent
+        else:
+            state = office.division
     else:
         state = office.division
 
