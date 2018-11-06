@@ -84,6 +84,9 @@ class Command(BaseCommand):
             race=race, author=self.steve, category=category
         )
 
+        race.description = rating["description"]
+        race.save()
+
     def handle(self, *args, **options):
         kwargs = {
             "signal": signals.post_save,
