@@ -28,7 +28,16 @@ PENNSYLVANIA_INCUMBENCY_MAP = {
     "15": "gop",
     "16": "gop",
     "17": "gop",
-    "18": "dem"
+    "18": "dem",
+}
+
+LOUISIANA_INCUMBENCY_MAP = {
+    "01": "gop",
+    "02": "dem",
+    "03": "gop",
+    "04": "gop",
+    "05": "gop",
+    "06": "gop",
 }
 
 
@@ -247,9 +256,17 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
             return None
 
     def get_current_party(self, obj):
-        if (obj.race.office.body and
-           obj.race.office.division.parent.slug == 'pennsylvania'):
+        if (
+            obj.race.office.body
+            and obj.race.office.division.parent.slug == "pennsylvania"
+        ):
             return PENNSYLVANIA_INCUMBENCY_MAP[obj.race.office.division.code]
+
+        if (
+            obj.race.office.body.slug == "house"
+            and obj.race.office.division.parent.slug == "louisiana"
+        ):
+            return LOUISIANA_INCUMBENCY_MAP[obj.race.office.division.code]
 
         dataset = obj.race.dataset.all()
 
