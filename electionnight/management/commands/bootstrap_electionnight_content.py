@@ -24,11 +24,15 @@ class Command(BaseCommand, BootstrapContentMethods):
         """
         Legislative or executive office?
         """
-        if election.election_type.slug == ElectionType.GENERAL:
+        if (
+            election.election_type.slug == ElectionType.GENERAL
+            or ElectionType.GENERAL_RUNOFF
+        ):
             self.bootstrap_general_election(election)
-        if election.race.special:
+        elif election.race.special:
             self.bootstrap_special_election(election)
-        elif election.race.office.is_executive:
+
+        if election.race.office.is_executive:
             self.bootstrap_executive_office(election)
         else:
             self.bootstrap_legislative_office(election)

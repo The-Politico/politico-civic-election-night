@@ -71,6 +71,16 @@ class Command(BaseCommand):
         )
 
     def bake_states(self, elections):
+        print(elections.first().election_type)
+
+        if (
+            len(elections) == 1
+            and elections.first().election_type.slug == "general-runoff"
+        ):
+            key = "election-results/2018/{}/runoff/context.json"
+        else:
+            key = "election-results/2018/{}/context.json"
+
         states = self.fetch_states(elections)
         self.stdout.write(self.style.SUCCESS("Baking state page data."))
         for state in tqdm(states):
@@ -79,7 +89,7 @@ class Command(BaseCommand):
                 state, context={"election_date": self.ELECTION_DAY.slug}
             ).data
             json_string = JSONRenderer().render(data)
-            key = "election-results/2018/{}/context.json".format(state.slug)
+            key = key.format(state.slug)
             bucket = get_bucket()
             bucket.put_object(
                 Key=key,
@@ -90,6 +100,13 @@ class Command(BaseCommand):
             )
 
     def bake_bodies(self, elections):
+        if (
+            len(elections) == 1
+            and elections.first().election_type.slug == "general-runoff"
+        ):
+            print("skipping")
+            return
+
         bodies = self.fetch_bodies(elections)
         self.stdout.write(self.style.SUCCESS("Baking body page data."))
         for body in tqdm(bodies):
@@ -109,6 +126,13 @@ class Command(BaseCommand):
             )
 
     def bake_state_bodies(self, elections):
+        if (
+            len(elections) == 1
+            and elections.first().election_type.slug == "general-runoff"
+        ):
+            print("skipping")
+            return
+
         self.stdout.write(self.style.SUCCESS("Baking state body page data."))
         states = self.fetch_states(elections)
         for state in tqdm(states, desc="States"):
@@ -139,6 +163,13 @@ class Command(BaseCommand):
                 )
 
     def bake_state_executive_offices(self, elections):
+        if (
+            len(elections) == 1
+            and elections.first().election_type.slug == "general-runoff"
+        ):
+            print("skipping")
+            return
+
         self.stdout.write(self.style.SUCCESS("Baking state office page data."))
         states = self.fetch_states(elections)
         for state in tqdm(states, desc="States"):
@@ -167,7 +198,8 @@ class Command(BaseCommand):
         for date in election_dates:
             election_day = ElectionDay.objects.get(date=date)
             self.ELECTION_DAY = election_day
-            self.bake_national_page()
+            if date == "2018-11-06":
+                self.bake_national_page()
 
             elections = election_day.elections.all()
             self.bake_states(elections)

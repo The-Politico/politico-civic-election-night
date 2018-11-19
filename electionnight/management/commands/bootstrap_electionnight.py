@@ -22,3 +22,8 @@ class Command(BaseCommand):
             signal=signals.post_save, receiver=rebake_context, sender=Election
         ):
             call_command("bootstrap_elections")
+            call_command("bootstrap_specials")
+
+        call_command("bootstrap_ratings_from_prod")
+        call_command("bootstrap_historical_results_mit")
+        call_command("bootstrap_historical_results_kos")

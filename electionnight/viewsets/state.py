@@ -13,14 +13,14 @@ class StateMixin(object):
         a date.
         """
         try:
-            date = ElectionDay.objects.get(date=self.kwargs['date'])
+            date = ElectionDay.objects.get(date=self.kwargs["date"])
         except Exception:
             raise APIException(
-                'No elections on {}.'.format(self.kwargs['date'])
+                "No elections on {}.".format(self.kwargs["date"])
             )
         division_ids = []
 
-        normal_elections = date.elections.filter(race__special=False)
+        normal_elections = date.elections.filter()
 
         if len(normal_elections) > 0:
             for election in date.elections.all():
@@ -34,7 +34,7 @@ class StateMixin(object):
     def get_serializer_context(self):
         """Adds ``election_day`` to serializer context."""
         context = super(StateMixin, self).get_serializer_context()
-        context['election_date'] = self.kwargs['date']
+        context["election_date"] = self.kwargs["date"]
         return context
 
 
