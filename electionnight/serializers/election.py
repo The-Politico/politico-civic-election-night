@@ -263,7 +263,7 @@ class ElectionSerializer(FlattenMixin, serializers.ModelSerializer):
             return PENNSYLVANIA_INCUMBENCY_MAP[obj.race.office.division.code]
 
         if (
-            obj.race.office.body.slug == "house"
+            obj.race.office.body
             and obj.race.office.division.parent.slug == "louisiana"
         ):
             return LOUISIANA_INCUMBENCY_MAP[obj.race.office.division.code]
