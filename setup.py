@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="politico-civic-election-night",
-    version="0.13.2",
+    version="0.13.3",
     description="",
     url="https://github.com/The-Politico/politico-civic-election-night",
     author="POLITICO interactive news",
