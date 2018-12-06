@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     "geography",
     "government",
     "election",
-    "almanac",
     "vote",
     "raceratings",
     "aploader",

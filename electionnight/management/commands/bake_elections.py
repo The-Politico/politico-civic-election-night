@@ -89,6 +89,15 @@ class Command(BaseCommand):
                 state, context={"election_date": self.ELECTION_DAY.slug}
             ).data
             json_string = JSONRenderer().render(data)
+
+            if (
+                len(elections) == 1
+                and elections.first().election_type.slug == "general-runoff"
+            ):
+                key = "election-results/2018/{}/runoff/context.json"
+            else:
+                key = "election-results/2018/{}/context.json"
+
             key = key.format(state.slug)
             bucket = get_bucket()
             bucket.put_object(
