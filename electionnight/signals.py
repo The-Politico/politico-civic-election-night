@@ -17,29 +17,15 @@ from vote.models import Votes
 
 @receiver(post_save, sender=APElectionMeta)
 @receiver(post_save, sender=CandidateElection)
-@receiver(post_save, sender=Person)
 def rebake_context(sender, instance, **kwargs):
     if sender == APElectionMeta:
         office = instance.election.race.office
 
-    if sender == Candidate:
-        office = instance.race.office
-
-    if sender == Election:
-        office = instance.race.office
-
     if sender == CandidateElection:
         office = instance.election.race.office
 
-    if sender == Person:
-        candidacy = instance.candidacies.get(race__cycle__slug="2018")
-        office = candidacy.race.office
-
-    if sender == Votes:
-        office = instance.candidate_election.election.race.office
-
     if office.body:
-        if office.body.slug == 'house':
+        if office.body.slug == "house":
             state = office.division.parent
         else:
             state = office.division
@@ -59,5 +45,5 @@ def rebake_context(sender, instance, **kwargs):
 
 @receiver(m2m_changed, sender=PageContent.featured.through)
 def rebake_page_context(sender, instance, **kwargs):
-    if instance.content_type.name == 'body':
+    if instance.content_type.name == "body":
         bake_body.delay(instance.content_object.slug)
